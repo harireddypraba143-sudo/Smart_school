@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'srv1995.hstgr.io',
+	'hostname' => 'localhost',
 	'username' => 'u670120121_SMS_live',
 	'password' => 'Shruthi@13@',
 	'database' => 'u670120121_SMS_live',
