@@ -1,0 +1,1 @@
+../admin/modal_take_payment.php
