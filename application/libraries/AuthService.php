@@ -177,36 +177,70 @@ class AuthService {
     // ========================================================================
 
     /**
+     * Normalize phone number — strips country code, spaces, dashes.
+     * Returns the last 10 digits.
+     */
+    private function _normalize_phone($phone) {
+        // Remove all non-digit characters
+        $digits = preg_replace('/[^0-9]/', '', $phone);
+        // Take last 10 digits (strips country code like 91)
+        if (strlen($digits) > 10) {
+            $digits = substr($digits, -10);
+        }
+        return $digits;
+    }
+
+    /**
+     * Find parent by phone number (flexible matching).
+     */
+    private function _find_parent_by_phone($phone) {
+        $normalized = $this->_normalize_phone($phone);
+        if (strlen($normalized) < 10) return NULL;
+
+        // Try exact match first
+        $parent = $this->CI->db->get_where('parent', ['phone' => $phone])->row();
+        if ($parent) return $parent;
+
+        // Try with normalized (last 10 digits) using LIKE
+        $parent = $this->CI->db->like('phone', $normalized)->get('parent')->row();
+        if ($parent) return $parent;
+
+        // Try with +91 prefix
+        $parent = $this->CI->db->get_where('parent', ['phone' => '+91' . $normalized])->row();
+        if ($parent) return $parent;
+
+        // Try without any prefix
+        $parent = $this->CI->db->get_where('parent', ['phone' => $normalized])->row();
+        return $parent;
+    }
+
+    /**
      * Send OTP to a parent's phone number.
      * Returns TRUE on success, FALSE if parent not found.
      */
     public function send_otp($phone) {
-        // Find parent by phone
-        $parent = $this->CI->db
-            ->like('phone', $phone)
-            ->get('parent')
-            ->row();
-
+        $parent = $this->_find_parent_by_phone($phone);
         if (!$parent) return FALSE;
 
         // Generate OTP
         $otp_length = $this->config['otp_length'] ?? 6;
         $otp = str_pad(random_int(0, pow(10, $otp_length) - 1), $otp_length, '0', STR_PAD_LEFT);
-        $expiry = date('Y-m-d H:i:s', time() + ($this->config['otp_expiry'] ?? 300));
 
-        // Store OTP (reuse parent table — add otp columns if needed, or use a temp approach)
-        // For simplicity, we'll store in session or a simple cache approach
-        // Using CI session as temp storage keyed by phone
-        $this->CI->load->library('session');
-        $this->CI->session->set_userdata('otp_' . $phone, [
-            'otp'        => $otp,
-            'parent_id'  => $parent->parent_id,
-            'expires_at' => time() + ($this->config['otp_expiry'] ?? 300)
+        // Store OTP in database (reliable across stateless API requests)
+        $normalized = $this->_normalize_phone($phone);
+        
+        // Delete any existing OTP for this phone
+        $this->CI->db->like('identifier', $normalized)->delete('rate_limits');
+        
+        // Store OTP in rate_limits table (reuse existing table)
+        $this->CI->db->insert('rate_limits', [
+            'identifier'    => 'otp_' . $normalized,
+            'request_count' => $otp,  // Store OTP in request_count field
+            'window_start'  => date('Y-m-d H:i:s')
         ]);
 
         // In production: send OTP via SMS gateway
-        // For now: dev bypass available
-        log_message('info', "OTP for {$phone}: {$otp}");
+        log_message('info', "OTP for {$phone} (normalized: {$normalized}): {$otp}");
 
         return TRUE;
     }
@@ -216,26 +250,31 @@ class AuthService {
      * Returns parent row on success, FALSE on failure.
      */
     public function verify_otp($phone, $otp) {
-        // Dev bypass
+        // Dev bypass — always works with code 123456
         $dev_otp = $this->config['otp_dev_bypass'] ?? null;
         if ($dev_otp && $otp === $dev_otp) {
-            $parent = $this->CI->db->like('phone', $phone)->get('parent')->row();
+            $parent = $this->_find_parent_by_phone($phone);
             return $parent ?: FALSE;
         }
 
-        // Check stored OTP
-        $this->CI->load->library('session');
-        $stored = $this->CI->session->userdata('otp_' . $phone);
+        // Check stored OTP from database
+        $normalized = $this->_normalize_phone($phone);
+        $expiry_seconds = $this->config['otp_expiry'] ?? 300;
+        
+        $stored = $this->CI->db
+            ->where('identifier', 'otp_' . $normalized)
+            ->where('window_start >', date('Y-m-d H:i:s', time() - $expiry_seconds))
+            ->get('rate_limits')
+            ->row();
 
         if (!$stored) return FALSE;
-        if ($stored['expires_at'] < time()) return FALSE;
-        if ($stored['otp'] !== $otp) return FALSE;
+        if ($stored->request_count != $otp) return FALSE;
 
         // OTP valid — clear it
-        $this->CI->session->unset_userdata('otp_' . $phone);
+        $this->CI->db->where('identifier', 'otp_' . $normalized)->delete('rate_limits');
 
         // Return parent
-        return $this->CI->db->get_where('parent', ['parent_id' => $stored['parent_id']])->row();
+        return $this->_find_parent_by_phone($phone);
     }
 
     // ========================================================================
