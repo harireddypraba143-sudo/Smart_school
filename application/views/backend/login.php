@@ -31,7 +31,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     background: #0f0c29 url('<?php echo base_url(); ?>assets/images/login_b.png') no-repeat center center;
     background-size: cover;
     overflow: hidden;
@@ -71,30 +71,24 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     z-index: 10;
     width: 100%;
     max-width: 460px;
-    padding: 20px 40px 20px 20px;
-    margin-right: 20px;
+    padding: 20px;
     animation: fadeInUp 0.8s ease-out;
   }
 
   /* Glass Card */
   .login-card {
-    background: #ffffff;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
     border-radius: 24px;
     padding: 48px 40px 40px;
-    box-shadow: 
-      0 32px 64px rgba(0, 0, 0, 0.15),
-      0 8px 24px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: none;
+    transition: transform 0.3s ease;
   }
 
   .login-card:hover {
     transform: translateY(-4px);
-    box-shadow: 
-      0 40px 80px rgba(0, 0, 0, 0.2),
-      0 12px 32px rgba(0, 0, 0, 0.12);
   }
 
   /* Logo Area */
@@ -138,17 +132,17 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .logo-area h1 {
-    color: #1a1a2e;
-    font-size: 22px;
-    font-weight: 700;
+    color: #111827;
+    font-size: 24px;
+    font-weight: 800;
     letter-spacing: -0.02em;
     margin-bottom: 6px;
   }
 
   .logo-area p {
-    color: #6b7280;
-    font-size: 14px;
-    font-weight: 400;
+    color: #374151;
+    font-size: 15px;
+    font-weight: 600;
     letter-spacing: 0.02em;
   }
 
@@ -164,9 +158,9 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
 
   .form-group label {
     display: block;
-    color: #374151;
-    font-size: 13px;
-    font-weight: 500;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 600;
     margin-bottom: 8px;
     letter-spacing: 0.02em;
   }
@@ -180,7 +174,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
+    color: #4b5563;
     font-size: 16px;
     transition: color 0.3s ease;
     z-index: 2;
@@ -189,13 +183,13 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   .form-input {
     width: 100%;
     padding: 14px 16px 14px 46px;
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 12px;
-    color: #1f2937;
+    color: #111827;
     font-size: 15px;
     font-family: 'Inter', sans-serif;
-    font-weight: 400;
+    font-weight: 500;
     outline: none;
     transition: all 0.3s ease;
     position: relative;
@@ -203,14 +197,14 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .form-input::placeholder {
-    color: #9ca3af;
-    font-weight: 300;
+    color: #6b7280;
+    font-weight: 400;
   }
 
   .form-input:focus {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
   }
 
   .form-input:focus + i,
@@ -238,9 +232,9 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid #d1d5db;
+    border: 2px solid #6b7280;
     border-radius: 5px;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
@@ -262,9 +256,9 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .remember-me span {
-    color: #6b7280;
-    font-size: 13px;
-    font-weight: 400;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 500;
   }
 
   .forgot-link {
@@ -344,9 +338,9 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .divider span {
-    color: #9ca3af;
+    color: #4b5563;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
@@ -364,19 +358,19 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 20px;
-    color: #6b7280;
+    color: #1f2937;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.3s ease;
     cursor: default;
   }
 
   .role-badge:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: rgba(102, 126, 234, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(102, 126, 234, 0.4);
     color: #667eea;
   }
 
@@ -388,20 +382,20 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   .login-footer {
     text-align: center;
     margin-top: 32px;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 12px;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 600;
     letter-spacing: 0.02em;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   }
 
   .login-footer a {
-    color: #ffffff;
+    color: #667eea;
     text-decoration: none;
     transition: color 0.3s ease;
   }
 
   .login-footer a:hover {
-    color: #667eea;
+    color: #4f46e5;
   }
 
   /* Toast Notification */
@@ -428,10 +422,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     font-size: 18px;
   }
 
-  /* Password Reset Form */
-  #recoverform {
-    display: none;
-  }
+
 
   /* Responsive */
   @media (max-width: 480px) {
@@ -450,9 +441,79 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
       font-size: 11px;
     }
   }
+
+  /* User Guide Styles */
+  .ug-btn {
+    position: fixed; top: 20px; right: 30px; z-index: 50;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    padding: 10px 20px; border-radius: 30px; font-weight: 600; color: #1f2937;
+    border: 1px solid rgba(255,255,255,0.5); cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s;
+  }
+  .ug-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+  .ug-btn i { color: #667eea; margin-right: 6px; }
+
+  .ug-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: rgba(15, 12, 41, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    z-index: 9999; display: flex; opacity: 0; visibility: hidden; transition: all 0.4s ease;
+  }
+  .ug-modal.active { opacity: 1; visibility: visible; }
+  
+  .ug-container {
+    width: 90%; max-width: 1000px; height: 85vh; margin: auto;
+    background: #ffffff; border-radius: 24px; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    display: flex; overflow: hidden; transform: translateY(30px); transition: all 0.4s ease; position: relative;
+  }
+  .ug-modal.active .ug-container { transform: translateY(0); }
+
+  .ug-close {
+    position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.05);
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 18px; color: #4b5563; z-index: 10; transition: background 0.2s;
+  }
+  .ug-close:hover { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+  .ug-sidebar { width: 250px; background: #f8fafc; border-right: 1px solid #e2e8f0; padding: 30px 0; }
+  .ug-sidebar-title { padding: 0 30px 20px; font-weight: 700; font-size: 18px; color: #0f172a; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px; }
+  .ug-tab { padding: 15px 30px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 500; color: #64748b; transition: all 0.2s; border-left: 3px solid transparent; }
+  .ug-tab:hover { background: #f1f5f9; color: #334155; }
+  .ug-tab.active { background: #eff6ff; color: #2563eb; border-left-color: #2563eb; font-weight: 600; }
+  .ug-tab i { font-size: 16px; width: 20px; text-align: center; }
+
+  .ug-content-area { flex: 1; padding: 40px; overflow-y: auto; background: #ffffff; }
+  .ug-pane { display: none; animation: fadeIn 0.4s ease; }
+  .ug-pane.active { display: block; }
+  .ug-header { margin-bottom: 30px; }
+  .ug-header h2 { font-size: 28px; color: #1e293b; margin-bottom: 8px; font-weight: 700; }
+  .ug-header p { color: #64748b; font-size: 15px; }
+
+  .ug-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .ug-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; transition: transform 0.2s, box-shadow 0.2s; }
+  .ug-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); border-color: #cbd5e1; }
+  .ug-card-icon { width: 44px; height: 44px; border-radius: 12px; background: #eff6ff; color: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 16px; }
+  .ug-card-icon.red { background: #fef2f2; color: #ef4444; }
+  .ug-card-icon.green { background: #f0fdf4; color: #22c55e; }
+  .ug-card-icon.purple { background: #faf5ff; color: #a855f7; }
+  .ug-card h3 { font-size: 16px; color: #0f172a; margin-bottom: 8px; font-weight: 600; }
+  .ug-card p { color: #475569; font-size: 13px; line-height: 1.5; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 768px) {
+    .ug-container { flex-direction: column; width: 100%; height: 100vh; border-radius: 0; }
+    .ug-sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; display: flex; padding: 10px; overflow-x: auto; white-space: nowrap; }
+    .ug-sidebar-title { display: none; }
+    .ug-tab { padding: 10px 15px; border-left: none; border-bottom: 2px solid transparent; }
+    .ug-tab.active { border-left-color: transparent; border-bottom-color: #2563eb; }
+    .ug-content-area { padding: 20px; }
+  }
 </style>
 </head>
 <body>
+
+<button class="ug-btn" id="openUgBtn">
+  <i class="fa fa-book"></i> User Guide
+</button>
 
 <?php if (($this->session->flashdata('error_message')) !=''): ?>
 <div class="toast-error" id="errorToast">
@@ -497,7 +558,6 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
           <input type="checkbox" id="remember">
           <span>Remember me</span>
         </label>
-        <a href="javascript:void(0)" id="to-recover" class="forgot-link">Forgot password?</a>
       </div>
 
       <button type="submit" class="btn-login">
@@ -520,26 +580,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
       <span class="role-badge"><i class="fa fa-chalkboard-teacher"></i> Teacher</span>
     </div>
 
-    <!-- Password Reset Form (hidden) -->
-    <form method="post" id="recoverform" class="login-form" action="<?php echo base_url();?>login/reset_password">
-      <div class="form-group">
-        <label for="recover-email">Enter your registered email</label>
-        <div class="input-wrapper">
-          <input type="email" id="recover-email" name="email" class="form-input" placeholder="Enter your email" required>
-          <i class="fa fa-envelope"></i>
-        </div>
-      </div>
-      <div style="display:flex; gap:10px; margin-top:16px;">
-        <a href="<?php echo base_url();?>" style="flex:1;">
-          <button type="button" class="btn-login" style="background: rgba(255,255,255,0.1); font-size:13px;">
-            <i class="fa fa-arrow-left"></i> Back
-          </button>
-        </a>
-        <button type="submit" class="btn-login" style="flex:1; font-size:13px;">
-          <i class="fa fa-key"></i> Reset
-        </button>
-      </div>
-    </form>
+
 
   </div>
 
@@ -548,14 +589,180 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   </div>
 </div>
 
+<!-- User Guide Modal -->
+<div class="ug-modal" id="ugModal">
+  <div class="ug-container">
+    <div class="ug-close" id="closeUgBtn"><i class="fa fa-times"></i></div>
+
+    <!-- Sidebar -->
+    <div class="ug-sidebar">
+      <div class="ug-sidebar-title">Application Guide</div>
+      <div class="ug-tab active" data-target="pane-admin"><i class="fa fa-shield"></i> Administrator</div>
+      <div class="ug-tab" data-target="pane-teacher"><i class="fa fa-chalkboard-teacher"></i> Teacher</div>
+      <div class="ug-tab" data-target="pane-student"><i class="fa fa-graduation-cap"></i> Student</div>
+      <div class="ug-tab" data-target="pane-parent"><i class="fa fa-users"></i> Parent</div>
+      <div class="ug-tab" data-target="pane-accountant"><i class="fa fa-calculator"></i> Accountant</div>
+      <div class="ug-tab" data-target="pane-admission"><i class="fa fa-user-plus"></i> Admission</div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="ug-content-area">
+      <!-- Admin Pane -->
+      <div class="ug-pane active" id="pane-admin">
+        <div class="ug-header">
+          <h2>Administrator Portal</h2>
+          <p>Complete control over system settings, user management, and high-level analytics.</p>
+        </div>
+        <div class="ug-grid">
+          <div class="ug-card">
+            <div class="ug-card-icon purple"><i class="fa fa-cogs"></i></div>
+            <h3>System Settings</h3>
+            <p>Configure academic years, school branding, external integrations, and core system preferences.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon"><i class="fa fa-users"></i></div>
+            <h3>User Management</h3>
+            <p>Onboard and manage permissions for teachers, parents, students, accountants, and other staff.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon green"><i class="fa fa-sitemap"></i></div>
+            <h3>Academics & HR</h3>
+            <p>Organize classes, subjects, syllabus, manage payroll, leave requests, and employee directory.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon red"><i class="fa fa-bullhorn"></i></div>
+            <h3>Communication</h3>
+            <p>Send bulk SMS and emails, publish global notices, and manage the event calendar.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teacher Pane -->
+      <div class="ug-pane" id="pane-teacher">
+        <div class="ug-header">
+          <h2>Teacher Portal</h2>
+          <p>Streamline daily classroom operations, student evaluation, and parent communication.</p>
+        </div>
+        <div class="ug-grid">
+          <div class="ug-card">
+            <div class="ug-card-icon green"><i class="fa fa-check-square-o"></i></div>
+            <h3>Daily Attendance</h3>
+            <p>Quickly mark class attendance with an intuitive interface and view historical attendance reports.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon purple"><i class="fa fa-book"></i></div>
+            <h3>Academics & Marks</h3>
+            <p>Input exam marks, manage subject-specific study materials, upload homework, and track progress.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon"><i class="fa fa-comments"></i></div>
+            <h3>Parent Interactions</h3>
+            <p>Send direct messages to parents regarding student behavior, progress, and upcoming events.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Pane -->
+      <div class="ug-pane" id="pane-student">
+        <div class="ug-header">
+          <h2>Student Portal</h2>
+          <p>Empowering students with access to their academic resources and personal timelines.</p>
+        </div>
+        <div class="ug-grid">
+          <div class="ug-card">
+            <div class="ug-card-icon"><i class="fa fa-file-text-o"></i></div>
+            <h3>Report Cards</h3>
+            <p>Real-time access to exam results, performance charts, and downloadable official report cards.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon purple"><i class="fa fa-calendar"></i></div>
+            <h3>Timetable & Live Classes</h3>
+            <p>View daily class routines and securely join scheduled online live classes via external integrations.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon green"><i class="fa fa-download"></i></div>
+            <h3>Study Material</h3>
+            <p>Download notes, syllabus, and submit homework assignments directly through the portal.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parent Pane -->
+      <div class="ug-pane" id="pane-parent">
+        <div class="ug-header">
+          <h2>Parent Portal</h2>
+          <p>Keeping parents in the loop concerning their child's academic journey and school updates.</p>
+        </div>
+        <div class="ug-grid">
+          <div class="ug-card">
+            <div class="ug-card-icon purple"><i class="fa fa-child"></i></div>
+            <h3>Child Overview</h3>
+            <p>Switch seamlessly between multiple children. Track daily attendance and academic progress in one place.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon green"><i class="fa fa-credit-card"></i></div>
+            <h3>Online Fee Payment</h3>
+            <p>View upcoming invoices, fee history, and securely pay tuition and other fees via integrated payment gateways.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon"><i class="fa fa-envelope-o"></i></div>
+            <h3>Direct Teacher Chat</h3>
+            <p>Communicate directly with class teachers for feedback and stay informed with school-wide broadcast messages.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accountant Pane -->
+      <div class="ug-pane" id="pane-accountant">
+        <div class="ug-header">
+          <h2>Accountant Portal</h2>
+          <p>Centralized financial management, from fee collection to payroll and expense tracking.</p>
+        </div>
+        <div class="ug-grid">
+          <div class="ug-card">
+            <div class="ug-card-icon green"><i class="fa fa-money"></i></div>
+            <h3>Fee Collection</h3>
+            <p>Create fee types, generate mass invoices for classes, process offline payments, and track defaulters.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon red"><i class="fa fa-line-chart"></i></div>
+            <h3>Expense Management</h3>
+            <p>Record school expenses, categorize spending, and maintain a clear ledger for transparent accounting.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon purple"><i class="fa fa-file-excel-o"></i></div>
+            <h3>Financial Reports</h3>
+            <p>Generate precise financial statements, transaction histories, and balance sheets for management review.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admission Pane -->
+      <div class="ug-pane" id="pane-admission">
+        <div class="ug-header">
+          <h2>Admission Portal</h2>
+          <p>Streamlined workflow for handling prospective student applications and enrollment.</p>
+        </div>
+        <div class="ug-grid">
+          <div class="ug-card">
+            <div class="ug-card-icon"><i class="fa fa-globe"></i></div>
+            <h3>Online Applications</h3>
+            <p>Review and process incoming applications submitted via the school's public website interface.</p>
+          </div>
+          <div class="ug-card">
+            <div class="ug-card-icon green"><i class="fa fa-user-plus"></i></div>
+            <h3>Enrollment Workflow</h3>
+            <p>Approve applications, assign roll numbers, allocate hostels/transport, and officially enroll students.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Minimal JS -->
 <script>
-  // Toggle forgot password form
-  document.getElementById('to-recover').addEventListener('click', function() {
-    document.getElementById('loginform').style.display = 'none';
-    document.querySelector('.form-extras').style.display = 'none';
-    document.getElementById('recoverform').style.display = 'block';
-  });
+
 
   // Auto-hide error toast
   var toast = document.getElementById('errorToast');
@@ -575,6 +782,45 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     });
     input.addEventListener('blur', function() {
       this.closest('.form-group').classList.remove('focused');
+    });
+  });
+
+  // User Guide Modal Logic
+  const ugModal = document.getElementById('ugModal');
+  const openUgBtn = document.getElementById('openUgBtn');
+  const closeUgBtn = document.getElementById('closeUgBtn');
+  const ugTabs = document.querySelectorAll('.ug-tab');
+  const ugPanes = document.querySelectorAll('.ug-pane');
+
+  openUgBtn.addEventListener('click', () => {
+    ugModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeUgBtn.addEventListener('click', () => {
+    ugModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  });
+
+  ugModal.addEventListener('click', (e) => {
+    if(e.target === ugModal) {
+      ugModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  });
+
+  ugTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Remove active class from all tabs
+      ugTabs.forEach(t => t.classList.remove('active'));
+      // Add active to clicked tab
+      tab.classList.add('active');
+      
+      // Hide all panes
+      ugPanes.forEach(p => p.classList.remove('active'));
+      // Show target pane
+      const targetId = tab.getAttribute('data-target');
+      document.getElementById(targetId).classList.add('active');
     });
   });
 </script>
