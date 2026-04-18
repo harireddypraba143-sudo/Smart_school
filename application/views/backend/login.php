@@ -31,7 +31,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     background: #0f0c29 url('<?php echo base_url(); ?>assets/images/login_b.png') no-repeat center center;
     background-size: cover;
     overflow: hidden;
@@ -71,7 +71,8 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     z-index: 10;
     width: 100%;
     max-width: 460px;
-    padding: 20px;
+    padding: 20px 40px 20px 20px;
+    margin-right: 20px;
     animation: fadeInUp 0.8s ease-out;
   }
 
