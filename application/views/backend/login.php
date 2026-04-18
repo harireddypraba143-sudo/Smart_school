@@ -32,8 +32,8 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #0f0c29;
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    background: #0f0c29 url('<?php echo base_url(); ?>assets/images/login_b.png') no-repeat center center;
+    background-size: cover;
     overflow: hidden;
     position: relative;
   }
