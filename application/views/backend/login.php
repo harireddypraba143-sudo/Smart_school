@@ -77,7 +77,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
 
   /* Glass Card */
   .login-card {
-    background: rgba(255, 255, 255, 0.92);
+    background: #ffffff;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.6);
