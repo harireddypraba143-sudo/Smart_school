@@ -38,30 +38,10 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     position: relative;
   }
 
-  /* Animated Background Orbs */
+  /* Animated Background Orbs - disabled for image background */
   body::before,
   body::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-    animation: float 8s ease-in-out infinite;
-  }
-  body::before {
-    width: 500px;
-    height: 500px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    top: -120px;
-    right: -100px;
-  }
-  body::after {
-    width: 400px;
-    height: 400px;
-    background: linear-gradient(135deg, #f093fb, #f5576c);
-    bottom: -80px;
-    left: -80px;
-    animation-delay: -4s;
+    display: none;
   }
 
   @keyframes float {
@@ -97,23 +77,23 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
 
   /* Glass Card */
   .login-card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 24px;
     padding: 48px 40px 40px;
     box-shadow: 
-      0 32px 64px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 32px 64px rgba(0, 0, 0, 0.15),
+      0 8px 24px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .login-card:hover {
     transform: translateY(-4px);
     box-shadow: 
-      0 40px 80px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      0 40px 80px rgba(0, 0, 0, 0.2),
+      0 12px 32px rgba(0, 0, 0, 0.12);
   }
 
   /* Logo Area */
@@ -157,7 +137,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .logo-area h1 {
-    color: #ffffff;
+    color: #1a1a2e;
     font-size: 22px;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -165,7 +145,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .logo-area p {
-    color: rgba(255, 255, 255, 0.5);
+    color: #6b7280;
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -183,7 +163,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
 
   .form-group label {
     display: block;
-    color: rgba(255, 255, 255, 0.7);
+    color: #374151;
     font-size: 13px;
     font-weight: 500;
     margin-bottom: 8px;
@@ -199,7 +179,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.3);
+    color: #9ca3af;
     font-size: 16px;
     transition: color 0.3s ease;
     z-index: 2;
@@ -208,10 +188,10 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   .form-input {
     width: 100%;
     padding: 14px 16px 14px 46px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
-    color: #ffffff;
+    color: #1f2937;
     font-size: 15px;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
@@ -222,13 +202,13 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .form-input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: #9ca3af;
     font-weight: 300;
   }
 
   .form-input:focus {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(102, 126, 234, 0.6);
+    background: #ffffff;
+    border-color: #667eea;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
   }
 
@@ -257,7 +237,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid #d1d5db;
     border-radius: 5px;
     background: transparent;
     cursor: pointer;
@@ -281,7 +261,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .remember-me span {
-    color: rgba(255, 255, 255, 0.5);
+    color: #6b7280;
     font-size: 13px;
     font-weight: 400;
   }
@@ -359,11 +339,11 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     content: '';
     flex: 1;
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #e5e7eb;
   }
 
   .divider span {
-    color: rgba(255, 255, 255, 0.3);
+    color: #9ca3af;
     font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
@@ -383,10 +363,10 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
     border-radius: 20px;
-    color: rgba(255, 255, 255, 0.5);
+    color: #6b7280;
     font-size: 12px;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -394,9 +374,9 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   }
 
   .role-badge:hover {
-    background: rgba(102, 126, 234, 0.15);
+    background: rgba(102, 126, 234, 0.1);
     border-color: rgba(102, 126, 234, 0.3);
-    color: #8b9cf7;
+    color: #667eea;
   }
 
   .role-badge i {
@@ -407,13 +387,14 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   .login-footer {
     text-align: center;
     margin-top: 32px;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 12px;
     letter-spacing: 0.02em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   }
 
   .login-footer a {
-    color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
     text-decoration: none;
     transition: color 0.3s ease;
   }
