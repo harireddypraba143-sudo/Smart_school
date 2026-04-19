@@ -50,6 +50,13 @@ class Systemsetting extends CI_Controller {
        redirect(base_url() . 'systemsetting/system_settings', 'refresh');
     }
 
+    if ($param1 == 'upload_signature') 
+	{
+       $this->crud_model->system_signature();
+       $this->session->set_flashdata('flash_message', get_phrase('settings_updated'));
+       redirect(base_url() . 'systemsetting/system_settings', 'refresh');
+    }
+
 
     if ($param1 == 'themeSettings') 
 	{

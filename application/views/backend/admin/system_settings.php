@@ -197,6 +197,31 @@
                 </div>
                 </div>
 
+                <hr>
+
+                <div class="panel-heading" style="background-color: transparent; border: none; padding-left: 0; color: #8e44ad;"> <i class="fa fa-pencil-square"></i>&nbsp;&nbsp;<?php echo get_phrase('System Signature Image'); ?></div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                <div class="panel-body table-responsive" style="padding-left: 0; padding-right: 0;">
+
+                <?php echo form_open(base_url() . 'systemsetting/system_settings/upload_signature', array('class' => 'form-horizontal form-groups-bordered validate', 'target' => '_top', 'enctype' => 'multipart/form-data'));
+                        ?>			
+                                    <div class="form-group"> 
+                                     <label class="col-sm-12"><?php echo get_phrase('Upload Principal Signature');?>*</label>        
+                                     <div class="col-sm-12">
+                                       <input type='file' class="form-control" name="userfile" onChange="readURL(this);" /required>
+                                       <img src="<?php echo base_url(); ?>uploads/signature.png" alt="Signature Missing" style="max-height: 100px; margin-top: 10px; border: 1px dashed #ccc; padding: 5px;"/>
+                                    </div>
+                                    </div>	
+                                    
+                                <div class="form-group">
+                                     <button class="btn btn-block btn-info btn-rounded btn-sm"><i class="fa fa-save"></i>&nbsp;<?php echo get_phrase('Update Signature');?></button>
+                                
+                                </div>
+                        
+                                <?php echo form_close(); ?>
+                </div>
+                </div>
+
 
 
 

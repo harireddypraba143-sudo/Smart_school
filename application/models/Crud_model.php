@@ -309,6 +309,10 @@ class Crud_model extends CI_Model {
         move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/upi_qr.png');
     }
 
+    function system_signature(){
+        move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/signature.png');
+    }
+
     function update_settings(){
 
         $data['description']    =   $this->input->post('system_name');
