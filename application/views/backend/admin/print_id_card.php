@@ -249,13 +249,15 @@
         }
         .return-policy {
             position: absolute;
-            bottom: 6mm;
+            bottom: 0;
             left: 0;
             width: 100%;
             text-align: center;
             font-size: 7px;
             font-weight: 700;
-            color: #dc2626;
+            padding: 2.5mm 0;
+            color: #ffffff;
+            border-top: 1px solid #eab308;
         }
     </style>
 </head>
@@ -411,7 +413,7 @@ foreach($users as $user):
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($qr_link); ?>" alt="QR Code">
         </div>
 
-        <div class="return-policy">
+        <div class="return-policy" style="background: <?php echo $theme_hex; ?>;">
             If found, please return to: <?php echo $system_name; ?> Office
         </div>
     </div>
