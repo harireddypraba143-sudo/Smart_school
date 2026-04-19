@@ -253,6 +253,58 @@ class Admin extends CI_Controller {
   
 
 
+    // ===============================================
+    // CR80 PVC ID CARD GENERATOR
+    // ===============================================
+    function id_card_generator() {
+        if ($this->session->userdata('admin_login') != 1)
+            redirect(base_url(), 'refresh');
+
+        $page_data['page_name']  = 'id_card_generator';
+        $page_data['page_title'] = 'Generate ID Cards';
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function print_id_card() {
+        if ($this->session->userdata('admin_login') != 1)
+            redirect(base_url(), 'refresh');
+
+        $user_type = $this->input->post('user_type');
+        $session_validity = $this->input->post('session_validity');
+        
+        $users = array();
+        
+        // Hard limit to 100 cards per batch to prevent thermal printer buffer overload
+        $this->db->limit(100);
+
+        if ($user_type == 'student') {
+            $class_id = $this->input->post('class_id');
+            $section_id = $this->input->post('section_id');
+
+            $this->db->where('class_id', $class_id);
+            if ($section_id != '') {
+                $this->db->where('section_id', $section_id);
+            }
+            $users = $this->db->get('student')->result_array();
+
+        } else if ($user_type == 'teacher') {
+            $this->db->where('status', '1');
+            $users = $this->db->get('teacher')->result_array();
+
+        } else if ($user_type == 'staff') {
+            $this->db->where('status', '1');
+            $users = $this->db->get('staff')->result_array();
+        }
+
+        $page_data['type'] = $user_type;
+        $page_data['users'] = $users;
+        $page_data['session_validity'] = $session_validity;
+
+        // Render directly the printing view (no sidebar/header)
+        $this->load->view('backend/admin/print_id_card', $page_data);
+    }
+    // ===============================================
+
     function teacher ($param1 = null, $param2 = null, $param3 = null){
         
         // Auto-migrate missing columns for payroll integration

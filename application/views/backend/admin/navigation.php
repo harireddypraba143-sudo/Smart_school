@@ -208,6 +208,14 @@
                     </a>
                 </li>
 
+                <li style="padding: 0 15px 0 20px;"><hr style="margin: 2px 0; border-color: #eee;"></li>
+
+                <li class="<?php if ($page_name == 'id_card_generator') echo 'active'; ?>">
+                    <a href="<?php echo base_url(); ?>admin/id_card_generator" style="padding: 8px 15px 8px 20px; font-size: 13px;">
+                        <i class="fa fa-id-badge" style="width: 20px; text-align: center; color: #f59e0b; margin-right: 8px;"></i>
+                        <span class="hide-menu">Generate ID Cards</span>
+                    </a>
+                </li>
             </ul>
    	 </li>
     <?php endif;?>
