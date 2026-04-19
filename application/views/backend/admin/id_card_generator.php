@@ -61,7 +61,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="alert alert-warning" style="border-left: 5px solid #f59e0b; background-color: #fffbeb;">
+                            <div class="alert alert-warning" style="border-left: 5px solid #f59e0b; background-color: #fffbeb; color: #92400e;">
                                 <strong><i class="fa fa-info-circle"></i> Print Instructions:</strong><br>
                                 This tool generates <strong>CR80 physical ID cards</strong>. It relies on a dedicated PVC Card Printer. <br>
                                 The server will process a maximum of <strong>100 cards per request</strong> to prevent crashing. If a class has more than 100 students, you should generate them by specific section.
