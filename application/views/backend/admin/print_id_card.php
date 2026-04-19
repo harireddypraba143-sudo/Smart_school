@@ -20,18 +20,47 @@
             padding: 0;
         }
         body {
-            background-color: #ffffff;
+            background-color: #f1f5f9;
             margin: 0;
             padding: 0;
         }
         
+        /* Side-By-Side Grid for Screen View */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            padding: 20px;
+        }
+
         .id-card-wrapper {
             width: 85.6mm;
             height: 54mm;
             position: relative;
             overflow: hidden;
             background: #ffffff;
-            page-break-after: always;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            /* Force exact sizing for DOM rendering */
+            min-width: 85.6mm;
+            min-height: 54mm;
+            border-radius: 4px;
+        }
+
+        /* Print Specific Overrides */
+        @media print {
+            .card-grid {
+                display: block;
+                padding: 0;
+            }
+            .id-card-wrapper {
+                box-shadow: none;
+                border-radius: 0;
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+            .no-print { display: none !important; }
+            body { background-color: transparent !important; }
         }
 
         /* Front Card Elements */
@@ -41,8 +70,6 @@
             left: 0;
             width: 100%;
             height: 18mm;
-            /* Default Blue, changed via inline styles based on type */
-            background: #1e3a8a; 
             z-index: 1;
         }
         
@@ -52,7 +79,7 @@
             left: -10mm;
             width: 120%;
             height: 15mm;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 1); /* Ensure it paints white over the background */
             border-top: 3px solid #eab308; /* Gold Accent */
             border-top-left-radius: 50% 100%;
             border-top-right-radius: 50% 100%;
@@ -113,7 +140,6 @@
             left: 4mm;
             font-weight: 900;
             font-size: 11.5px;
-            color: #1e3a8a; /* Theme variable */
             text-transform: uppercase;
             letter-spacing: 0.2px;
             width: 45mm;
@@ -178,7 +204,6 @@
             font-size: 8px;
             font-weight: 700;
             letter-spacing: 2px;
-            color: #64748b;
         }
 
         .signature-block {
@@ -241,6 +266,7 @@
             right: 4mm;
             width: 18mm;
             text-align: center;
+            background: white; /* Prevent transparent bleeding */
         }
         .qr-block img {
             width: 18mm;
@@ -263,9 +289,10 @@
         .no-print {
             text-align: center;
             padding: 10px;
-            background: #f8fafc;
+            background: #ffffff;
             border-bottom: 2px solid #e2e8f0;
             margin-bottom: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .btn {
             background: #2563eb;
@@ -280,12 +307,9 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .btn-success { background: #16a34a; }
+        .btn-warning { background: #f59e0b; }
         .btn:hover { opacity: 0.9; }
 
-        @media print {
-            .no-print { display: none !important; }
-            body { background-color: transparent; }
-        }
     </style>
     <!-- Include html2pdf.js for client-side PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -299,7 +323,7 @@
     </div>
     
     <!-- Wrapper for PDF snapshot -->
-    <div id="pdf-container">
+    <div id="pdf-container" class="card-grid">
 
 <?php 
 $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
@@ -448,7 +472,7 @@ foreach($users as $user):
         
         <div class="qr-block">
             <!-- Dynamic QR Code (No heavy local lib needed, uses secure standard API) -->
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($qr_link); ?>" alt="QR Code">
+            <img crossorigin="anonymous" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($qr_link); ?>" alt="QR Code">
         </div>
 
         <div class="return-policy" style="background: <?php echo $theme_hex; ?>;">
