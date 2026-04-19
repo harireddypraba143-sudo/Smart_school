@@ -120,53 +120,13 @@
     <!-- COL 2: HR & Compliance -->
     <div class="col-md-6">
         <div class="white-box" style="border-radius: 12px; border: 1px solid #eee; padding: 25px;">
-            <h3 class="box-title" style="margin-bottom: 25px;"><i class="fa fa-briefcase text-success"></i> HR & Compliance</h3>
-            
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label>PAN Card</label>
-                    <input type="text" class="form-control" name="pan_num" placeholder="e.g., ABCDE1234F">
-                    <small class="text-muted">10-character PAN number</small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>Aadhaar / National ID</label>
-                    <input type="text" class="form-control" name="aadhaar_num" placeholder="e.g., 1234-5678-9012">
-                    <small class="text-muted">12-digit Aadhaar number</small>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label>EPF UAN Number</label>
-                    <input type="text" class="form-control" name="uan_num" placeholder="e.g., 100012345678">
-                    <small class="text-muted">Universal Account Number</small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>ESI IP Number</label>
-                    <input type="text" class="form-control" name="esi_num" placeholder="e.g., 1100000012">
-                    <small class="text-muted">ESI Insurance number</small>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label>Qualification</label>
-                    <input type="text" class="form-control" name="qualification" placeholder="e.g., 10th Pass, ITI, Diploma">
-                    <small class="text-muted">Highest educational level</small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>Experience (Years)</label>
-                    <input type="number" class="form-control" name="experience" placeholder="e.g., 3">
-                    <small class="text-muted">Total years of work experience</small>
-                </div>
-            </div>
+            <h3 class="box-title" style="margin-bottom: 25px;"><i class="fa fa-briefcase text-success"></i> Documents & Identity</h3>
 
             <div class="form-group">
                 <label>Documents (ID Proof / Certificates)</label>
                 <input type="file" name="file_name" class="form-control dropify">
-                <small class="text-muted">Upload ID proof, certificates (PDF/ZIP/DOC)</small>
+                <small class="text-muted">Upload any required ID proof or certificates (PDF/ZIP/DOC)</small>
             </div>
-
         </div>
 
         <!-- BANK & DEDUCTIONS -->
