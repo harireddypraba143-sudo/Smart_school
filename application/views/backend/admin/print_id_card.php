@@ -259,9 +259,47 @@
             color: #ffffff;
             border-top: 1px solid #eab308;
         }
+        /* Screen-only Action Toolbar */
+        .no-print {
+            text-align: center;
+            padding: 10px;
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn-success { background: #16a34a; }
+        .btn:hover { opacity: 0.9; }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: transparent; }
+        }
     </style>
+    <!-- Include html2pdf.js for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
-<body onload="window.print()">
+<body>
+
+    <div class="no-print">
+        <button class="btn" onclick="window.print()"><svg style="width:16px;height:16px;vertical-align:middle;margin-right:5px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg> Print Cards</button>
+        <button class="btn btn-success" onclick="downloadPDF()"><svg style="width:16px;height:16px;vertical-align:middle;margin-right:5px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> Download as PDF</button>
+        <div style="font-size: 11px; color: #64748b; margin-top: 5px;">Note: Use the 'Print' button to send natively to your PVC ID Card Machine.</div>
+    </div>
+    
+    <!-- Wrapper for PDF snapshot -->
+    <div id="pdf-container">
 
 <?php 
 $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
@@ -419,6 +457,22 @@ foreach($users as $user):
     </div>
 
 <?php endforeach; ?>
+    </div> <!-- END pdf-container -->
 
+    <script>
+        function downloadPDF() {
+            var element = document.getElementById('pdf-container');
+            var opt = {
+                margin:       [0, 0, 0, 0],
+                filename:     'ID_Cards_' + new Date().getTime() + '.pdf',
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: 4, useCORS: true }, // high density scale
+                jsPDF:        { unit: 'mm', format: [85.6, 54], orientation: 'landscape' }
+            };
+
+            // New Promise-based usage:
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
 </body>
 </html>
