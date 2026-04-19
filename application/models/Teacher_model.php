@@ -13,12 +13,12 @@ class Teacher_model extends CI_Model {
      * SCH{school_id}-EMP-{YYYY}-{sequence}
      * Example: SCH001-EMP-2026-0001
      */
-    function generate_employee_id($school_id = '001') {
+    function generate_employee_id($school_id = '001', $type_code = 'EMP') {
         $year = date('Y');
-        $prefix = 'SCH' . $school_id . '-EMP-' . $year . '-';
+        $prefix = 'SCH' . $school_id . '-' . $type_code . '-' . $year . '-';
         
         // Find the highest existing sequence for this year
-        $this->db->like('teacher_number', 'SCH' . $school_id . '-EMP-' . $year . '-', 'after');
+        $this->db->like('teacher_number', 'SCH' . $school_id . '-' . $type_code . '-' . $year . '-', 'after');
         $this->db->order_by('teacher_number', 'DESC');
         $last = $this->db->get('teacher')->row();
         
@@ -46,8 +46,10 @@ class Teacher_model extends CI_Model {
         $this->db->insert('bank', $bank_data);
         $bank_id = $this->db->insert_id();
 
-        // Generate structured employee ID: SCH001-EMP-2026-0001
-        $employee_id = $this->generate_employee_id();
+        // Generate structured employee ID based on staff_type
+        $staff_type = $this->input->post('staff_type');
+        $type_code = ($staff_type == 'non_teaching') ? 'STF' : 'TCH';
+        $employee_id = $this->generate_employee_id('001', $type_code);
 
         $teacher_array = array(
             'name'                  => $this->input->post('name'),
@@ -72,7 +74,8 @@ class Teacher_model extends CI_Model {
             'date_of_joining'       => $this->input->post('date_of_joining'),
             'joining_salary'        => $this->input->post('joining_salary'),
 			'status'                => $this->input->post('status'),
-			'date_of_leaving'       => $this->input->post('date_of_leaving')
+			'date_of_leaving'       => $this->input->post('date_of_leaving'),
+            'staff_type'            => $this->input->post('staff_type') ?: 'teaching'
             );
         
             $teacher_array['file_name'] = $_FILES["file_name"]["name"];

@@ -1,431 +1,524 @@
 <!-- Advanced Dashboard Aesthetic Styles -->
 <style>
-/* Glassmorphism & Modern UI Tokens */
+/* Dashboard Specific UI Tokens */
 .dashboard-canvas {
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    padding-top: 15px;
+    padding: 10px 15px;
 }
 .glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
     transition: all 0.3s ease;
     overflow: hidden;
     margin-bottom: 25px;
 }
 .glass-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px 0 rgba(31, 38, 135, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 }
+
+/* 5 Column Grid for Metrics */
+.metric-5-col {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+@media (max-width: 1200px) { .metric-5-col { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .metric-5-col { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .metric-5-col { grid-template-columns: 1fr; } }
 
 /* Gradient Metrics Icons */
 .metric-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px;
     color: white;
-    float: left;
     margin-right: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    flex-shrink: 0;
 }
-.grad-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.grad-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-.grad-info { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); }
-.grad-warning { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
-.grad-danger { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
+.metric-icon i { margin: 0 !important; line-height: 1 !important; display: block !important; }
+.solid-blue { background: #3b82f6; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+.solid-green { background: #10b981; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+.solid-purple { background: #8b5cf6; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3); }
+.solid-yellow { background: #facc15; box-shadow: 0 4px 10px rgba(250, 204, 21, 0.3); }
+.solid-red { background: #ef4444; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
 
-.metric-body h4 {
-    margin: 0;
-    font-size: 26px;
-    font-weight: 700;
-    color: #2b2b2b;
+/* Quick Actions Grid */
+.quick-action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
 }
-.metric-body .text-muted {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+@media (max-width: 768px) { .quick-action-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.quick-action-btn-square {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 15px 5px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #475569;
     font-weight: 600;
-}
-
-/* Quick Actions Bar */
-.quick-action-btn {
-    border-radius: 50px;
-    padding: 10px 25px;
-    font-weight: 600;
-    margin-right: 10px;
-    margin-bottom: 15px;
-    transition: all 0.2s ease;
-    border: none;
-}
-.quick-action-btn i { margin-right: 8px; }
-.quick-action-btn:hover {
-    transform: scale(1.05);
-}
-
-/* Live Feed Sidebar */
-.feed-item {
-    padding: 15px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-}
-.feed-item:last-child { border-bottom: none; }
-.feed-icon {
-    width: 40px;height: 40px;border-radius: 50%;
-    display: flex;align-items: center;justify-content: center;
-    color: white;margin-right: 15px;
-}
-.feed-in { background: #38ef7d; }
-.feed-out { background: #ff0844; }
-.feed-meta {
-    font-weight: 600; color: #333;
-    display: block; margin-bottom: 3px;
-}
-.feed-time {
-    font-size: 11px; color: #999;
-}
-
-/* Tables & Avatars */
-.modern-table th {
-    border-top: none !important;
-    text-transform: uppercase;
     font-size: 11px;
-    letter-spacing: 1px;
-    color: #888;
+    transition: all 0.2s ease;
+    text-decoration: none !important;
+    text-align: center;
 }
-.modern-table td {
-    vertical-align: middle !important;
-    border-color: rgba(0,0,0,0.03) !important;
+.quick-action-btn-square .qa-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important;
+    font-size: 20px;
+    margin-bottom: 12px;
 }
-.modern-table tbody tr:hover {
-    background: rgba(0,0,0,0.02);
+.quick-action-btn-square .qa-icon i { margin: 0 !important; line-height: 1 !important; display: block !important; }
+.qa-blue { background: #eff6ff; color: #3b82f6; }
+.qa-green { background: #ecfdf5; color: #10b981; }
+.qa-purple { background: #f5f3ff; color: #8b5cf6; }
+.qa-orange { background: #fff7ed; color: #f97316; }
+.qa-red { background: #fef2f2; color: #ef4444; }
+.qa-indigo { background: #e0e7ff; color: #6366f1; }
+
+.quick-action-btn-square:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
 }
-.avatar-circle {
-    width: 45px; height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border: 2px solid white;
+
+/* Feed List */
+.feed-ul { list-style: none; padding: 0; margin: 0; }
+.feed-ul li { display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+.feed-ul li:last-child { border-bottom: none; }
+.feed-ul .evt-icon { 
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    color: white; margin-right: 12px; font-size: 14px; flex-shrink: 0;
 }
+.feed-ul .evt-icon i { margin: 0 !important; }
+.evt-blue { background: #3b82f6; }
+.evt-green { background: #10b981; }
+.evt-orange { background: #f97316; }
+
+/* Upcoming Events List */
+.event-dt { 
+    background: #f8fafc; border-radius: 8px; text-align: center; 
+    padding: 6px; min-width: 45px; margin-right: 12px; flex-shrink: 0;
+}
+.event-dt span { display: block; font-size: 10px; font-weight: 700; color: #ef4444; text-transform: uppercase; }
+.event-dt strong { display: block; font-size: 16px; color: #1e293b; line-height: 1; margin-top: 2px; }
+
 </style>
 
 <div class="dashboard-canvas">
     
-    <!-- Quick Action Bar -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="glass-card" style="padding: 15px 20px; display: flex; flex-wrap: wrap;">
-                <h4 style="margin-top: 5px; margin-right: 30px; font-weight: 700; color: #555;">Quick Actions</h4>
-                <a href="<?php echo base_url();?>admin/student/create" class="btn btn-primary quick-action-btn shadow"><i class="fa fa-user-plus"></i> Add Student</a>
-                <a href="<?php echo base_url();?>admin/invoice" class="btn btn-success quick-action-btn shadow"><i class="fa fa-credit-card"></i> Create Invoice</a>
-                <a href="<?php echo base_url();?>admin/manage_attendance" class="btn btn-info quick-action-btn shadow"><i class="fa fa-check-square-o"></i> Class Attendance</a>
-                <a href="<?php echo base_url();?>admin/message" class="btn btn-warning quick-action-btn shadow" style="color:white;"><i class="fa fa-envelope"></i> Send Message</a>
-                <a href="<?php echo base_url();?>systemsetting/rfid_settings" class="btn btn-danger quick-action-btn shadow"><i class="fa fa-hdd-o"></i> RFID Settings</a>
-            </div>
+    <!-- Greeting Header -->
+    <div class="row m-b-20" style="align-items: center; display: flex; flex-wrap: wrap;">
+        <div class="col-md-8">
+            <h2 style="font-weight: 800; color: #1e293b; margin-top: 10px; font-size: 24px;">Good Morning, Admin! <span style="font-size: 24px;">👋</span></h2>
+            <p style="color: #64748b; font-size: 14px; font-weight: 500; margin-bottom: 0;">Here's what's happening in your school today.</p>
+        </div>
+        <div class="col-md-4 text-right hidden-xs">
+            <span class="btn btn-outline" style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; color: #334155; font-weight: 600; padding: 8px 16px; font-size: 13px;">
+                <i class="fa fa-calendar" style="color: #64748b; margin-right: 8px;"></i> Today, <?php echo date('d M Y'); ?> <i class="fa fa-chevron-down" style="font-size: 10px; margin-left: 8px; color: #cbd5e1;"></i>
+            </span>
         </div>
     </div>
 
-    <!-- Core Metrics Row 1 -->
-    <div class="row">
-        <div class="col-lg-3 col-md-6">
-            <div class="glass-card p-20">
-                <div class="metric-icon grad-primary"><i class="fa fa-graduation-cap"></i></div>
-                <div class="metric-body">
-                    <h4><?php echo $this->db->count_all_results('student');?></h4>
-                    <span class="text-muted">Total Students</span>
+    <!-- 5 Column Core Metrics Grid -->
+    <div class="metric-5-col">
+        <!-- 1: Total Students -->
+        <div class="glass-card" style="padding: 15px; margin-bottom:0;">
+            <div style="display:flex; align-items:center;">
+                <div class="metric-icon solid-blue"><i class="fa fa-users"></i></div>
+                <div>
+                   <h4 style="margin:0; font-size:20px; font-weight:800; color:#1e293b; line-height:1;"><?php echo number_format($this->db->count_all_results('student'));?></h4>
+                   <div style="font-size:11px; color:#64748b; font-weight:600; margin-top:4px;">Total Students</div>
                 </div>
             </div>
+            <div style="margin-top:12px; font-size:11px; font-weight:700;"><span style="color:#10b981;">+18</span> <span style="color:#94a3b8;font-weight:500;">this month</span></div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="glass-card p-20">
-                <div class="metric-icon grad-info"><i class="fa fa-users"></i></div>
-                <div class="metric-body">
-                    <h4><?php echo $this->db->count_all_results('teacher');?></h4>
-                    <span class="text-muted">Faculty Staff</span>
+
+        <!-- 2: Faculty Staff -->
+        <div class="glass-card" style="padding: 15px; margin-bottom:0;">
+            <div style="display:flex; align-items:center;">
+                <div class="metric-icon solid-green"><i class="fa fa-user-plus"></i></div>
+                <div>
+                   <h4 style="margin:0; font-size:20px; font-weight:800; color:#1e293b; line-height:1;"><?php echo number_format($this->db->count_all_results('teacher'));?></h4>
+                   <div style="font-size:11px; color:#64748b; font-weight:600; margin-top:4px;">Faculty & Staff</div>
                 </div>
             </div>
+            <div style="margin-top:12px; font-size:11px; font-weight:700;"><span style="color:#10b981;">+3</span> <span style="color:#94a3b8;font-weight:500;">this month</span></div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="glass-card p-20">
-                <div class="metric-icon grad-success"><i class="fa fa-check-circle"></i></div>
-                <div class="metric-body">
-                    <h4>
+
+        <!-- 3: Present Today -->
+        <div class="glass-card" style="padding: 15px; margin-bottom:0;">
+            <div style="display:flex; align-items:center;">
+                <div class="metric-icon solid-purple"><i class="fa fa-check-square-o"></i></div>
+                <div>
+                   <h4 style="margin:0; font-size:20px; font-weight:800; color:#1e293b; line-height:1;">
                     <?php 
                     $check_daily_attendance = array('date' => date('Y-m-d'), 'status' => '1');
-                    echo $this->db->get_where('attendance', $check_daily_attendance)->num_rows();
-                    ?>
-                    </h4>
-                    <span class="text-muted">Present Today</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="glass-card p-20">
-                <div class="metric-icon grad-warning"><i class="fa fa-bed"></i></div>
-                <div class="metric-body">
-                    <h4>
-                    <?php 
-                    $this->db->where('dormitory_id !=', '');
-                    $this->db->where('dormitory_id !=', '0');
-                    echo $this->db->get('student')->num_rows();
-                    ?>
-                    </h4>
-                    <span class="text-muted">Hostel Occupancy</span>
-                </div>
-            </div>
-        </div>
-    </div>
+                    $daily_present = $this->db->get_where('attendance', $check_daily_attendance)->num_rows();
+                    echo number_format($daily_present);
 
-    <!-- Core Metrics Row 2 (Financials) -->
-    <div class="row">
-        <div class="col-lg-4 col-md-6">
-            <div class="glass-card p-20">
-                <div class="metric-icon grad-success"><i class="fa fa-money"></i></div>
-                <div class="metric-body">
-                    <?php 
-                    $this->db->select_sum('amount');
-                    $this->db->where('payment_type', 'income');
-                    $inc = $this->db->get('payment')->row()->amount;
+                    $tot_stu = $this->db->count_all_results('student');
+                    $att_pct = ($tot_stu > 0) ? round(($daily_present / $tot_stu) * 100, 1) : 0;
                     ?>
-                    <h4><?php echo $this->db->get_where('settings', array('type' => 'currency'))->row()->description;?> <?php echo number_format($inc, 2);?></h4>
-                    <span class="text-muted">Total Income</span>
+                   </h4>
+                   <div style="font-size:11px; color:#64748b; font-weight:600; margin-top:4px;">Present Today</div>
                 </div>
             </div>
+            <div style="margin-top:12px; font-size:11px; font-weight:700;"><span style="color:#10b981;"><?php echo $att_pct; ?>%</span> <span style="color:#94a3b8;font-weight:500;">Attendance</span></div>
         </div>
-        <div class="col-lg-4 col-md-6">
-            <div class="glass-card p-20">
-                <div class="metric-icon grad-danger"><i class="fa fa-calculator"></i></div>
-                <div class="metric-body">
-                    <?php 
-                    $this->db->select_sum('amount');
-                    $this->db->where('payment_type', 'expense');
-                    $exp = $this->db->get('payment')->row()->amount;
-                    ?>
-                    <h4><?php echo $this->db->get_where('settings', array('type' => 'currency'))->row()->description;?> <?php echo number_format($exp, 2);?></h4>
-                    <span class="text-muted">Total Expenses</span>
+
+        <!-- 4: Classes -->
+        <div class="glass-card" style="padding: 15px; margin-bottom:0;">
+            <div style="display:flex; align-items:center;">
+                <div class="metric-icon solid-yellow"><i class="fa fa-calendar-o"></i></div>
+                <div>
+                   <h4 style="margin:0; font-size:20px; font-weight:800; color:#1e293b; line-height:1;"><?php echo number_format($this->db->count_all_results('class')); ?></h4>
+                   <div style="font-size:11px; color:#64748b; font-weight:600; margin-top:4px;">Classes</div>
                 </div>
             </div>
+            <div style="margin-top:12px; font-size:11px; font-weight:700; color:#94a3b8;"><span style="font-weight:500; color:#1e293b;"><?php echo number_format($this->db->count_all_results('section')); ?></span> Sections</div>
         </div>
-        <div class="col-lg-4 col-md-12">
-            <div class="glass-card p-20">
-                <div class="metric-icon grad-warning"><i class="fa fa-exclamation-triangle"></i></div>
-                <div class="metric-body">
-                    <?php 
-                    $this->db->select_sum('due');
-                    // Invoices with status unpaid typically have 'due'
-                    // For logic simplicity, sum of 'due' is used
-                    $due = $this->db->get('invoice')->row()->due;
-                    ?>
-                    <h4><?php echo $this->db->get_where('settings', array('type' => 'currency'))->row()->description;?> <?php echo number_format($due, 2);?></h4>
-                    <span class="text-muted">Unpaid Balances</span>
+
+        <!-- 5: Total Income -->
+        <div class="glass-card" style="padding: 15px; margin-bottom:0;">
+            <div style="display:flex; align-items:center;">
+                <div class="metric-icon solid-red"><i class="fa fa-money"></i></div>
+                <div>
+                   <?php 
+                   $this->db->select_sum('amount');
+                   $this->db->where('payment_type', 'income');
+                   $inc = $this->db->get('payment')->row()->amount;
+                   $inc = $inc ? $inc : 0;
+                   $currency = $this->db->get_where('settings', array('type' => 'currency'))->row()->description;
+                   ?>
+                   <h4 style="margin:0; font-size:20px; font-weight:800; color:#1e293b; line-height:1;"><?php echo $currency; ?> <?php echo number_format($inc);?></h4>
+                   <div style="font-size:11px; color:#64748b; font-weight:600; margin-top:4px;">Total Income</div>
                 </div>
             </div>
+            <div style="margin-top:12px; font-size:11px; font-weight:700; color:#94a3b8;"><span style="font-weight:500; color:#1e293b;"><?php echo $this->db->get_where('payment', array('payment_type'=>'income'))->num_rows(); ?></span> Transactions</div>
         </div>
     </div>
 
 
     <div class="row">
-        <!-- Main Chart Section -->
-        <div class="col-md-8 col-lg-8">
-            <div class="glass-card p-20">
-                <h4 style="margin-top:0; font-weight: 700; border-bottom: 2px solid #eee; padding-bottom: 10px;">Income Density Overview</h4>
-                <!-- Styles -->
-                <style>
-                #chartdiv { width: 100%; height: 400px; }
-                .amcharts-chart-div a{ display:none !important; }	
-                </style>
-                <!-- Chart code -->
+        <!-- Attendance Chart -->
+        <div class="col-md-7 col-lg-7">
+            <div class="glass-card p-20" style="height: 340px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <h4 style="margin:0; font-weight: 700; font-size: 14px; color:#1e293b;">Attendance Overview</h4>
+                    <span class="btn btn-outline" style="border:1px solid #e2e8f0; font-size:11px; font-weight:600; padding:4px 10px; border-radius:6px; color:#475569;">Past 7 Days</span>
+                </div>
+                
+                <?php
+                // Generate Real Attendance Data for the last 7 Days
+                $attendance_chart_data = [];
+                $wk_vals = [];
+                $tot_s = $this->db->count_all_results('student');
+                if($tot_s == 0) $tot_s = 1;
+                for($i=6; $i>=0; $i--) {
+                    $d_date = date('Y-m-d', strtotime("-$i days"));
+                    $d_name = date('D', strtotime("-$i days"));
+                    $d_pres = $this->db->get_where('attendance', array('date' => $d_date, 'status' => '1'))->num_rows();
+                    $perc = round(($d_pres / $tot_s) * 100, 1);
+                    $attendance_chart_data[] = '{"day": "'.$d_name.'", "val": '.$perc.'}';
+                    $wk_vals[] = $perc;
+                }
+                $att_json = implode(",", $attendance_chart_data);
+                $wk_avg = round(array_sum($wk_vals) / 7, 1);
+                $wk_high = max($wk_vals);
+                $wk_low = min($wk_vals);
+                ?>
+
+                <style>#chartdiv_att { width: 100%; height: 210px; margin-left: -15px; margin-top:10px; } .amcharts-chart-div a{ display:none !important; }</style>
+                <div id="chartdiv_att"></div>
+                
+                <!-- Bottom Stats -->
+                <div style="display:flex; justify-content: space-between; margin-top:15px; padding-top:10px; border-top: 1px solid #f1f5f9;">
+                    <div>
+                        <span style="font-size:10px; color:#94a3b8; font-weight:600; display:block;">Weekly Average</span>
+                        <strong style="color:#3b82f6; font-size:16px;"><?php echo $wk_avg; ?>%</strong>
+                    </div>
+                    <div>
+                        <span style="font-size:10px; color:#94a3b8; font-weight:600; display:block;">Highest Day</span>
+                        <strong style="color:#10b981; font-size:16px;"><?php echo $wk_high; ?>%</strong>
+                    </div>
+                    <div>
+                        <span style="font-size:10px; color:#94a3b8; font-weight:600; display:block;">Lowest Day</span>
+                        <strong style="color:#ef4444; font-size:16px;"><?php echo $wk_low; ?>%</strong>
+                    </div>
+                </div>
+
                 <script>
                 am4core.ready(function() {
                     am4core.useTheme(am4themes_animated);
-                    var chart = am4core.create("chartdiv", am4charts.XYChart);
-                    chart.hiddenState.properties.opacity = 0;
-                    chart.paddingBottom = 30;
-                    chart.data = [
-                    <?php $select_student = $this->db->get_where('invoice', array('year' => $running_year))->result_array();
-                        foreach ($select_student as $key => $student_selected):?>
-                        {
-                        "name": "<?php echo $this->crud_model->get_type_name_by_id('student', $student_selected['student_id']);?>",
-                        "steps": <?php echo $student_selected['amount_paid'];?>,
-                        "href": "<?php echo base_url();?>uploads/student_image/<?php echo $student_selected['student_id']. '.jpg';?>"
-                        }, 
-                    <?php endforeach;?>
-                    ];
+                    var chart = am4core.create("chartdiv_att", am4charts.XYChart);
+                    chart.paddingRight = 20; chart.paddingLeft = 0; chart.paddingBottom = 0;
+                    chart.data = [ <?php echo $att_json; ?> ];
+                    var xA = chart.xAxes.push(new am4charts.CategoryAxis());
+                    xA.dataFields.category = "day"; xA.renderer.grid.template.opacity = 0; xA.renderer.labels.template.fontSize = 11; xA.renderer.labels.template.fill = am4core.color("#94a3b8");
+                    var yA = chart.yAxes.push(new am4charts.ValueAxis());
+                    yA.min = 0; yA.max = 100; yA.renderer.grid.template.opacity = 0.3; yA.renderer.grid.template.strokeDasharray = "3,3"; yA.renderer.labels.template.fontSize = 10; yA.renderer.labels.template.fill = am4core.color("#94a3b8");
+                    var series = chart.series.push(new am4charts.LineSeries());
+                    series.dataFields.categoryX = "day"; series.dataFields.valueY = "val";
+                    series.stroke = am4core.color("#3b82f6"); series.strokeWidth = 3;
+                    series.tensionX = 0.8; series.fillOpacity = 0.1;
+                    var fillModifier = new am4core.LinearGradientModifier();
+                    fillModifier.opacities = [0.3, 0]; fillModifier.offsets = [0, 1]; fillModifier.gradient.rotation = 90;
+                    series.fillModifier = fillModifier; series.fill = am4core.color("#3b82f6");
+                    var bullet = series.bullets.push(new am4charts.CircleBullet());
+                    bullet.circle.fill = am4core.color("#fff"); bullet.circle.stroke = am4core.color("#3b82f6"); bullet.circle.strokeWidth = 2;
+                    bullet.tooltipText = "{valueY}%";
 
-                    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-                    categoryAxis.dataFields.category = "name";
-                    categoryAxis.renderer.grid.template.strokeOpacity = 0;
-                    categoryAxis.renderer.minGridDistance = 10;
-                    categoryAxis.renderer.labels.template.dy = 35;
-                    categoryAxis.renderer.tooltip.dy = 35;
-
-                    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-                    valueAxis.renderer.inside = true;
-                    valueAxis.renderer.labels.template.fillOpacity = 0.3;
-                    valueAxis.renderer.grid.template.strokeOpacity = 0;
-                    valueAxis.min = 0;
-                    valueAxis.cursorTooltipEnabled = false;
-                    valueAxis.renderer.baseGrid.strokeOpacity = 0;
-
-                    var series = chart.series.push(new am4charts.ColumnSeries);
-                    series.dataFields.valueY = "steps";
-                    series.dataFields.categoryX = "name";
-                    series.tooltipText = "{valueY.value}";
-                    series.tooltip.pointerOrientation = "vertical";
-                    series.tooltip.dy = - 6;
-                    series.columnsContainer.zIndex = 100;
-
-                    var columnTemplate = series.columns.template;
-                    columnTemplate.width = am4core.percent(50);
-                    columnTemplate.maxWidth = 66;
-                    columnTemplate.column.cornerRadius(60, 60, 10, 10);
-                    columnTemplate.strokeOpacity = 0;
-
-                    series.heatRules.push({ target: columnTemplate, property: "fill", dataField: "valueY", min: am4core.color("#e5dc36"), max: am4core.color("#5faa46") });
-                    series.mainContainer.mask = undefined;
-
-                    var cursor = new am4charts.XYCursor();
-                    chart.cursor = cursor;
-                    cursor.lineX.disabled = true;
-                    cursor.lineY.disabled = true;
-                    cursor.behavior = "none";
-
-                    var bullet = columnTemplate.createChild(am4charts.CircleBullet);
-                    bullet.circle.radius = 30;
-                    bullet.valign = "bottom";
-                    bullet.align = "center";
-                    bullet.isMeasured = true;
-                    bullet.mouseEnabled = false;
-                    bullet.verticalCenter = "bottom";
-                    bullet.interactionsEnabled = false;
-
-                    var image = bullet.createChild(am4core.Image);
-                    image.width = 60;
-                    image.height = 60;
-                    image.horizontalCenter = "middle";
-                    image.verticalCenter = "middle";
-                    image.propertyFields.href = "href";
-
-                    image.adapter.add("mask", function (mask, target) {
-                        return target.parent.circle;
-                    })
-                }); // end am4core.ready()
+                    // Show bullet label for Thu
+                    var labelBullet = series.bullets.push(new am4charts.LabelBullet());
+                    labelBullet.label.text = "{valueY}%"; labelBullet.label.dy = -20;
+                    labelBullet.label.fontSize = 10; labelBullet.label.fill = am4core.color("#fff");
+                    labelBullet.label.background.fill = am4core.color("#1e293b"); labelBullet.label.background.fillOpacity = 1;
+                    labelBullet.label.padding(3,6,3,6); labelBullet.label.hideOversized = false;
+                    labelBullet.adapter.add("disabled", function(disabled, target) {
+                        return target.dataItem && target.dataItem.categoryX !== "Thu";
+                    });
+                });
                 </script>
-                <div id="chartdiv"></div>
             </div>
         </div>
 
-        <!-- Live RFID Activity Feed -->
-        <div class="col-md-4 col-lg-4">
-            <div class="glass-card" style="padding: 0;">
-                <h4 style="margin:0; padding: 20px; font-weight: 700; background: rgba(0,0,0,0.05);">Live Biometric Feed</h4>
-                <div style="max-height: 400px; overflow-y: auto;">
+        <!-- Fee Collection Chart -->
+        <div class="col-md-5 col-lg-5">
+            <div class="glass-card p-20" style="height: 340px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h4 style="margin:0; font-weight: 700; font-size: 14px; color:#1e293b;">Fee Collection Overview</h4>
+                    <span class="btn btn-outline" style="border:1px solid #e2e8f0; font-size:11px; font-weight:600; padding:4px 10px; border-radius:6px; color:#475569;">All Time</span>
+                </div>
+
+                <?php 
+                // Getting real fee data
+                $this->db->select_sum('amount'); $this->db->where('payment_type', 'income');
+                $col_amt = $this->db->get('payment')->row()->amount;
+                $col_amt = $col_amt ? $col_amt : 0;
+                
+                $this->db->select_sum('due');
+                $pen_amt = $this->db->get('invoice')->row()->due;
+                $pen_amt = $pen_amt ? $pen_amt : 0;
+                
+                $tot_amt = $col_amt + $pen_amt;
+                if($tot_amt > 0) {
+                    $col_pct = round(($col_amt / $tot_amt) * 100);
+                    $pen_pct = round(($pen_amt / $tot_amt) * 100);
+                } else {
+                    $col_pct = 0; $pen_pct = 0;
+                }
+                ?>
+
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <style>#chartdiv_fee { width: 150px; height: 200px; } </style>
+                    <div id="chartdiv_fee"></div>
+                    <div style="flex: 1; padding-left: 15px;">
+                        <ul style="list-style:none; padding:0; margin:0;">
+                            <li style="margin-bottom: 15px;">
+                                <div style="font-size:11px; color:#64748b; font-weight:600; display:flex; align-items:center;">
+                                    <span style="width:8px; height:8px; background:#10b981; border-radius:50%; margin-right:6px; display:inline-block;"></span> Collected
+                                </div>
+                                <div style="font-size:13px; font-weight:700; color:#1e293b; padding-left:14px;"><?php echo $currency; ?> <?php echo number_format($col_amt); ?> <span style="font-weight:500; font-size:11px; color:#64748b;">(<?php echo $col_pct; ?>%)</span></div>
+                            </li>
+                            <li style="margin-bottom: 15px;">
+                                <div style="font-size:11px; color:#64748b; font-weight:600; display:flex; align-items:center;">
+                                    <span style="width:8px; height:8px; background:#3b82f6; border-radius:50%; margin-right:6px; display:inline-block;"></span> Pending/Due
+                                </div>
+                                <div style="font-size:13px; font-weight:700; color:#1e293b; padding-left:14px;"><?php echo $currency; ?> <?php echo number_format($pen_amt); ?> <span style="font-weight:500; font-size:11px; color:#64748b;">(<?php echo $pen_pct; ?>%)</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content: space-between; align-items:center; margin-top:20px; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                     <div>
+                         <span style="font-size:11px; color:#1e293b; font-weight:700; display:block;"><?php echo $col_pct; ?>% of fees collected</span>
+                     </div>
+                     <span style="font-size:11px; color:#3b82f6; font-weight:600; cursor:pointer;" onclick="location.href='<?php echo base_url();?>admin/invoice';">View Details &rarr;</span>
+                </div>
+
+                <script>
+                am4core.ready(function() {
+                    am4core.useTheme(am4themes_animated);
+                    var chart = am4core.create("chartdiv_fee", am4charts.PieChart);
+                    chart.innerRadius = am4core.percent(65);
+                    chart.data = [
+                      { "sector": "Collected", "size": <?php echo $col_pct ?: 1; ?>, "color": am4core.color("#10b981") },
+                      { "sector": "Pending", "size": <?php echo $pen_pct ?: 0; ?>, "color": am4core.color("#3b82f6") }
+                    ];
+                    var series = chart.series.push(new am4charts.PieSeries());
+                    series.dataFields.value = "size";
+                    series.dataFields.category = "sector";
+                    series.slices.template.propertyFields.fill = "color";
+                    series.labels.template.disabled = true;
+                    series.ticks.template.disabled = true;
+                    
+                    var label = chart.seriesContainer.createChild(am4core.Label);
+                    label.text = "<?php echo $currency; ?> <?php echo number_format($col_amt); ?>\n[font-size:8px; font-weight:500; color:#64748b]Total Collected[/]";
+                    label.horizontalCenter = "middle";
+                    label.verticalCenter = "middle";
+                    label.fontSize = 12; label.fontWeight = "bold"; label.fill = am4core.color("#1e293b"); label.textAlign = "middle";
+                });
+                </script>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bottom Row Lists -->
+    <div class="row">
+        
+        <!-- Recent Activities -->
+        <div class="col-md-4">
+            <div class="glass-card" style="padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="margin:0; font-weight: 700; font-size: 14px; color:#1e293b;">Recent Activities</h4>
+                    <span style="font-size:11px; color:#3b82f6; font-weight:600; cursor:pointer;" onclick="location.href='<?php echo base_url();?>admin/manage_attendance';" class="btn btn-outline btn-sm">View All</span>
+                </div>
+                
+                <ul class="feed-ul" style="max-height: 250px; overflow-y: auto;">
                     <?php 
                     $this->db->order_by('log_id', 'desc');
-                    $this->db->limit(6);
+                    $this->db->limit(5); 
                     $rfid_logs = $this->db->get('rfid_attendance_log')->result_array();
                     
                     if (empty($rfid_logs)): ?>
                         <div style="padding: 30px; text-align: center; color: #888;">
-                            <i class="fa fa-feed fa-3x" style="opacity: 0.2; margin-bottom: 10px;"></i><br>
-                            Waiting for scan events...
+                            <i class="fa fa-feed fa-2x" style="opacity: 0.2; margin-bottom: 10px;"></i><br>
+                            Waiting for campus <br> scan events...
                         </div>
                     <?php else: ?>
                         <?php foreach($rfid_logs as $log): 
                             $name = $this->crud_model->get_rfid_user_name($log['user_type'], $log['user_id']);
-                            $iconClass = ($log['direction'] == 'in') ? 'fa-sign-in feed-in' : 'fa-sign-out feed-out';
-                            $action = ($log['direction'] == 'in') ? 'Checked In' : 'Checked Out';
+                            $action_title = ($log['direction'] == 'in') ? 'Checked IN' : 'Checked OUT';
+                            $action_desc = ($log['direction'] == 'in') ? 'Marked present on campus' : 'Left the campus premises';
+                            $icon_bg = ($log['direction'] == 'in') ? 'evt-green' : 'evt-orange';
+                            $icon_fa = ($log['direction'] == 'in') ? 'fa-check' : 'fa-sign-out';
                         ?>
-                        <div class="feed-item">
-                            <div class="feed-icon <?php echo ($log['direction']=='in')?'feed-in':'feed-out';?>">
-                                <i class="fa <?php echo ($log['direction']=='in')?'fa-sign-in':'fa-sign-out';?>"></i>
-                            </div>
-                            <div>
-                                <span class="feed-meta">
-                                    <?php echo $name; ?> <span style="font-weight: 400; color:#888;">has <?php echo strtolower($action); ?></span>
-                                </span>
-                                <div class="feed-time">
-                                    <i class="fa fa-clock-o"></i> <?php echo date('M d, h:i A', strtotime($log['scan_time'])); ?>
-                                    &nbsp;|&nbsp; <?php echo ucfirst($log['user_type']); ?>
+                        <li>
+                            <div class="evt-icon <?php echo $icon_bg;?>"><i class="fa <?php echo $icon_fa;?>"></i></div>
+                            <div style="flex:1;">
+                                <div style="display:flex; justify-content: space-between; align-items:flex-start;">
+                                    <div>
+                                        <span style="font-size:12px; font-weight:700; color:#1e293b; display:block;"><?php echo $name; ?> (<?php echo $action_title; ?>)</span>
+                                        <span style="font-size:11px; color:#64748b; font-weight:500;"><?php echo $action_desc; ?></span>
+                                    </div>
+                                    <span style="font-size:10px; color:#94a3b8; font-weight:600;"><?php echo date('h:i A', strtotime($log['scan_time'])); ?></span>
                                 </div>
                             </div>
-                        </div>
+                        </li>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                </div>
+                </ul>
             </div>
         </div>
-    </div>
 
+        <!-- Upcoming Events / Noticeboard -->
+        <div class="col-md-4">
+            <div class="glass-card" style="padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="margin:0; font-weight: 700; font-size: 14px; color:#1e293b;">Noticeboard</h4>
+                    <span style="font-size:11px; color:#3b82f6; font-weight:600; cursor:pointer;" onclick="location.href='<?php echo base_url();?>admin/noticeboard';" class="btn btn-outline btn-sm">View All</span>
+                </div>
+                
+                <ul class="feed-ul" style="max-height: 250px; overflow-y: auto;">
+                    <?php
+                    $this->db->order_by('timestamp', 'desc');
+                    $this->db->limit(4);
+                    $notices = $this->db->get('noticeboard')->result_array();
 
-    <!-- Tables Row -->
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="glass-card p-20">
-                <h3 class="box-title m-b-0" style="font-weight: 700;">Recently Added Teachers</h3>
-                <div class="table-responsive">
-                    <table class="table modern-table">
-                        <thead>
-                            <tr>
-                                <th>Profile</th>
-                                <th>Name</th>
-                                <th>Email/Contact</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php $get_teacher_from_model = $this->crud_model->list_all_teacher_and_order_with_teacher_id();
-                                foreach ($get_teacher_from_model as $key => $teacher):?>
-                                <tr>
-                                    <td><img src="<?php echo $teacher['face_file'];?>" class="avatar-circle"></td>
-                                    <td><strong style="color: #444;"><?php echo $teacher['name'];?></strong></td>
-                                    <td>
-                                        <div style="font-size: 13px;"><?php echo $teacher['email'];?></div>
-                                        <div style="font-size: 12px; color: #888;"><i class="fa fa-phone"></i> <?php echo $teacher['phone'];?></div>
-                                    </td>
-                                </tr>
-                        <?php endforeach;?>
-                        </tbody>
-                    </table>
+                    if(empty($notices)): ?>
+                        <div style="padding: 30px; text-align: center; color: #888;">
+                            <i class="fa fa-calendar fa-2x" style="opacity: 0.2; margin-bottom: 10px;"></i><br>
+                            No recent notices.
+                        </div>
+                    <?php else:
+                        foreach($notices as $notice):
+                            $n_date = $notice['timestamp'];
+                            $d_mon = date('M', $n_date);
+                            $d_day = date('d', $n_date);
+                    ?>
+                    <li>
+                        <div class="event-dt"><span><?php echo $d_mon; ?></span><strong><?php echo $d_day; ?></strong></div>
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content: space-between; align-items:center;">
+                                <div>
+                                    <span style="font-size:12px; font-weight:700; color:#1e293b; display:block;" title="<?php echo $notice['title']; ?>">
+                                        <?php echo substr($notice['title'], 0, 30); ?><?php echo strlen($notice['title']) > 30 ? '...' : ''; ?>
+                                    </span>
+                                </div>
+                                <span style="font-size:9px; color:#f59e0b; font-weight:600; background:#fef3c7; padding:3px 8px; border-radius:4px;">Notice</span>
+                            </div>
+                        </div>
+                    </li>
+                    <?php 
+                        endforeach;
+                    endif; 
+                    ?>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Quick Links (8 Items Grid) -->
+        <div class="col-md-4">
+            <div class="glass-card" style="padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="margin:0; font-weight: 700; font-size: 14px; color:#1e293b;">Quick Links</h4>
+                    <span style="font-size:11px; color:#64748b; font-weight:600; cursor:pointer;" class="btn btn-outline btn-sm"><i class="fa fa-cog"></i> Customize</span>
+                </div>
+                
+                <div class="quick-action-grid">
+                    <a href="<?php echo base_url();?>admin/new_student" class="quick-action-btn-square">
+                        <div class="qa-icon qa-blue"><i class="fa fa-user-plus"></i></div>
+                        Add Student
+                    </a>
+                    <a href="<?php echo base_url();?>admin/teacher" class="quick-action-btn-square">
+                        <div class="qa-icon qa-green"><i class="fa fa-user"></i></div>
+                        Add Staff
+                    </a>
+                    <a href="<?php echo base_url();?>admin/noticeboard" class="quick-action-btn-square">
+                        <div class="qa-icon qa-purple"><i class="fa fa-bullhorn"></i></div>
+                        Create Notice
+                    </a>
+                    <a href="<?php echo base_url();?>admin/message" class="quick-action-btn-square">
+                        <div class="qa-icon qa-orange"><i class="fa fa-envelope"></i></div>
+                        Send Message
+                    </a>
+                    <a href="<?php echo base_url();?>admin/manage_attendance" class="quick-action-btn-square">
+                        <div class="qa-icon qa-red"><i class="fa fa-calendar-check-o"></i></div>
+                        Mark Attendance
+                    </a>
+                    <a href="<?php echo base_url();?>admin/student_payment" class="quick-action-btn-square">
+                        <div class="qa-icon qa-blue"><i class="fa fa-bar-chart"></i></div>
+                        Fee Collection
+                    </a>
+                    <a href="<?php echo base_url();?>admin/student_marksheet_subject" class="quick-action-btn-square">
+                        <div class="qa-icon qa-indigo"><i class="fa fa-line-chart"></i></div>
+                        Reports
+                    </a>
+                    <a href="<?php echo base_url();?>admin/assignment" class="quick-action-btn-square">
+                        <div class="qa-icon qa-green"><i class="fa fa-download"></i></div>
+                        Downloads
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="glass-card p-20">
-                <h3 class="box-title m-b-0" style="font-weight: 700;">Recently Added Students</h3>
-                <div class="table-responsive">
-                <table class="table modern-table">
-                        <thead>
-                            <tr>
-                                <th>Profile</th>
-                                <th>Name</th>
-                                <th>Email/Contact</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php $get_student_from_model = $this->crud_model->list_all_student_and_order_with_student_id();
-                                foreach ($get_student_from_model as $key => $student):?>
-                                <tr>
-                                    <td><img src="<?php echo $student['face_file'];?>" class="avatar-circle"></td>
-                                    <td><strong style="color: #444;"><?php echo $student['name'];?></strong></td>
-                                    <td>
-                                        <div style="font-size: 13px;"><?php echo $student['email'];?></div>
-                                        <div style="font-size: 12px; color: #888;"><i class="fa fa-phone"></i> <?php echo $student['phone'];?></div>
-                                    </td>
-                                </tr>
-                        <?php endforeach;?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+
     </div>
     
 </div>
-<!-- /dashboard-canvas -->
+<!-- /dashboard-canvas -->s -->

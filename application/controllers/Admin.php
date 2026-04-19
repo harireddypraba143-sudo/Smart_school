@@ -262,8 +262,13 @@ class Admin extends CI_Controller {
         if (!$this->db->field_exists('date_of_joining', 'teacher')) {
             $this->db->query("ALTER TABLE `teacher` ADD `date_of_joining` date DEFAULT NULL");
         }
+        // Auto-migrate staff_type column
+        if (!$this->db->field_exists('staff_type', 'teacher')) {
+            $this->db->query("ALTER TABLE `teacher` ADD `staff_type` VARCHAR(20) NOT NULL DEFAULT 'teaching'");
+        }
 
         if($param1 == 'insert'){
+            $_POST['staff_type'] = 'teaching'; // Force teaching type
             $this->teacher_model->insetTeacherFunction();
             $this->session->set_flashdata('flash_message', get_phrase('Data saved successfully'));
             redirect(base_url(). 'admin/teacher', 'refresh');
@@ -284,8 +289,47 @@ class Admin extends CI_Controller {
         }
 
         $page_data['page_name']     = 'hrms/employee_directory';
-        $page_data['page_title']    = get_phrase('Manage Teacher');
+        $page_data['page_title']    = get_phrase('Manage Teachers');
+        // Filter to only show teaching staff
+        $this->db->where('staff_type', 'teaching');
         $page_data['select_teacher']  = $this->db->get('teacher')->result_array();
+        $this->load->view('backend/index', $page_data);
+
+    }
+
+
+    /***********  Staff Management (Non-Teaching: Drivers, Watchmen, Peons, etc.) ***********************/
+    function staff ($param1 = null, $param2 = null, $param3 = null){
+        
+        // Auto-migrate staff_type column if missing
+        if (!$this->db->field_exists('staff_type', 'teacher')) {
+            $this->db->query("ALTER TABLE `teacher` ADD `staff_type` VARCHAR(20) NOT NULL DEFAULT 'teaching'");
+        }
+
+        if($param1 == 'insert'){
+            $_POST['staff_type'] = 'non_teaching'; // Force non-teaching type
+            $this->teacher_model->insetTeacherFunction();
+            $this->session->set_flashdata('flash_message', get_phrase('Staff added successfully'));
+            redirect(base_url(). 'admin/staff', 'refresh');
+        }
+
+        if($param1 == 'update'){
+            $this->teacher_model->updateTeacherFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Staff updated successfully'));
+            redirect(base_url(). 'admin/staff', 'refresh');
+        }
+
+        if($param1 == 'delete'){
+            $this->teacher_model->deleteTeacherFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Staff deleted successfully'));
+            redirect(base_url(). 'admin/staff', 'refresh');
+        }
+
+        $page_data['page_name']     = 'staff';
+        $page_data['page_title']    = get_phrase('Manage Staff');
+        // Filter to only show non-teaching staff
+        $this->db->where('staff_type', 'non_teaching');
+        $page_data['select_staff']  = $this->db->get('teacher')->result_array();
         $this->load->view('backend/index', $page_data);
 
     }
@@ -788,7 +832,7 @@ class Admin extends CI_Controller {
         $page_data['month'] = $month;
         $page_data['year'] = $year;
         $page_data['page_name'] = 'hrms/staff_attendance';
-        $page_data['page_title'] = "Teacher Attendance Report";
+        $page_data['page_title'] = "Staff & Teacher Attendance";
         $this->load->view('backend/index', $page_data);
     }
 

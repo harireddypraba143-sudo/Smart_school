@@ -146,6 +146,7 @@
             <ul class="nav nav-second-level<?php 
                 if ($page_name == 'hrms/employee_directory' || 
                     $page_name == 'hrms/employee_profile' || 
+                    $page_name == 'hrms/staff_directory' || 
                     $page_name == 'hrms/staff_attendance' || 
                     $page_name == 'hrms/payroll_list' || 
                     $page_name == 'department' || 
@@ -163,8 +164,15 @@
 
                 <li class="<?php if ($page_name == 'hrms/employee_directory' || $page_name == 'hrms/employee_profile') echo 'active'; ?>">
                     <a href="<?php echo base_url(); ?>admin/teacher" style="padding: 8px 15px 8px 20px; font-size: 13px;">
-                        <i class="fa fa-users" style="width: 20px; text-align: center; color: #16a34a; margin-right: 8px;"></i>
-                        <span class="hide-menu">Employees</span>
+                        <i class="fa fa-graduation-cap" style="width: 20px; text-align: center; color: #16a34a; margin-right: 8px;"></i>
+                        <span class="hide-menu">Teachers</span>
+                    </a>
+                </li>
+
+                <li class="<?php if ($page_name == 'hrms/staff_directory') echo 'active'; ?>">
+                    <a href="<?php echo base_url(); ?>admin/staff" style="padding: 8px 15px 8px 20px; font-size: 13px;">
+                        <i class="fa fa-wrench" style="width: 20px; text-align: center; color: #e67e22; margin-right: 8px;"></i>
+                        <span class="hide-menu">Staff</span>
                     </a>
                 </li>
 
