@@ -570,13 +570,14 @@
             </div>
 
             <!-- PRINCIPAL TEXT -->
+            <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 35px; position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); z-index: 2; object-fit: contain; -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
             <div class="ms-sig-line" style="position: relative; z-index: 1;"></div>
             <div class="ms-sig-name" style="position: relative; z-index: 1;">Principal</div>
             <div class="ms-sig-date" style="position: relative; z-index: 1;">Date: <?php echo date('d-m-Y'); ?></div>
         </div>
     </div>
 
-    <div class="ms-footer-text">This is a computer generated marksheet. Does not require physical signature.</div>
+    <div class="ms-footer-text">This is an officially generated marksheet containing authenticated digital signatures.</div>
 
 </div> <!-- /ms-a4-container -->
 </div> <!-- /ms-wrapper -->
