@@ -208,8 +208,8 @@
                                     <div class="form-group"> 
                                      <label class="col-sm-12"><?php echo get_phrase('Upload Principal Signature');?>*</label>        
                                      <div class="col-sm-12">
-                                       <input type='file' class="form-control" name="userfile" onChange="readURL(this);" /required>
-                                       <img src="<?php echo base_url(); ?>uploads/signature.png" alt="Signature Missing" style="max-height: 100px; margin-top: 10px; border: 1px dashed #ccc; padding: 5px;"/>
+                                       <input type='file' class="form-control" name="userfile" onChange="readURL(this);" required>
+                                       <img src="<?php echo base_url(); ?>uploads/signature.png?v=<?php echo time(); ?>" alt="Signature Missing" style="max-height: 100px; margin-top: 10px; border: 1px dashed #ccc; padding: 5px;"/>
                                     </div>
                                     </div>	
                                     

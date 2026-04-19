@@ -679,7 +679,7 @@
             </div>
 
             <!-- PRINCIPAL TEXT -->
-            <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 35px; position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); z-index: 2; object-fit: contain;" onerror="this.style.display='none'">
+            <img src="<?php echo base_url('uploads/signature.png'); ?>?v=<?php echo time(); ?>" style="height: 35px; position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); z-index: 2; object-fit: contain;" onerror="this.style.display='none'">
             <div class="ms-sig-line" style="position: relative; z-index: 1;"></div>
             <div class="ms-sig-name" style="position: relative; z-index: 1;">Principal</div>
             <div class="ms-sig-date" style="position: relative; z-index: 1;">Date: <?php echo date('d-m-Y'); ?></div>

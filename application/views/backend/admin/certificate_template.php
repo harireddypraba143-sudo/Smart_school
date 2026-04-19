@@ -188,7 +188,7 @@ $accent = isset($colors[$cert_type]) ? $colors[$cert_type] : '#1a237e';
             </div>
         </div>
         <div style="text-align: center; position: relative;">
-            <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 40px; position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
+            <img src="<?php echo base_url('uploads/signature.png'); ?>?v=<?php echo time(); ?>" style="height: 40px; position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
             <div style="border-top: 1px solid #555; width: 180px; margin: 0 auto; padding-top: 5px; position: relative; z-index: 1;">
                 <strong>Principal</strong>
             </div>

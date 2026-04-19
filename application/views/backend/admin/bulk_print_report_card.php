@@ -103,7 +103,7 @@ foreach ($students as $student):
         <div style="text-align:center; width: 30%;"><div style="border-top: 1px solid #94a3b8; padding-top: 5px;">Class Teacher</div></div>
         <div style="text-align:center; width: 30%;"><div style="border-top: 1px solid #94a3b8; padding-top: 5px;">Parent Signature</div></div>
         <div style="text-align:center; width: 30%; position: relative;">
-            <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 35px; position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 2; object-fit: contain; -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
+            <img src="<?php echo base_url('uploads/signature.png'); ?>?v=<?php echo time(); ?>" style="height: 35px; position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 2; object-fit: contain; -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
             <div style="border-top: 1px solid #94a3b8; padding-top: 5px; position: relative; z-index: 1;">Principal</div>
         </div>
     </div>

@@ -151,7 +151,7 @@ foreach ($invoices as $key => $row):
                 </div>
                 
                 <div style="text-align: center; margin-right: 30px; position: relative;">
-                    <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 40px; position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
+                    <img src="<?php echo base_url('uploads/signature.png'); ?>?v=<?php echo time(); ?>" style="height: 40px; position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
                     <div style="border-top: 1px solid #555; width: 150px; margin: 0 auto; padding-top: 5px; position: relative; z-index: 1; font-size: 12px;">
                         <strong>Authorized Signatory</strong>
                     </div>

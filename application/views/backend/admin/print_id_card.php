@@ -445,7 +445,7 @@ foreach($users as $user):
 
             <div class="signature-block">
                 <!-- Replace with actual signature image -->
-                <img src="<?php echo base_url('uploads/signature.png'); ?>" class="signature-img" onerror="this.style.display='none'">
+                <img src="<?php echo base_url('uploads/signature.png'); ?>?v=<?php echo time(); ?>" class="signature-img" onerror="this.style.display='none'">
                 <div class="signature-title">Principal Signature</div>
             </div>
 

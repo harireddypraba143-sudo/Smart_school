@@ -221,7 +221,7 @@ if ($letter_type == 'joining') {
             <table style='width:100%;'>
                 <tr>
                     <td style='width:50%; padding:10px 0; vertical-align:bottom;'>
-                        <img src='" . base_url('uploads/signature.png') . "' style='height: 40px; margin-bottom: 5px;' onerror='this.style.display=\"none\"'>
+                        <img src='" . base_url('uploads/signature.png') . "?v=" . time() . "' style='height: 40px; margin-bottom: 5px;' onerror='this.style.display=\"none\"'>
                         <div style='border-top:1px dashed #999; max-width:220px; padding-top:8px;'>
                             <b>Principal's Signature & Seal</b>
                         </div>
@@ -340,7 +340,7 @@ if ($letter_type == 'joining') {
                         <tr>
                             <td style="width: 50%; vertical-align: bottom;">
                                 <p style="margin: 0 0 5px 0; font-size: 13px; color: #666;">For <b style="color: #1a1a2e;"><?php echo $system_name; ?></b></p>
-                                <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 45px; display: block; margin: 10px 0; -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
+                                <img src="<?php echo base_url('uploads/signature.png'); ?>?v=<?php echo time(); ?>" style="height: 45px; display: block; margin: 10px 0; -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
                                 <div style="border-top: 1px solid #ccc; max-width: 220px; padding-top: 8px;">
                                     <b style="color: #1a1a2e; font-size: 13px;">Authorized Signatory</b><br>
                                     <span style="font-size: 12px; color: #888;">Director / Principal</span>
