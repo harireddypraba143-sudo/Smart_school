@@ -145,9 +145,16 @@ foreach ($invoices as $key => $row):
             </div>
 
             <!-- Footer & Signatures -->
-            <div style="margin-top: 50px; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: flex-end;">
                 <div style="flex: 1; font-size: 11px; color: #95a5a6; line-height: 1.5;">
-                    <p style="margin: 0;"><strong>Terms & Conditions:</strong><br>1. This is a computer-generated receipt and requires no signature.<br>2. Fees once paid are non-refundable.<br>3. Keep this receipt safe for future reference.</p>
+                    <p style="margin: 0;"><strong>Terms & Conditions:</strong><br>1. This is an authenticated receipt containing digital signatures.<br>2. Fees once paid are non-refundable.<br>3. Keep this receipt safe for future reference.</p>
+                </div>
+                
+                <div style="text-align: center; margin-right: 30px; position: relative;">
+                    <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 40px; position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
+                    <div style="border-top: 1px solid #555; width: 150px; margin: 0 auto; padding-top: 5px; position: relative; z-index: 1; font-size: 12px;">
+                        <strong>Authorized Signatory</strong>
+                    </div>
                 </div>
                 <!-- Fake QR Code for aesthetics -->
                 <div style="width: 80px; height: 80px; display: flex; justify-content: center; align-items: center;">

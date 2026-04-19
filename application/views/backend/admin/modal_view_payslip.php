@@ -221,8 +221,9 @@ $amount_in_words = numberToWords(floor($payroll->net_salary));
                 </table>
 
                 <div style="text-align: center; margin-top: 20px; font-size: 11px; color: #555; position: relative;">
+                    <img src="<?php echo base_url('uploads/signature.png'); ?>" style="height: 45px; display: block; margin: 0 auto 5px auto; -webkit-print-color-adjust: exact !important;" onerror="this.style.display='none'">
                     <hr style="border: 0; border-top: 1px dashed #ccc; margin-bottom: 10px;">
-                    <p style="margin: 0; font-family: monospace;">This is a system generated payslip and does not require a physical signature or stamp.</p>
+                    <p style="margin: 0; font-family: monospace;">This is an officially authenticated payslip containing digital signatures.</p>
                 </div>
 
             </div>

@@ -221,7 +221,7 @@ if ($letter_type == 'joining') {
             <table style='width:100%;'>
                 <tr>
                     <td style='width:50%; padding:10px 0; vertical-align:bottom;'>
-                        <br><br>
+                        <img src='" . base_url('uploads/signature.png') . "' style='height: 40px; margin-bottom: 5px;' onerror='this.style.display=\"none\"'>
                         <div style='border-top:1px dashed #999; max-width:220px; padding-top:8px;'>
                             <b>Principal's Signature & Seal</b>
                         </div>
