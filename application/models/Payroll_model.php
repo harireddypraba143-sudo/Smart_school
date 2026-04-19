@@ -45,84 +45,94 @@ class Payroll_model extends CI_Model {
      */
     public function create_payroll_bulk($month, $year) 
     {
-        // Get all active teachers
-        $teachers = $this->db->get_where('teacher', array('status' => '1'))->result_array();
         $generated_count = 0;
-
+        
+        // 1. Process Teachers
+        $teachers = $this->db->get_where('teacher', array('status' => '1'))->result_array();
         foreach ($teachers as $teacher) {
-            $teacher_id = $teacher['teacher_id'];
-            
-            // Check if already generated for this month/year (Safety Check)
-            $existing = $this->db->get_where('payroll', array(
-                'employee_id' => $teacher_id,
-                'month' => $month,
-                'year' => $year
-            ))->row();
+            $this->_process_employee_payroll($teacher['teacher_id'], 'teacher', $teacher, $month, $year);
+            $generated_count++;
+        }
 
-            if (!$existing) {
-                // Ensure salary structure exists
-                $this->sync_salary_structure($teacher_id, $teacher['joining_salary']);
-                
-                // Fetch structure
-                $structure = $this->db->get_where('salary_structures', array('employee_id' => $teacher_id))->row();
-                
-                // Base formula calculations based on joining salary
-                // Base formula calculations based on joining salary
-                $gross = $teacher['joining_salary'] > 0 ? $teacher['joining_salary'] : 0;
-                
-                $basic = $structure->basic > 0 ? $structure->basic : ($gross * 0.40);
-                $hra = $structure->hra > 0 ? $structure->hra : ($gross * 0.20);
-                
-                // Extra Allowances Logic
-                $da = ($gross * 0.10);
-                $conveyance = ($gross * 0.05);
-                $medical = ($gross * 0.05);
-                $special = ($gross * 0.20); // Balances out to 100% of gross
-                
-                // Deductions Logic
-                $pf = $structure->pf > 0 ? $structure->pf : ($basic * 0.12);
-                $esi = isset($structure->esi) && $structure->esi > 0 ? $structure->esi : ($gross * 0.0075);
-                $tax = $structure->tax > 0 ? $structure->tax : (($gross - $pf) * 0.05);
-                $pt = isset($structure->pt) && $structure->pt > 0 ? $structure->pt : 200; // Manual PT override
-
-                $total_allow = $hra + $da + $conveyance + $medical + $special;
-                $total_deduct = $pf + $esi + $tax + $pt;
-
-                $net_salary = $basic + $total_allow - $total_deduct;
-
-                $payroll_data = array(
-                    'employee_id' => $teacher_id,
-                    'month' => $month,
-                    'year' => $year,
-                    'basic_salary' => $basic,
-                    'allowances' => $total_allow, 
-                    'deductions' => $total_deduct,
-                    'net_salary' => $net_salary,
-                    'status' => 1, // 1 = Generated
-                    'payslip_no' => 'PAY-' . date('ym') . '-' . rand(1000, 9999)
-                );
-                
-                $this->db->insert('payroll', $payroll_data);
-                $payroll_id = $this->db->insert_id();
-
-                // Add richer breakdown items to dynamic table
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'House Rent Allowance (HRA)', 'amount' => $hra));
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Dearness Allowance (DA)', 'amount' => $da));
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Conveyance Allowance', 'amount' => $conveyance));
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Medical Allowance', 'amount' => $medical));
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Special Allowance', 'amount' => $special));
-                
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Employee Provident Fund (EPF)', 'amount' => $pf));
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Employee State Insurance (ESI)', 'amount' => $esi));
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Professional Tax (PT)', 'amount' => $pt));
-                $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Tax Deducted at Source (TDS)', 'amount' => $tax));
-
-                $this->log_audit($payroll_id, 'System Auto-Generated');
-                $generated_count++;
-            }
+        // 2. Process Staff
+        $staff_members = $this->db->get_where('staff', array('status' => '1'))->result_array();
+        foreach ($staff_members as $staff) {
+            $this->_process_employee_payroll($staff['staff_id'], 'staff', $staff, $month, $year);
+            $generated_count++;
         }
         
         return $generated_count;
+    }
+
+    private function _process_employee_payroll($emp_id, $emp_type, $employee, $month, $year) {
+        // Check if already generated for this month/year (Safety Check)
+        $existing = $this->db->get_where('payroll', array(
+            'employee_id' => $emp_id,
+            'employee_type' => $emp_type,
+            'month' => $month,
+            'year' => $year
+        ))->row();
+
+        if (!$existing) {
+            // Ensure salary structure exists
+            $this->sync_salary_structure($emp_id, $emp_type, $employee['joining_salary'], $employee);
+            
+            // Fetch structure
+            $structure = $this->db->get_where('salary_structures', array('employee_id' => $emp_id, 'employee_type' => $emp_type))->row();
+            
+            // Base formula calculations based on joining salary
+            $gross = $employee['joining_salary'] > 0 ? $employee['joining_salary'] : 0;
+            
+            $basic = $structure->basic > 0 ? $structure->basic : ($gross * 0.40);
+            $hra = (isset($structure->hra) && $structure->hra > 0) ? $structure->hra : ($gross * 0.20);
+            
+            // Extra Allowances Logic
+            $da = ($gross * 0.10);
+            $conveyance = ($gross * 0.05);
+            $medical = ($gross * 0.05);
+            $special = ($gross * 0.20); // Balances out to 100% of gross
+            
+            // Deductions Logic
+            $pf = $structure->pf > 0 ? $structure->pf : ($basic * 0.12);
+            $esi = isset($structure->esi) && $structure->esi > 0 ? $structure->esi : ($gross * 0.0075);
+            $tax = $structure->tax > 0 ? $structure->tax : (($gross - $pf) * 0.05);
+            $pt = isset($structure->pt) && $structure->pt > 0 ? $structure->pt : 200; // Manual PT override
+
+            $total_allow = $hra + $da + $conveyance + $medical + $special;
+            $total_deduct = $pf + $esi + $tax + $pt;
+
+            $net_salary = $basic + $total_allow - $total_deduct;
+
+            $payroll_data = array(
+                'employee_id' => $emp_id,
+                'employee_type' => $emp_type,
+                'month' => $month,
+                'year' => $year,
+                'basic_salary' => $basic,
+                'allowances' => $total_allow, 
+                'deductions' => $total_deduct,
+                'net_salary' => $net_salary,
+                'status' => 1, // 1 = Generated
+                'payslip_no' => 'PAY-' . date('ym') . '-' . rand(1000, 9999)
+            );
+            
+            $this->db->insert('payroll', $payroll_data);
+            $payroll_id = $this->db->insert_id();
+
+            // Add richer breakdown items
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'House Rent Allowance (HRA)', 'amount' => $hra));
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Dearness Allowance (DA)', 'amount' => $da));
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Conveyance Allowance', 'amount' => $conveyance));
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Medical Allowance', 'amount' => $medical));
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'allowance', 'name' => 'Special Allowance', 'amount' => $special));
+            
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Employee Provident Fund (EPF)', 'amount' => $pf));
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Employee State Insurance (ESI)', 'amount' => $esi));
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Professional Tax (PT)', 'amount' => $pt));
+            $this->db->insert('payroll_items', array('payroll_id' => $payroll_id, 'type' => 'deduction', 'name' => 'Tax Deducted at Source (TDS)', 'amount' => $tax));
+
+            $this->log_audit($payroll_id, 'System Auto-Generated');
+        }
     }
 
     /**

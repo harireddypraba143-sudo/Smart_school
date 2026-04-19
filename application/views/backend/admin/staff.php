@@ -273,13 +273,13 @@
         if(isset($select_staff)) {
         foreach($select_staff as $key => $staff){ ?>
                         <tr>
-                            <td><img src="<?php echo $this->crud_model->get_image_url('teacher', $staff['teacher_id']);?>" class="img-circle" width="40px"></td>
+                            <td><img src="<?php echo base_url('uploads/staff_image/' . $staff['staff_id'] . '.jpg');?>" class="img-circle" width="40px" onerror="this.src='<?php echo base_url('uploads/default.jpg');?>'"></td>
                             <td>
                                 <strong><?php echo $staff['name'];?></strong><br>
                                 <small style="color: #999;"><?php echo isset($staff['email']) ? $staff['email'] : '';?></small>
                             </td>
                             <td>
-                                <code style="font-size: 12px; background: #f5f5f5; padding: 3px 8px; border-radius: 4px;"><?php echo $staff['teacher_number'];?></code>
+                                <code style="font-size: 12px; background: #f5f5f5; padding: 3px 8px; border-radius: 4px;"><?php echo $staff['staff_number'];?></code>
                             </td>
                             <td>
                                 <span class="label label-warning">
@@ -313,7 +313,7 @@
                                 <ul class="dropdown-menu dropdown-default pull-right" role="menu">
                                     <!-- EDITING LINK -->
                                     <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_teacher/<?php echo $staff['teacher_id'];?>');">                                            
+                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_staff/<?php echo $staff['staff_id'];?>');">                                            
                                             <i class="fa fa-edit text-info"></i>
                                             Edit Profile
                                         </a>
@@ -323,12 +323,13 @@
                                     <!-- HR LETTERS -->
                                     <li class="dropdown-header">HR DOCUMENTS</li>
                                     <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/modal_hr_letter/<?php echo $staff['teacher_id'];?>/joining');">
+                                        <!-- Note: HR letters need to be updated to support staff type -->
+                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/modal_hr_letter/<?php echo $staff['staff_id'];?>/joining/staff');">
                                             <i class="fa fa-file-text-o text-success"></i> Joining Letter
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/modal_hr_letter/<?php echo $staff['teacher_id'];?>/relieving');">
+                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/modal_hr_letter/<?php echo $staff['staff_id'];?>/relieving/staff');">
                                             <i class="fa fa-sign-out text-danger"></i> Relieving Letter
                                         </a>
                                     </li>
@@ -336,7 +337,7 @@
 
                                     <!-- DELETE -->
                                     <li>
-                                        <a href="#" style="color: #e74c3c !important;" onclick="confirm_modal('<?php echo base_url();?>admin/staff/delete/<?php echo $staff['teacher_id'];?>');">
+                                        <a href="#" style="color: #e74c3c !important;" onclick="confirm_modal('<?php echo base_url();?>admin/staff/delete/<?php echo $staff['staff_id'];?>');">
                                             <i class="fa fa-trash"></i> Delete Record
                                         </a>
                                     </li>

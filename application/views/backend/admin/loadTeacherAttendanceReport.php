@@ -4,24 +4,19 @@
     // Get staff_type filter from request
     $staff_type_filter = isset($_GET['staff_type']) ? $_GET['staff_type'] : (isset($_POST['staff_type']) ? $_POST['staff_type'] : 'all');
 
-    // Fetch employees based on filter
-    if ($staff_type_filter == 'teaching') {
-        $this->db->where('staff_type', 'teaching');
-    } elseif ($staff_type_filter == 'non_teaching') {
-        $this->db->where('staff_type', 'non_teaching');
-    }
-    $all_employees = $this->db->get('teacher')->result_array();
-    
-    // Separate into groups
+    // Fetch employees based on filter - NOW FROM SEPARATE TABLES
     $teaching = array();
     $non_teaching = array();
-    foreach($all_employees as $emp) {
-        if (isset($emp['staff_type']) && $emp['staff_type'] == 'non_teaching') {
-            $non_teaching[] = $emp;
-        } else {
-            $teaching[] = $emp;
-        }
+    
+    if ($staff_type_filter == 'teaching' || $staff_type_filter == 'all') {
+        $teaching = $this->db->get('teacher')->result_array();
     }
+    
+    if ($staff_type_filter == 'non_teaching' || $staff_type_filter == 'all') {
+        $non_teaching = $this->db->get('staff')->result_array();
+    }
+    
+    $all_employees = count($teaching) + count($non_teaching);
     
     $days = date("t", mktime(0,0,0,$month,1,$year));
     $full_date_display = date("F, Y", mktime(0,0,0,$month,1,$year));
@@ -36,17 +31,33 @@
     );
     
     // Calculate summary stats
-    $total_employees = count($all_employees);
+    $total_employees = $all_employees;
     $total_present = 0;
     $total_absent = 0;
     $total_late = 0;
     $total_halfday = 0;
     $total_records = 0;
     
-    foreach($all_employees as $emp) {
+    // Stats for teachers
+    foreach($teaching as $emp) {
         for ($d=1; $d <= $days; $d++) {
             $fd = $year."-".$month."-".str_pad($d, 2, '0', STR_PAD_LEFT);
             $att = $this->db->get_where('teacher_attendance', array('teacher_id' => $emp['teacher_id'], 'date' => $fd))->row();
+            if ($att) {
+                $total_records++;
+                if ($att->status == 1) $total_present++;
+                elseif ($att->status == 2) $total_absent++;
+                elseif ($att->status == 3) $total_late++;
+                elseif ($att->status == 4) $total_halfday++;
+            }
+        }
+    }
+    
+    // Stats for staff
+    foreach($non_teaching as $emp) {
+        for ($d=1; $d <= $days; $d++) {
+            $fd = $year."-".$month."-".str_pad($d, 2, '0', STR_PAD_LEFT);
+            $att = $this->db->get_where('staff_attendance', array('staff_id' => $emp['staff_id'], 'date' => $fd))->row();
             if ($att) {
                 $total_records++;
                 if ($att->status == 1) $total_present++;
@@ -210,7 +221,7 @@
                         
                         <?php for ($i=1; $i <= $days; $i++) {
                             $full_date = $year."-".$month."-".str_pad($i, 2, '0', STR_PAD_LEFT);
-                            $attendance = $this->db->get_where('teacher_attendance', array('teacher_id' => $staff_member['teacher_id'], 'date' => $full_date))->row();
+                            $attendance = $this->db->get_where('staff_attendance', array('staff_id' => $staff_member['staff_id'], 'date' => $full_date))->row();
                             $status = $attendance ? $attendance->status : 0;
                             if ($status == 1) $p_count++;
                             if ($status == 2) $a_count++;

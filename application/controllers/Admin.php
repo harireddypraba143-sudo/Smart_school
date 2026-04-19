@@ -301,35 +301,78 @@ class Admin extends CI_Controller {
     /***********  Staff Management (Non-Teaching: Drivers, Watchmen, Peons, etc.) ***********************/
     function staff ($param1 = null, $param2 = null, $param3 = null){
         
-        // Auto-migrate staff_type column if missing
-        if (!$this->db->field_exists('staff_type', 'teacher')) {
-            $this->db->query("ALTER TABLE `teacher` ADD `staff_type` VARCHAR(20) NOT NULL DEFAULT 'teaching'");
+        // Auto-migration for completely separate staff table architecture
+        $this->db->query("CREATE TABLE IF NOT EXISTS `staff` (
+            `staff_id` int(11) NOT NULL AUTO_INCREMENT,
+            `name` varchar(250) NOT NULL,
+            `staff_number` varchar(50) DEFAULT NULL,
+            `role` int(11) DEFAULT NULL,
+            `birthday` varchar(250) DEFAULT NULL,
+            `sex` varchar(250) DEFAULT NULL,
+            `blood_group` varchar(250) DEFAULT NULL,
+            `religion` varchar(250) DEFAULT NULL,
+            `phone` varchar(250) DEFAULT NULL,
+            `email` varchar(250) DEFAULT NULL,
+            `address` longtext,
+            `password` varchar(250) DEFAULT NULL,
+            `marital_status` varchar(250) DEFAULT NULL,
+            `department_id` int(11) DEFAULT NULL,
+            `designation_id` int(11) DEFAULT NULL,
+            `date_of_joining` varchar(250) DEFAULT NULL,
+            `joining_salary` varchar(250) DEFAULT NULL,
+            `status` int(11) DEFAULT '1',
+            `date_of_leaving` varchar(250) DEFAULT NULL,
+            `file_name` varchar(250) DEFAULT NULL,
+            `bank_id` int(11) DEFAULT NULL,
+            `pf` varchar(250) DEFAULT NULL,
+            `esi` varchar(250) DEFAULT NULL,
+            `tax` varchar(250) DEFAULT NULL,
+            `pt` varchar(250) DEFAULT NULL,
+            PRIMARY KEY (`staff_id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        $this->db->query("CREATE TABLE IF NOT EXISTS `staff_attendance` (
+            `attendance_id` int(11) NOT NULL AUTO_INCREMENT,
+            `status` int(11) NOT NULL DEFAULT '0',
+            `date` varchar(250) NOT NULL,
+            `staff_id` int(11) NOT NULL,
+            PRIMARY KEY (`attendance_id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        // Migrate existing payroll structure to support polymorphism
+        if (!$this->db->field_exists('employee_type', 'payroll')) {
+            $this->db->query("ALTER TABLE `payroll` ADD `employee_type` ENUM('teacher', 'staff') NOT NULL DEFAULT 'teacher' AFTER `employee_id`");
         }
+        if (!$this->db->field_exists('employee_type', 'salary_structures')) {
+            $this->db->query("ALTER TABLE `salary_structures` ADD `employee_type` ENUM('teacher', 'staff') NOT NULL DEFAULT 'teacher' AFTER `employee_id`");
+        }
+        if (!$this->db->field_exists('employee_type', 'leave')) {
+            $this->db->query("ALTER TABLE `leave` ADD `employee_type` ENUM('teacher', 'staff') NOT NULL DEFAULT 'teacher' AFTER `teacher_id`");
+        }
+        $this->load->model('staff_model');
 
         if($param1 == 'insert'){
-            $_POST['staff_type'] = 'non_teaching'; // Force non-teaching type
-            $this->teacher_model->insetTeacherFunction();
+            $this->staff_model->insertStaffFunction();
             $this->session->set_flashdata('flash_message', get_phrase('Staff added successfully'));
             redirect(base_url(). 'admin/staff', 'refresh');
         }
 
         if($param1 == 'update'){
-            $this->teacher_model->updateTeacherFunction($param2);
+            $this->staff_model->updateStaffFunction($param2);
             $this->session->set_flashdata('flash_message', get_phrase('Staff updated successfully'));
             redirect(base_url(). 'admin/staff', 'refresh');
         }
 
         if($param1 == 'delete'){
-            $this->teacher_model->deleteTeacherFunction($param2);
+            $this->staff_model->deleteStaffFunction($param2);
             $this->session->set_flashdata('flash_message', get_phrase('Staff deleted successfully'));
             redirect(base_url(). 'admin/staff', 'refresh');
         }
 
         $page_data['page_name']     = 'staff';
         $page_data['page_title']    = get_phrase('Manage Staff');
-        // Filter to only show non-teaching staff
-        $this->db->where('staff_type', 'non_teaching');
-        $page_data['select_staff']  = $this->db->get('teacher')->result_array();
+        // Fetch from new separate staff table
+        $page_data['select_staff']  = $this->db->get('staff')->result_array();
         $this->load->view('backend/index', $page_data);
 
     }
