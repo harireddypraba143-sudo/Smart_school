@@ -5,118 +5,108 @@
                     <ul class="nav navbar-top-links navbar-left hidden-xs">
                         <li><a href="javascript:void(0)" class="open-close hidden-xs "><i class="icon-arrow-left-circle ti-menu"></i></a></li>
                         <li>
-                            <form role="search" class="app-search hidden-xs">
-                            <input type="text" placeholder="Search..." class="form-control"> <a href=""><i class="fa fa-search"></i></a> </form>
+                            <!-- GLOBAL SEARCH BAR -->
+                            <form role="search" class="app-search hidden-xs" onsubmit="return false;" style="position:relative;">
+                            <input type="text" placeholder="🔍 Search students, pages, features..." class="form-control" id="globalSearchInput" autocomplete="off" onkeyup="globalSearch(this.value)" style="width:320px; border-radius:20px; padding-left:16px; font-size:13px;">
+                            <a href="javascript:void(0)"><i class="fa fa-search"></i></a>
+                            <div id="searchResults" style="display:none; position:absolute; top:100%; left:0; width:420px; background:#fff; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15); z-index:9999; max-height:400px; overflow-y:auto; margin-top:4px;"></div>
+                            </form>
                         </li>
                     </ul>
+
+                    <!-- QUICK SHORTCUTS -->
+                    <ul class="nav navbar-top-links navbar-left hidden-xs" style="margin-left:8px;">
+                        <li><a href="<?php echo base_url();?>admin/new_student" title="New Admission" style="color:#fff; font-size:13px; padding:15px 8px;"><i class="fa fa-user-plus"></i></a></li>
+                        <li><a href="<?php echo base_url();?>admin/fee_collection" title="Fee Collection" style="color:#fff; font-size:13px; padding:15px 8px;"><i class="fa fa-money"></i></a></li>
+                        <li><a href="<?php echo base_url();?>admin/student_attendance" title="Attendance" style="color:#fff; font-size:13px; padding:15px 8px;"><i class="fa fa-calendar-check-o"></i></a></li>
+                        <li><a href="<?php echo base_url();?>admin/manage_marks" title="Marks Entry" style="color:#fff; font-size:13px; padding:15px 8px;"><i class="fa fa-pencil-square-o"></i></a></li>
+                        <li><a href="<?php echo base_url();?>admin/sms" title="Send SMS" style="color:#fff; font-size:13px; padding:15px 8px;"><i class="fa fa-envelope"></i></a></li>
+                        <li><a href="<?php echo base_url();?>admin/payment" title="Online Payments" style="color:#fff; font-size:13px; padding:15px 8px;"><i class="fa fa-credit-card"></i></a></li>
+                    </ul>
+
             <ul class="nav navbar-top-links navbar-right pull-right">
-                <!--<li class="dropdown"> 
-                    <a class="dropdown-toggle " data-toggle="dropdown" href="#"><i class="icon-envelope"></i>
-                        <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-                    </a>
-                        <ul class="dropdown-menu mailbox animated bounceInDown">
-                                <li>
-                                    <div class="drop-title">You have 4 new messages</div>
-                                </li>
-                                    <li>
-                                        <div class="message-center">
-                                            <a href="#">
-                                                <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span> </div>
-                                            </a>
-                                            <a href="#">
-                                                <div class="user-img"> <img src="../plugins/images/users/sonu.jpg" alt="user" class="img-circle"> <span class="profile-status busy pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span> </div>
-                                            </a>
-                                            <a href="#">
-                                                <div class="user-img"> <img src="../plugins/images/users/arijit.jpg" alt="user" class="img-circle"> <span class="profile-status away pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span> </div>
-                                            </a>
-                                            <a href="#">
-                                                <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
-                                                <div class="mail-contnet">
-                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span> </div>
-                                            </a>
-                                        </div>
-                                    </li>
-                                <li>
-                                <a class="text-center" href="javascript:void(0);"> <strong>See all notifications</strong> <i class="fa fa-angle-right"></i> </a>
-                            </li>
-                        </ul> 
-            
-                </li>/.dropdown-messages -->
-                    <!-- /.dropdown -->
-
-            <!-- <li class="dropdown"> 
-                <a class="dropdown-toggle " data-toggle="dropdown" href="#"><i class="icon-note"></i>
-                    <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
-                </a>
-                    <ul class="dropdown-menu dropdown-tasks animated slideInUp">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p> <strong>Task 1</strong> <span class="pull-right text-muted">40% Complete</span> </p>
-                                        <div class="progress progress-striped active">
-                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span class="sr-only">40% Complete (success)</span> </div>
-                                        </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <p> <strong>Task 2</strong> <span class="pull-right text-muted">20% Complete</span> </p>
-                                        <div class="progress progress-striped active">
-                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%"> <span class="sr-only">20% Complete</span> </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        <li class="divider"></li>
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <p> <strong>Task 3</strong> <span class="pull-right text-muted">60% Complete</span> </p>
-                                        <div class="progress progress-striped active">
-                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"> <span class="sr-only">60% Complete (warning)</span> </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        <li class="divider"></li>
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <p> <strong>Task 4</strong> <span class="pull-right text-muted">80% Complete</span> </p>
-                                        <div class="progress progress-striped active">
-                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%"> <span class="sr-only">80% Complete (danger)</span> </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a class="text-center" href="#"> <strong>See All Tasks</strong> <i class="fa fa-angle-right"></i> </a>
-                            </li>
-                        </ul>
-                        
-                    </li> /.dropdown-tasks -->
-
-
-                    
-                    <!-- /.dropdown -->
                     <li>
                         <a href="<?php echo base_url();?>login/logout" class="waves-effect" title="Logout"><i class="fa fa-power-off"></i></a>
                     </li>
                     <li class="right-side-toggle"> <a class="" href="javascript:void(0)"><i class="ti-settings"></i></a></li>
-                    <!-- /.dropdown -->
                 </ul>
             </div>
-            <!-- /.navbar-header -->
-            <!-- /.navbar-top-links -->
-            <!-- /.navbar-static-side -->
         </nav>
+
+<!-- GLOBAL SEARCH SCRIPT -->
+<script>
+var searchPages = [
+    {title:'Dashboard', url:'admin/dashboard', icon:'fa-dashboard', cat:'Pages'},
+    {title:'New Admission', url:'admin/new_student', icon:'fa-user-plus', cat:'Admission'},
+    {title:'Student List', url:'admin/manage_students', icon:'fa-users', cat:'Students'},
+    {title:'Fee Collection', url:'admin/fee_collection', icon:'fa-money', cat:'Finance'},
+    {title:'Fee Structure', url:'admin/fee_structure', icon:'fa-list-alt', cat:'Finance'},
+    {title:'Online Payments', url:'admin/payment', icon:'fa-credit-card', cat:'Finance'},
+    {title:'Income', url:'admin/income', icon:'fa-plus-circle', cat:'Finance'},
+    {title:'Expense', url:'admin/expense', icon:'fa-minus-circle', cat:'Finance'},
+    {title:'Payroll', url:'admin/payroll', icon:'fa-briefcase', cat:'HR'},
+    {title:'Staff Management', url:'admin/manage_teachers', icon:'fa-user-secret', cat:'HR'},
+    {title:'Attendance', url:'admin/student_attendance', icon:'fa-calendar-check-o', cat:'Academic'},
+    {title:'Marks Entry', url:'admin/manage_marks', icon:'fa-pencil-square-o', cat:'Academic'},
+    {title:'Exam List', url:'admin/manage_exam', icon:'fa-file-text', cat:'Academic'},
+    {title:'Report Cards', url:'admin/report_card', icon:'fa-id-card', cat:'Academic'},
+    {title:'Class Management', url:'admin/manage_class', icon:'fa-book', cat:'Academic'},
+    {title:'Subject Management', url:'admin/manage_subject', icon:'fa-bookmark', cat:'Academic'},
+    {title:'Send SMS', url:'admin/sms', icon:'fa-envelope', cat:'Communication'},
+    {title:'Noticeboard', url:'admin/noticeboard', icon:'fa-bullhorn', cat:'Communication'},
+    {title:'Settings', url:'admin/system_settings', icon:'fa-cogs', cat:'System'},
+    {title:'Alumni', url:'admin/alumni', icon:'fa-graduation-cap', cat:'Students'},
+    {title:'Transport', url:'admin/transport', icon:'fa-bus', cat:'Transport'},
+    {title:'Library', url:'admin/library', icon:'fa-book', cat:'Library'},
+    {title:'Hostel', url:'admin/hostel', icon:'fa-building', cat:'Hostel'},
+    {title:'Enquiry', url:'admin/enquiry', icon:'fa-question-circle', cat:'Admission'},
+    {title:'Promotion', url:'admin/promotion', icon:'fa-arrow-up', cat:'Academic'},
+    {title:'Certificate', url:'admin/certificate', icon:'fa-certificate', cat:'Documents'},
+    {title:'ID Card', url:'admin/id_card', icon:'fa-id-badge', cat:'Documents'}
+];
+var searchDebounce = null;
+function globalSearch(q) {
+    clearTimeout(searchDebounce);
+    var box = document.getElementById('searchResults');
+    if (!q || q.length < 2) { box.style.display = 'none'; return; }
+    searchDebounce = setTimeout(function() {
+        var html = '';
+        var ql = q.toLowerCase();
+        var pageMatches = searchPages.filter(function(p) { return p.title.toLowerCase().indexOf(ql) >= 0 || p.cat.toLowerCase().indexOf(ql) >= 0; });
+        if (pageMatches.length > 0) {
+            html += '<div style="padding:8px 14px; font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; background:#f8fafc;">📄 Pages & Features</div>';
+            pageMatches.slice(0, 8).forEach(function(p) {
+                html += '<a href="<?php echo base_url();?>' + p.url + '" style="display:flex; align-items:center; padding:10px 14px; text-decoration:none; color:#1a1a2e; border-bottom:1px solid #f1f5f9;"'
+                    + ' onmouseover="this.style.background=\'#f0f4ff\'" onmouseout="this.style.background=\'#fff\'">'
+                    + '<i class="fa ' + p.icon + '" style="width:28px; height:28px; background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; margin-right:10px;"></i>'
+                    + '<div><div style="font-weight:600; font-size:13px;">' + p.title + '</div><div style="font-size:10px; color:#94a3b8;">' + p.cat + '</div></div></a>';
+            });
+        }
+        // Search students via AJAX
+        $.ajax({
+            url: '<?php echo base_url();?>admin/search_students_ajax',
+            data: {q: q}, dataType: 'json',
+            success: function(students) {
+                if (students && students.length > 0) {
+                    html += '<div style="padding:8px 14px; font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; background:#f8fafc;">👨‍🎓 Students</div>';
+                    students.slice(0, 5).forEach(function(s) {
+                        html += '<a href="<?php echo base_url();?>admin/manage_students" style="display:flex; align-items:center; padding:10px 14px; text-decoration:none; color:#1a1a2e; border-bottom:1px solid #f1f5f9;"'
+                            + ' onmouseover="this.style.background=\'#f0fff4\'" onmouseout="this.style.background=\'#fff\'">'
+                            + '<div style="width:28px;height:28px;background:#16a34a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-right:10px;">' + (s.name ? s.name[0] : '?') + '</div>'
+                            + '<div><div style="font-weight:600;font-size:13px;">' + s.name + '</div><div style="font-size:10px;color:#94a3b8;">' + (s.admission_no || '') + ' • ' + (s.phone || '') + '</div></div></a>';
+                    });
+                }
+                box.innerHTML = html || '<div style="padding:20px; text-align:center; color:#94a3b8;">No results found</div>';
+                box.style.display = 'block';
+            },
+            error: function() {
+                box.innerHTML = html || '<div style="padding:20px; text-align:center; color:#94a3b8;">No results found</div>';
+                box.style.display = 'block';
+            }
+        });
+    }, 300);
+}
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.app-search')) document.getElementById('searchResults').style.display = 'none';
+});
+</script>

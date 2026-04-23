@@ -2298,4 +2298,21 @@ class Admin extends CI_Controller {
         $this->load->view('backend/admin/ocr_scanner', $page_data);
     }
 
+
+    /************** GLOBAL SEARCH: Student AJAX ********************/
+    function search_students_ajax() {
+        if (!$this->_is_staff_logged_in()) { echo json_encode([]); return; }
+        $q = $this->input->get('q');
+        if (empty($q) || strlen($q) < 2) { echo json_encode([]); return; }
+        
+        $students = $this->db->select('student_id, name, phone, admission_no')
+            ->like('name', $q)
+            ->or_like('phone', $q)
+            ->or_like('admission_no', $q)
+            ->limit(10)
+            ->get('student')->result_array();
+        
+        echo json_encode($students);
+    }
+
 }
