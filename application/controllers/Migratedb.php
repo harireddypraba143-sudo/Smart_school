@@ -195,42 +195,209 @@ class Migratedb extends CI_Controller {
     }
 
     /**
-     * Alumni & Missing Tables Migration
-     * Run once: /migratedb/create_tables
+     * Create ALL missing tables
+     * Run: /migratedb/create_tables
      */
     public function create_tables() {
         $queries = [
+            // Alumni
             "CREATE TABLE IF NOT EXISTS `alumni` (
               `alumni_id` int(11) NOT NULL AUTO_INCREMENT,
-              `name` varchar(100) NOT NULL,
-              `email` varchar(100) DEFAULT NULL,
-              `sex` varchar(10) DEFAULT NULL,
-              `address` text DEFAULT NULL,
-              `phone` varchar(20) DEFAULT NULL,
-              `profession` varchar(100) DEFAULT NULL,
-              `g_year` varchar(20) DEFAULT NULL,
-              `club_id` int(11) DEFAULT NULL,
-              `interest` text DEFAULT NULL,
-              PRIMARY KEY (`alumni_id`)
+              `name` varchar(100) NOT NULL, `email` varchar(100) DEFAULT NULL,
+              `sex` varchar(10) DEFAULT NULL, `address` text DEFAULT NULL,
+              `phone` varchar(20) DEFAULT NULL, `profession` varchar(100) DEFAULT NULL,
+              `g_year` varchar(20) DEFAULT NULL, `club_id` int(11) DEFAULT NULL,
+              `interest` text DEFAULT NULL, PRIMARY KEY (`alumni_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
+            // Admin Role
             "CREATE TABLE IF NOT EXISTS `admin_role` (
               `admin_role_id` int(11) NOT NULL AUTO_INCREMENT,
               `admin_id` int(11) NOT NULL,
-              `dashboard` int(1) NOT NULL DEFAULT 1,
-              `manage_academics` int(1) NOT NULL DEFAULT 1,
-              `manage_employee` int(1) NOT NULL DEFAULT 1,
-              `manage_student` int(1) NOT NULL DEFAULT 1,
-              `manage_attendance` int(1) NOT NULL DEFAULT 1,
-              `download_page` int(1) NOT NULL DEFAULT 1,
-              `manage_parent` int(1) NOT NULL DEFAULT 1,
-              `manage_alumni` int(1) NOT NULL DEFAULT 1,
+              `dashboard` int(1) DEFAULT 1, `manage_academics` int(1) DEFAULT 1,
+              `manage_employee` int(1) DEFAULT 1, `manage_student` int(1) DEFAULT 1,
+              `manage_attendance` int(1) DEFAULT 1, `download_page` int(1) DEFAULT 1,
+              `manage_parent` int(1) DEFAULT 1, `manage_alumni` int(1) DEFAULT 1,
               PRIMARY KEY (`admin_role_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Enquiry
+            "CREATE TABLE IF NOT EXISTS `enquiry` (
+              `enquiry_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) DEFAULT NULL, `email` varchar(100) DEFAULT NULL,
+              `phone` varchar(20) DEFAULT NULL, `address` text DEFAULT NULL,
+              `enquiry_category_id` int(11) DEFAULT NULL,
+              `description` text DEFAULT NULL, `date` varchar(50) DEFAULT NULL,
+              `status` varchar(20) DEFAULT 'pending',
+              PRIMARY KEY (`enquiry_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Enquiry Category
+            "CREATE TABLE IF NOT EXISTS `enquiry_category` (
+              `enquiry_category_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) DEFAULT NULL,
+              PRIMARY KEY (`enquiry_category_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Co-Scholastic Marks
+            "CREATE TABLE IF NOT EXISTS `co_scholastic_marks` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `student_id` int(11) NOT NULL, `exam_id` int(11) NOT NULL,
+              `class_id` int(11) NOT NULL, `area` varchar(100) DEFAULT NULL,
+              `grade` varchar(10) DEFAULT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Exam Components
+            "CREATE TABLE IF NOT EXISTS `exam_components` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `exam_id` int(11) NOT NULL, `subject_id` int(11) NOT NULL,
+              `class_id` int(11) NOT NULL, `component_name` varchar(100) DEFAULT NULL,
+              `max_marks` decimal(10,2) DEFAULT 0,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Exam Results
+            "CREATE TABLE IF NOT EXISTS `exam_results` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `student_id` int(11) NOT NULL, `exam_id` int(11) NOT NULL,
+              `component_id` int(11) DEFAULT NULL, `subject_id` int(11) DEFAULT NULL,
+              `marks_obtained` decimal(10,2) DEFAULT 0,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Exam Remarks
+            "CREATE TABLE IF NOT EXISTS `exam_remarks` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `student_id` int(11) NOT NULL, `exam_id` int(11) NOT NULL,
+              `class_id` int(11) DEFAULT NULL, `remark` text DEFAULT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // RFID Devices
+            "CREATE TABLE IF NOT EXISTS `rfid_devices` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `device_id` varchar(100) NOT NULL, `device_name` varchar(100) DEFAULT NULL,
+              `location` varchar(200) DEFAULT NULL, `status` varchar(20) DEFAULT 'active',
+              `api_key` varchar(255) DEFAULT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // RFID Cards
+            "CREATE TABLE IF NOT EXISTS `rfid_cards` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `card_uid` varchar(100) NOT NULL, `user_type` varchar(20) DEFAULT NULL,
+              `user_id` int(11) DEFAULT NULL, `status` varchar(20) DEFAULT 'active',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // RFID Attendance Log
+            "CREATE TABLE IF NOT EXISTS `rfid_attendance_log` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `card_uid` varchar(100) DEFAULT NULL, `device_id` varchar(100) DEFAULT NULL,
+              `user_type` varchar(20) DEFAULT NULL, `user_id` int(11) DEFAULT NULL,
+              `scan_type` varchar(20) DEFAULT NULL, `scan_time` datetime DEFAULT CURRENT_TIMESTAMP,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Audit Logs
+            "CREATE TABLE IF NOT EXISTS `audit_logs` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `user_type` varchar(30) DEFAULT NULL, `user_id` int(11) DEFAULT NULL,
+              `action` varchar(255) DEFAULT NULL, `module` varchar(100) DEFAULT NULL,
+              `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Hostel Category
+            "CREATE TABLE IF NOT EXISTS `hostel_category` (
+              `hostel_category_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) DEFAULT NULL,
+              PRIMARY KEY (`hostel_category_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Hostel Attendance
+            "CREATE TABLE IF NOT EXISTS `hostel_attendance` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `student_id` int(11) NOT NULL, `date` varchar(50) DEFAULT NULL,
+              `status` varchar(20) DEFAULT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Transport Route
+            "CREATE TABLE IF NOT EXISTS `transport_route` (
+              `transport_route_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) DEFAULT NULL, `description` text DEFAULT NULL,
+              PRIMARY KEY (`transport_route_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Staff
+            "CREATE TABLE IF NOT EXISTS `staff` (
+              `staff_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) NOT NULL, `designation` varchar(100) DEFAULT NULL,
+              `department_id` int(11) DEFAULT NULL, `phone` varchar(20) DEFAULT NULL,
+              `email` varchar(100) DEFAULT NULL, `sex` varchar(10) DEFAULT NULL,
+              `address` text DEFAULT NULL, `joining_date` varchar(50) DEFAULT NULL,
+              `salary` decimal(10,2) DEFAULT 0, `login_status` int(1) DEFAULT 0,
+              PRIMARY KEY (`staff_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Staff Attendance
+            "CREATE TABLE IF NOT EXISTS `staff_attendance` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `staff_id` int(11) NOT NULL, `date` varchar(50) DEFAULT NULL,
+              `status` varchar(20) DEFAULT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Designation
+            "CREATE TABLE IF NOT EXISTS `designation` (
+              `designation_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) DEFAULT NULL,
+              PRIMARY KEY (`designation_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Circular
+            "CREATE TABLE IF NOT EXISTS `circular` (
+              `circular_id` int(11) NOT NULL AUTO_INCREMENT,
+              `title` varchar(200) DEFAULT NULL, `description` text DEFAULT NULL,
+              `date` varchar(50) DEFAULT NULL,
+              PRIMARY KEY (`circular_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Academic Syllabus
+            "CREATE TABLE IF NOT EXISTS `academic_syllabus` (
+              `academic_syllabus_id` int(11) NOT NULL AUTO_INCREMENT,
+              `title` varchar(200) DEFAULT NULL, `class_id` int(11) DEFAULT NULL,
+              `subject_id` int(11) DEFAULT NULL, `file_name` varchar(255) DEFAULT NULL,
+              PRIMARY KEY (`academic_syllabus_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Social Category
+            "CREATE TABLE IF NOT EXISTS `social_category` (
+              `social_category_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) DEFAULT NULL,
+              PRIMARY KEY (`social_category_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Book Category
+            "CREATE TABLE IF NOT EXISTS `book_category` (
+              `book_category_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) DEFAULT NULL,
+              PRIMARY KEY (`book_category_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            // Book Issue
+            "CREATE TABLE IF NOT EXISTS `book_issue` (
+              `book_issue_id` int(11) NOT NULL AUTO_INCREMENT,
+              `book_id` int(11) DEFAULT NULL, `student_id` int(11) DEFAULT NULL,
+              `issue_date` varchar(50) DEFAULT NULL, `return_date` varchar(50) DEFAULT NULL,
+              `status` varchar(20) DEFAULT 'issued',
+              PRIMARY KEY (`book_issue_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
         ];
 
-        $success = 0;
-        $skipped = 0;
+        $success = 0; $skipped = 0;
         foreach ($queries as $sql) {
             try {
                 $this->db->query($sql);
@@ -242,13 +409,13 @@ class Migratedb extends CI_Controller {
             }
         }
 
-        // Create upload directory for alumni images
-        $alumni_dir = FCPATH . 'uploads/alumni_image';
-        if (!is_dir($alumni_dir)) {
-            mkdir($alumni_dir, 0755, true);
-            echo "✓ Created uploads/alumni_image/ directory<br>";
+        // Create upload directory
+        $dirs = ['uploads/alumni_image'];
+        foreach ($dirs as $d) {
+            $path = FCPATH . $d;
+            if (!is_dir($path)) { mkdir($path, 0755, true); echo "✓ Created $d/<br>"; }
         }
 
-        echo "<br><strong>Tables Migration Complete: $success applied, $skipped skipped.</strong>";
+        echo "<br><strong>Tables Migration Complete: $success created/verified, $skipped skipped.</strong>";
     }
 }
