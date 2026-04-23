@@ -1058,7 +1058,7 @@ function pollOCRData() {
         dataType: 'json',
         success: function(res) {
             if (res.status === 'has_data' && res.data) {
-                var types = ['student_aadhaar', 'father_aadhaar', 'mother_aadhaar', 'bank'];
+                var types = ['student_aadhaar', 'father_aadhaar', 'mother_aadhaar', 'bank', 'tc', 'admission_form'];
                 types.forEach(function(type) {
                     if (res.data[type] && !ocrAppliedTypes[type]) {
                         applyOCRData(type, res.data[type]);
@@ -1066,10 +1066,9 @@ function pollOCRData() {
                     }
                 });
                 
-                // Update modal status
                 var doneCount = Object.keys(ocrAppliedTypes).length;
                 document.getElementById('ocr_waiting').innerHTML = 
-                    '<span style="color:#16a34a;"><i class="fa fa-check-circle"></i> ' + doneCount + '/4 scans received</span>';
+                    '<span style="color:#16a34a;"><i class="fa fa-check-circle"></i> ' + doneCount + '/6 scans received</span>';
             }
         }
     });
@@ -1111,21 +1110,31 @@ function applyOCRData(type, data) {
         };
     }
     else if (type === 'bank') {
-        fieldMap = {
-            'bank_account_number': data.account_no,
-            'bank_ifsc': data.ifsc
-        };
-        // Set bank name dropdown
+        fieldMap = { 'bank_account_number': data.account_no, 'bank_ifsc': data.ifsc };
         if (data.bank_name) {
             var bankSel = document.querySelector('[name="bank_name"]');
-            if (bankSel) {
-                for (var i = 0; i < bankSel.options.length; i++) {
-                    if (bankSel.options[i].value.indexOf(data.bank_name) >= 0 || data.bank_name.indexOf(bankSel.options[i].value) >= 0) {
-                        bankSel.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
+            if (bankSel) { for (var i=0;i<bankSel.options.length;i++) { if (bankSel.options[i].value.indexOf(data.bank_name)>=0||data.bank_name.indexOf(bankSel.options[i].value)>=0) { bankSel.selectedIndex=i; break; } } }
+        }
+    }
+    else if (type === 'tc') {
+        fieldMap = {
+            'name': data.student_name, 'father_name': data.father_name,
+            'ps_attended': data.school_name, 'class_study': data.class_studied,
+            'ps_purpose': data.reason
+        };
+        if (data.dob) {
+            var parts = data.dob.replace(/-/g,'/').split('/');
+            if (parts.length===3) { var dobEl=document.getElementById('birthday_field'); if(dobEl){dobEl.value=parts[2]+'-'+parts[1]+'-'+parts[0]; calculateAge();} }
+        }
+    }
+    else if (type === 'admission_form') {
+        fieldMap = {
+            'name': data.student_name, 'father_name': data.father_name,
+            'mother_name': data.mother_name, 'phone': data.phone
+        };
+        if (data.dob) {
+            var parts = data.dob.replace(/-/g,'/').split('/');
+            if (parts.length===3) { var dobEl=document.getElementById('birthday_field'); if(dobEl){dobEl.value=parts[2]+'-'+parts[1]+'-'+parts[0]; calculateAge();} }
         }
     }
     
