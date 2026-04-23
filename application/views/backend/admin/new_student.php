@@ -236,78 +236,16 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
             </div>
         </div>
 
-        <!-- Row 7: City, State, PIN Code, Password -->
+        <!-- Row 7: PIN Code, State, City, Password -->
         <div class="row">
             <div class="form-group col-md-3">
-                <label>City / District</label>
-                <select name="city" class="form-control select2" style="width:100%">
-                    <option value="">Select City</option>
-                    <optgroup label="── Telangana ──">
-                        <option value="Hyderabad">Hyderabad</option>
-                        <option value="Warangal">Warangal</option>
-                        <option value="Nizamabad">Nizamabad</option>
-                        <option value="Karimnagar">Karimnagar</option>
-                        <option value="Khammam">Khammam</option>
-                        <option value="Mahbubnagar">Mahbubnagar</option>
-                        <option value="Nalgonda">Nalgonda</option>
-                        <option value="Adilabad">Adilabad</option>
-                        <option value="Medak">Medak</option>
-                        <option value="Rangareddy">Rangareddy</option>
-                        <option value="Sangareddy">Sangareddy</option>
-                        <option value="Siddipet">Siddipet</option>
-                        <option value="Suryapet">Suryapet</option>
-                        <option value="Mancherial">Mancherial</option>
-                        <option value="Jagtial">Jagtial</option>
-                        <option value="Peddapalli">Peddapalli</option>
-                        <option value="Kamareddy">Kamareddy</option>
-                        <option value="Wanaparthy">Wanaparthy</option>
-                        <option value="Nagarkurnool">Nagarkurnool</option>
-                        <option value="Jogulamba Gadwal">Jogulamba Gadwal</option>
-                        <option value="Bhadradri Kothagudem">Bhadradri Kothagudem</option>
-                        <option value="Jangaon">Jangaon</option>
-                        <option value="Jayashankar Bhupalpally">Jayashankar Bhupalpally</option>
-                        <option value="Medchal-Malkajgiri">Medchal-Malkajgiri</option>
-                        <option value="Rajanna Sircilla">Rajanna Sircilla</option>
-                        <option value="Vikarabad">Vikarabad</option>
-                        <option value="Yadadri Bhuvanagiri">Yadadri Bhuvanagiri</option>
-                        <option value="Mahabubabad">Mahabubabad</option>
-                        <option value="Nirmal">Nirmal</option>
-                        <option value="Kumuram Bheem Asifabad">Kumuram Bheem Asifabad</option>
-                        <option value="Mulugu">Mulugu</option>
-                        <option value="Narayanpet">Narayanpet</option>
-                    </optgroup>
-                    <optgroup label="── Andhra Pradesh ──">
-                        <option value="Visakhapatnam">Visakhapatnam</option>
-                        <option value="Vijayawada">Vijayawada</option>
-                        <option value="Guntur">Guntur</option>
-                        <option value="Nellore">Nellore</option>
-                        <option value="Kurnool">Kurnool</option>
-                        <option value="Tirupati">Tirupati</option>
-                        <option value="Anantapur">Anantapur</option>
-                        <option value="Rajahmundry">Rajahmundry</option>
-                        <option value="Kadapa">Kadapa</option>
-                        <option value="Kakinada">Kakinada</option>
-                        <option value="Eluru">Eluru</option>
-                        <option value="Ongole">Ongole</option>
-                        <option value="Srikakulam">Srikakulam</option>
-                        <option value="Vizianagaram">Vizianagaram</option>
-                        <option value="Chittoor">Chittoor</option>
-                        <option value="Machilipatnam">Machilipatnam</option>
-                    </optgroup>
-                    <optgroup label="── Other States ──">
-                        <option value="Mumbai">Mumbai</option>
-                        <option value="Delhi">Delhi</option>
-                        <option value="Bangalore">Bangalore</option>
-                        <option value="Chennai">Chennai</option>
-                        <option value="Kolkata">Kolkata</option>
-                        <option value="Pune">Pune</option>
-                        <option value="Other">Other</option>
-                    </optgroup>
-                </select>
+                <label>PIN Code <small style="color:#999;">(auto-fills city & state)</small></label>
+                <input type="text" class="form-control" name="pin_code" id="pin_code" placeholder="e.g., 500001" maxlength="6" onkeyup="if(this.value.length==6) lookupPincode(this.value)">
+                <small id="pin_status" style="color:#16a34a; display:none;"><i class="fa fa-check-circle"></i> Found</small>
             </div>
             <div class="form-group col-md-3">
                 <label>State</label>
-                <select name="state" class="form-control">
+                <select name="state" class="form-control" id="state_select" onchange="filterCities()">
                     <option value="">Select State</option>
                     <option value="Telangana" selected>Telangana</option>
                     <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -336,8 +274,10 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                 </select>
             </div>
             <div class="form-group col-md-3">
-                <label>PIN Code</label>
-                <input type="text" class="form-control" name="pin_code" placeholder="e.g., 500001" maxlength="6">
+                <label>City / District</label>
+                <select name="city" class="form-control select2" style="width:100%" id="city_select">
+                    <option value="">Select City</option>
+                </select>
             </div>
             <div class="form-group col-md-3">
                 <label>Password *</label>
@@ -779,6 +719,122 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
 </div>
 
 <script type="text/javascript">
+// ═══ State → City Mapping ═══
+var stateCities = {
+    'Telangana': ['Hyderabad','Warangal','Nizamabad','Karimnagar','Khammam','Mahbubnagar','Nalgonda','Adilabad','Medak','Rangareddy','Sangareddy','Siddipet','Suryapet','Mancherial','Jagtial','Peddapalli','Kamareddy','Wanaparthy','Nagarkurnool','Jogulamba Gadwal','Bhadradri Kothagudem','Jangaon','Jayashankar Bhupalpally','Medchal-Malkajgiri','Rajanna Sircilla','Vikarabad','Yadadri Bhuvanagiri','Mahabubabad','Nirmal','Kumuram Bheem Asifabad','Mulugu','Narayanpet'],
+    'Andhra Pradesh': ['Visakhapatnam','Vijayawada','Guntur','Nellore','Kurnool','Tirupati','Anantapur','Rajahmundry','Kadapa','Kakinada','Eluru','Ongole','Srikakulam','Vizianagaram','Chittoor','Machilipatnam','Prakasam','Krishna','West Godavari','East Godavari','Palnadu','Bapatla','Anakapalli','Alluri Sitharama Raju','Nandyal','Sri Sathya Sai'],
+    'Karnataka': ['Bangalore','Mysore','Hubli','Mangalore','Belgaum','Gulbarga','Davangere','Shimoga','Tumkur','Bellary','Bidar','Raichur','Hassan','Udupi','Chitradurga'],
+    'Tamil Nadu': ['Chennai','Coimbatore','Madurai','Tiruchirappalli','Salem','Tirunelveli','Erode','Vellore','Thanjavur','Dindigul','Tuticorin','Kanchipuram','Tiruvannamalai','Nagercoil'],
+    'Maharashtra': ['Mumbai','Pune','Nagpur','Thane','Nashik','Aurangabad','Solapur','Kolhapur','Sangli','Ahmednagar','Satara','Amravati','Nanded','Latur','Jalgaon'],
+    'Kerala': ['Thiruvananthapuram','Kochi','Kozhikode','Thrissur','Kollam','Palakkad','Alappuzha','Kannur','Malappuram','Kottayam','Kasaragod','Idukki','Pathanamthitta','Wayanad'],
+    'Delhi': ['New Delhi','Central Delhi','South Delhi','North Delhi','East Delhi','West Delhi','Shahdara','Dwarka','Rohini'],
+    'Uttar Pradesh': ['Lucknow','Noida','Agra','Varanasi','Kanpur','Ghaziabad','Meerut','Allahabad','Bareilly','Aligarh','Moradabad','Gorakhpur','Mathura','Jhansi'],
+    'Rajasthan': ['Jaipur','Jodhpur','Udaipur','Kota','Ajmer','Bikaner','Alwar','Bhilwara','Bharatpur','Sikar','Pali','Sri Ganganagar'],
+    'Gujarat': ['Ahmedabad','Surat','Vadodara','Rajkot','Bhavnagar','Jamnagar','Gandhinagar','Junagadh','Anand','Nadiad','Mehsana','Morbi'],
+    'Madhya Pradesh': ['Bhopal','Indore','Jabalpur','Gwalior','Ujjain','Sagar','Dewas','Satna','Ratlam','Rewa','Katni','Singrauli'],
+    'West Bengal': ['Kolkata','Howrah','Durgapur','Siliguri','Asansol','Bardhaman','Malda','Kharagpur','Haldia','Baharampur'],
+    'Bihar': ['Patna','Gaya','Bhagalpur','Muzaffarpur','Purnia','Darbhanga','Arrah','Begusarai','Katihar','Munger'],
+    'Punjab': ['Chandigarh','Ludhiana','Amritsar','Jalandhar','Patiala','Bathinda','Mohali','Hoshiarpur','Pathankot'],
+    'Haryana': ['Gurgaon','Faridabad','Panipat','Ambala','Karnal','Hisar','Rohtak','Sonipat','Yamunanagar','Sirsa'],
+    'Odisha': ['Bhubaneswar','Cuttack','Rourkela','Berhampur','Sambalpur','Puri','Balasore','Baripada','Jharsuguda'],
+    'Chhattisgarh': ['Raipur','Bhilai','Bilaspur','Korba','Durg','Rajnandgaon','Jagdalpur','Ambikapur'],
+    'Jharkhand': ['Ranchi','Jamshedpur','Dhanbad','Bokaro','Hazaribagh','Deoghar','Giridih','Ramgarh'],
+    'Assam': ['Guwahati','Silchar','Dibrugarh','Jorhat','Nagaon','Tinsukia','Tezpur','Bongaigaon'],
+    'Goa': ['Panaji','Margao','Vasco da Gama','Mapusa','Ponda'],
+    'Uttarakhand': ['Dehradun','Haridwar','Rishikesh','Haldwani','Roorkee','Kashipur','Rudrapur','Nainital'],
+    'Himachal Pradesh': ['Shimla','Manali','Dharamshala','Solan','Mandi','Kullu','Bilaspur','Hamirpur'],
+    'Jammu & Kashmir': ['Srinagar','Jammu','Anantnag','Baramulla','Udhampur','Kathua','Sopore']
+};
+
+function filterCities() {
+    var state = document.getElementById('state_select').value;
+    var citySelect = document.getElementById('city_select');
+    // Destroy select2 before modifying
+    if ($.fn.select2 && $(citySelect).data('select2')) {
+        $(citySelect).select2('destroy');
+    }
+    citySelect.innerHTML = '<option value="">Select City</option>';
+    if (state && stateCities[state]) {
+        stateCities[state].forEach(function(city) {
+            var opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            citySelect.appendChild(opt);
+        });
+    }
+    // Add "Other" option always
+    var otherOpt = document.createElement('option');
+    otherOpt.value = 'Other';
+    otherOpt.textContent = 'Other';
+    citySelect.appendChild(otherOpt);
+    // Re-initialize select2
+    if ($.fn.select2) {
+        $(citySelect).select2({width: '100%'});
+    }
+}
+
+// ═══ PIN Code Auto-Lookup (India Post API) ═══
+function lookupPincode(pin) {
+    if (pin.length !== 6 || isNaN(pin)) return;
+    var statusEl = document.getElementById('pin_status');
+    statusEl.style.display = 'inline';
+    statusEl.style.color = '#f59e0b';
+    statusEl.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Looking up...';
+    
+    $.ajax({
+        url: 'https://api.postalpincode.in/pincode/' + pin,
+        type: 'GET',
+        dataType: 'json',
+        timeout: 5000,
+        success: function(data) {
+            if (data && data[0] && data[0].Status === 'Success' && data[0].PostOffice && data[0].PostOffice.length > 0) {
+                var po = data[0].PostOffice[0];
+                var apiState = po.State || '';
+                var apiDistrict = po.District || '';
+                
+                // Set state
+                var stateSelect = document.getElementById('state_select');
+                for (var i = 0; i < stateSelect.options.length; i++) {
+                    if (stateSelect.options[i].value === apiState) {
+                        stateSelect.value = apiState;
+                        break;
+                    }
+                }
+                
+                // Filter cities for that state, then set city
+                filterCities();
+                setTimeout(function() {
+                    var citySelect = document.getElementById('city_select');
+                    var found = false;
+                    for (var j = 0; j < citySelect.options.length; j++) {
+                        if (citySelect.options[j].value === apiDistrict) {
+                            $(citySelect).val(apiDistrict).trigger('change');
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found && apiDistrict) {
+                        // Add it dynamically if not in list
+                        var newOpt = new Option(apiDistrict, apiDistrict, true, true);
+                        $(citySelect).prepend(newOpt).trigger('change');
+                    }
+                }, 200);
+                
+                statusEl.style.color = '#16a34a';
+                statusEl.innerHTML = '<i class="fa fa-check-circle"></i> ' + apiDistrict + ', ' + apiState;
+            } else {
+                statusEl.style.color = '#dc2626';
+                statusEl.innerHTML = '<i class="fa fa-times-circle"></i> Invalid PIN';
+            }
+        },
+        error: function() {
+            statusEl.style.color = '#dc2626';
+            statusEl.innerHTML = '<i class="fa fa-exclamation-circle"></i> Could not verify';
+        }
+    });
+}
+
+// ═══ Parent Toggle ═══
 function toggleParentMode(mode) {
     if (mode === 'new') {
         document.getElementById('existingParentSection').style.display = 'none';
@@ -823,4 +879,9 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// Load Telangana cities on page load
+$(document).ready(function() {
+    filterCities();
+});
 </script>
