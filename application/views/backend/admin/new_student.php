@@ -134,7 +134,16 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
             </div>
             <div class="form-group col-md-3">
                 <label>Religion</label>
-                <input type="text" class="form-control" name="religion" placeholder="e.g., Hindu">
+                <select name="religion" class="form-control">
+                    <option value="">Select</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Muslim">Muslim</option>
+                    <option value="Christian">Christian</option>
+                    <option value="Sikh">Sikh</option>
+                    <option value="Buddhist">Buddhist</option>
+                    <option value="Jain">Jain</option>
+                    <option value="Other">Other</option>
+                </select>
             </div>
             <div class="form-group col-md-3">
                 <label>Place of Birth</label>
@@ -149,11 +158,38 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
             </div>
             <div class="form-group col-md-3">
                 <label>Mother Tongue</label>
-                <input type="text" class="form-control" name="m_tongue" placeholder="e.g., Telugu">
+                <select name="m_tongue" class="form-control">
+                    <option value="">Select</option>
+                    <option value="Telugu">Telugu</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="English">English</option>
+                    <option value="Urdu">Urdu</option>
+                    <option value="Tamil">Tamil</option>
+                    <option value="Kannada">Kannada</option>
+                    <option value="Malayalam">Malayalam</option>
+                    <option value="Marathi">Marathi</option>
+                    <option value="Bengali">Bengali</option>
+                    <option value="Gujarati">Gujarati</option>
+                    <option value="Odia">Odia</option>
+                    <option value="Punjabi">Punjabi</option>
+                    <option value="Other">Other</option>
+                </select>
             </div>
             <div class="form-group col-md-3">
                 <label>Caste</label>
-                <input type="text" class="form-control" name="caste" placeholder="e.g., OBC / General">
+                <select name="caste" class="form-control">
+                    <option value="">Select</option>
+                    <option value="OC">OC (General)</option>
+                    <option value="BC-A">BC-A</option>
+                    <option value="BC-B">BC-B</option>
+                    <option value="BC-C">BC-C</option>
+                    <option value="BC-D">BC-D</option>
+                    <option value="BC-E">BC-E</option>
+                    <option value="SC">SC</option>
+                    <option value="ST">ST</option>
+                    <option value="EWS">EWS</option>
+                    <option value="Other">Other</option>
+                </select>
             </div>
             <div class="form-group col-md-3">
                 <label>Sub-Caste</label>
@@ -198,7 +234,33 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
             </div>
             <div class="form-group col-md-4">
                 <label>State</label>
-                <input type="text" class="form-control" name="state" placeholder="e.g., Telangana">
+                <select name="state" class="form-control">
+                    <option value="">Select State</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Telangana" selected>Telangana</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jammu & Kashmir">Jammu & Kashmir</option>
+                    <option value="Other">Other</option>
+                </select>
             </div>
             <div class="form-group col-md-4">
                 <label>Password *</label>
@@ -240,7 +302,28 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
         <div class="row">
             <div class="form-group col-md-4">
                 <label>Bank Name</label>
-                <input type="text" class="form-control" name="bank_name" placeholder="e.g., State Bank of India">
+                <select name="bank_name" class="form-control select2" style="width:100%">
+                    <option value="">Select Bank</option>
+                    <option value="State Bank of India">State Bank of India (SBI)</option>
+                    <option value="Andhra Bank">Andhra Bank</option>
+                    <option value="Bank of Baroda">Bank of Baroda</option>
+                    <option value="Canara Bank">Canara Bank</option>
+                    <option value="Central Bank of India">Central Bank of India</option>
+                    <option value="HDFC Bank">HDFC Bank</option>
+                    <option value="ICICI Bank">ICICI Bank</option>
+                    <option value="Indian Bank">Indian Bank</option>
+                    <option value="Indian Overseas Bank">Indian Overseas Bank</option>
+                    <option value="Punjab National Bank">Punjab National Bank</option>
+                    <option value="Union Bank of India">Union Bank of India</option>
+                    <option value="Axis Bank">Axis Bank</option>
+                    <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                    <option value="Yes Bank">Yes Bank</option>
+                    <option value="IDBI Bank">IDBI Bank</option>
+                    <option value="Telangana Grameena Bank">Telangana Grameena Bank</option>
+                    <option value="Andhra Pradesh Grameena Vikas Bank">AP Grameena Vikas Bank</option>
+                    <option value="Post Office">Post Office Savings</option>
+                    <option value="Other">Other</option>
+                </select>
             </div>
             <div class="form-group col-md-4">
                 <label>Account Number</label>
@@ -248,7 +331,7 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
             </div>
             <div class="form-group col-md-4">
                 <label>IFSC Code</label>
-                <input type="text" class="form-control" name="bank_ifsc" placeholder="e.g., SBIN0001234">
+                <input type="text" class="form-control" name="bank_ifsc" placeholder="e.g., SBIN0001234" style="text-transform: uppercase;">
             </div>
         </div>
     </div>
@@ -468,11 +551,36 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
         <div class="row">
             <div class="form-group col-md-4">
                 <label>Purpose of Leaving</label>
-                <input type="text" class="form-control" name="ps_purpose" placeholder="Reason for leaving">
+                <select name="ps_purpose" class="form-control">
+                    <option value="">Select Reason</option>
+                    <option value="Transfer">Transfer to another school</option>
+                    <option value="Promotion">Promotion / Class completed</option>
+                    <option value="Family Relocation">Family Relocation</option>
+                    <option value="Financial Reasons">Financial Reasons</option>
+                    <option value="Health Issues">Health Issues</option>
+                    <option value="Completed Studies">Completed Studies</option>
+                    <option value="Discontinued">Discontinued</option>
+                    <option value="Other">Other</option>
+                </select>
             </div>
             <div class="form-group col-md-4">
                 <label>Class Studied</label>
-                <input type="text" class="form-control" name="class_study" placeholder="Last class studied">
+                <select name="class_study" class="form-control">
+                    <option value="">Select Class</option>
+                    <option value="Pre-KG">Pre-KG / Nursery</option>
+                    <option value="LKG">LKG</option>
+                    <option value="UKG">UKG</option>
+                    <option value="1st">1st Class</option>
+                    <option value="2nd">2nd Class</option>
+                    <option value="3rd">3rd Class</option>
+                    <option value="4th">4th Class</option>
+                    <option value="5th">5th Class</option>
+                    <option value="6th">6th Class</option>
+                    <option value="7th">7th Class</option>
+                    <option value="8th">8th Class</option>
+                    <option value="9th">9th Class</option>
+                    <option value="10th">10th Class</option>
+                </select>
             </div>
             <div class="form-group col-md-4">
                 <label>Date of Leaving</label>
