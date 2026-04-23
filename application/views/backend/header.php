@@ -197,9 +197,9 @@
 
     <!-- Shortcuts -->
     <div class="hdr-shortcuts">
-        <a href="<?php echo base_url();?>admin/student_information" class="<?php echo in_array($active_page, ['student_information','new_student','edit_student']) ? 'active' : ''; ?>" title="Students">
-            <i class="fa fa-users"></i>
-            <span>Students</span>
+        <a href="<?php echo base_url();?>admin/new_student" class="<?php echo in_array($active_page, ['student_information','new_student','edit_student']) ? 'active' : ''; ?>" title="Admission">
+            <i class="fa fa-user-plus"></i>
+            <span>Admission</span>
         </a>
         <a href="<?php echo base_url();?>admin/student_payment" class="<?php echo in_array($active_page, ['student_payment','student_invoice']) ? 'active' : ''; ?>" title="Fees">
             <i class="fa fa-inr"></i>
@@ -209,9 +209,9 @@
             <i class="fa fa-calendar-check-o"></i>
             <span>Attendance</span>
         </a>
-        <a href="<?php echo base_url();?>admin/createExamination" class="<?php echo in_array($active_page, ['createExamination','examQuestion','student_marksheet_subject']) ? 'active' : ''; ?>" title="Exams">
-            <i class="fa fa-file-text-o"></i>
-            <span>Exams</span>
+        <a href="<?php echo base_url();?>admin/student_marksheet_subject" class="<?php echo in_array($active_page, ['createExamination','examQuestion','student_marksheet_subject']) ? 'active' : ''; ?>" title="Marks Entry">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Marks Entry</span>
         </a>
         <a href="<?php echo base_url();?>admin/noticeboard" class="<?php echo in_array($active_page, ['noticeboard','circular']) ? 'active' : ''; ?>" title="Messages">
             <i class="fa fa-bell-o"></i>
