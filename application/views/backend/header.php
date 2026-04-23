@@ -145,16 +145,21 @@
 /* Hide old navbar */
 .navbar.navbar-default { display: none !important; }
 
-/* Keep header full width and adjust sidebar underneath */
+/* Fix page wrapper margin and sidebar gap */
 #wrapper { padding-top: 64px; }
-.top-header-bar { position: fixed; top: 0; left: 0; width: 100%; }
-.navbar-default.sidebar { margin-top: 64px; }
+.top-header-bar { position: fixed; top: 0; left: 0; width: 100%; z-index: 1050; }
+
+@media (min-width: 768px) {
+    /* Set sidebar underneath the header cleanly */
+    .navbar-default.sidebar { margin-top: 0 !important; top: 64px !important; z-index: 1040; height: calc(100vh - 64px) !important; }
+}
 
 @media (max-width: 767px) {
     .hdr-shortcuts { display: none; }
     .hdr-brand .name { font-size: 13px; }
     .hdr-brand { min-width: auto; border: none; padding-right: 10px; }
     .hdr-search span, .hdr-search kbd { display: none; }
+    .navbar-default.sidebar { margin-top: 0 !important; top: 64px !important; }
 }
 </style>
 
