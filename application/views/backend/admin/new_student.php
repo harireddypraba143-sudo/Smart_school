@@ -89,16 +89,7 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
     <div class="white-box" style="border-radius: 12px; border-left: 4px solid #16a34a; margin-bottom: 15px;">
         <h3 class="box-title" style="margin-bottom: 20px; font-size: 16px;"><i class="fa fa-user" style="color: #16a34a;"></i> Personal Information</h3>
         
-        <div class="row">
-            <div class="form-group col-md-4">
-                <label>Photo</label>
-                <input type='file' name="userfile" class="form-control" onChange="readURL(this);" style="font-size: 12px;">
-            </div>
-            <div class="form-group col-md-4" style="text-align: center;">
-                <img id="preview_image" src="<?php echo base_url();?>uploads/student_image/default.jpg" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #eee; object-fit: cover;">
-            </div>
-        </div>
-
+        <!-- Row 1: Name, DOB, Age -->
         <div class="row">
             <div class="form-group col-md-6">
                 <label>Full Name *</label>
@@ -114,6 +105,7 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
             </div>
         </div>
 
+        <!-- Row 2: Gender, Blood Group, Religion, Nationality -->
         <div class="row">
             <div class="form-group col-md-3">
                 <label>Gender *</label>
@@ -146,16 +138,16 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                 </select>
             </div>
             <div class="form-group col-md-3">
-                <label>Place of Birth</label>
-                <input type="text" class="form-control" name="place_birth" placeholder="e.g., Hyderabad">
+                <label>Nationality *</label>
+                <select name="nationality" class="form-control" required>
+                    <option value="Indian" selected>Indian</option>
+                    <option value="Other">Other</option>
+                </select>
             </div>
         </div>
 
+        <!-- Row 3: Mother Tongue, Caste, Sub-Caste, Medium -->
         <div class="row">
-            <div class="form-group col-md-3">
-                <label>Nationality *</label>
-                <input type="text" class="form-control" name="nationality" value="Indian" required>
-            </div>
             <div class="form-group col-md-3">
                 <label>Mother Tongue</label>
                 <select name="m_tongue" class="form-control">
@@ -195,11 +187,8 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                 <label>Sub-Caste</label>
                 <input type="text" class="form-control" name="sub_caste" placeholder="e.g., Reddy">
             </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col-md-4">
-                <label>Medium of Instruction *</label>
+            <div class="form-group col-md-3">
+                <label>Medium *</label>
                 <select name="medium" class="form-control" required>
                     <option value="">Select</option>
                     <option value="English">English</option>
@@ -210,6 +199,10 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                     <option value="Kannada">Kannada</option>
                 </select>
             </div>
+        </div>
+
+        <!-- Row 4: Phone, Email, Place of Birth -->
+        <div class="row">
             <div class="form-group col-md-4">
                 <label>Phone</label>
                 <input type="text" class="form-control" name="phone" placeholder="e.g., 9876543210">
@@ -218,26 +211,106 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                 <label>Email *</label>
                 <input type="email" class="form-control" name="email" placeholder="e.g., student@email.com" required>
             </div>
+            <div class="form-group col-md-4">
+                <label>Place of Birth</label>
+                <input type="text" class="form-control" name="place_birth" placeholder="e.g., Hyderabad">
+            </div>
         </div>
 
+        <!-- Row 5: Photo -->
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label>Photo</label>
+                <input type='file' name="userfile" class="form-control" onChange="readURL(this);" style="font-size: 12px;">
+            </div>
+            <div class="form-group col-md-2" style="text-align: center;">
+                <img id="preview_image" src="<?php echo base_url();?>uploads/student_image/default.jpg" style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #eee; object-fit: cover;">
+            </div>
+        </div>
+
+        <!-- Row 6: Address -->
         <div class="row">
             <div class="form-group col-md-12">
                 <label>Address *</label>
-                <textarea name="address" class="form-control" rows="2" placeholder="Full residential address with PIN code" required></textarea>
+                <textarea name="address" class="form-control" rows="2" placeholder="Full residential address (House No, Street, Village/Town, Mandal, PIN)" required></textarea>
             </div>
         </div>
 
+        <!-- Row 7: City, State, PIN Code, Password -->
         <div class="row">
-            <div class="form-group col-md-4">
-                <label>City</label>
-                <input type="text" class="form-control" name="city" placeholder="e.g., Hyderabad">
+            <div class="form-group col-md-3">
+                <label>City / District</label>
+                <select name="city" class="form-control select2" style="width:100%">
+                    <option value="">Select City</option>
+                    <optgroup label="── Telangana ──">
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Warangal">Warangal</option>
+                        <option value="Nizamabad">Nizamabad</option>
+                        <option value="Karimnagar">Karimnagar</option>
+                        <option value="Khammam">Khammam</option>
+                        <option value="Mahbubnagar">Mahbubnagar</option>
+                        <option value="Nalgonda">Nalgonda</option>
+                        <option value="Adilabad">Adilabad</option>
+                        <option value="Medak">Medak</option>
+                        <option value="Rangareddy">Rangareddy</option>
+                        <option value="Sangareddy">Sangareddy</option>
+                        <option value="Siddipet">Siddipet</option>
+                        <option value="Suryapet">Suryapet</option>
+                        <option value="Mancherial">Mancherial</option>
+                        <option value="Jagtial">Jagtial</option>
+                        <option value="Peddapalli">Peddapalli</option>
+                        <option value="Kamareddy">Kamareddy</option>
+                        <option value="Wanaparthy">Wanaparthy</option>
+                        <option value="Nagarkurnool">Nagarkurnool</option>
+                        <option value="Jogulamba Gadwal">Jogulamba Gadwal</option>
+                        <option value="Bhadradri Kothagudem">Bhadradri Kothagudem</option>
+                        <option value="Jangaon">Jangaon</option>
+                        <option value="Jayashankar Bhupalpally">Jayashankar Bhupalpally</option>
+                        <option value="Medchal-Malkajgiri">Medchal-Malkajgiri</option>
+                        <option value="Rajanna Sircilla">Rajanna Sircilla</option>
+                        <option value="Vikarabad">Vikarabad</option>
+                        <option value="Yadadri Bhuvanagiri">Yadadri Bhuvanagiri</option>
+                        <option value="Mahabubabad">Mahabubabad</option>
+                        <option value="Nirmal">Nirmal</option>
+                        <option value="Kumuram Bheem Asifabad">Kumuram Bheem Asifabad</option>
+                        <option value="Mulugu">Mulugu</option>
+                        <option value="Narayanpet">Narayanpet</option>
+                    </optgroup>
+                    <optgroup label="── Andhra Pradesh ──">
+                        <option value="Visakhapatnam">Visakhapatnam</option>
+                        <option value="Vijayawada">Vijayawada</option>
+                        <option value="Guntur">Guntur</option>
+                        <option value="Nellore">Nellore</option>
+                        <option value="Kurnool">Kurnool</option>
+                        <option value="Tirupati">Tirupati</option>
+                        <option value="Anantapur">Anantapur</option>
+                        <option value="Rajahmundry">Rajahmundry</option>
+                        <option value="Kadapa">Kadapa</option>
+                        <option value="Kakinada">Kakinada</option>
+                        <option value="Eluru">Eluru</option>
+                        <option value="Ongole">Ongole</option>
+                        <option value="Srikakulam">Srikakulam</option>
+                        <option value="Vizianagaram">Vizianagaram</option>
+                        <option value="Chittoor">Chittoor</option>
+                        <option value="Machilipatnam">Machilipatnam</option>
+                    </optgroup>
+                    <optgroup label="── Other States ──">
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Other">Other</option>
+                    </optgroup>
+                </select>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label>State</label>
                 <select name="state" class="form-control">
                     <option value="">Select State</option>
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
                     <option value="Telangana" selected>Telangana</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
                     <option value="Karnataka">Karnataka</option>
                     <option value="Tamil Nadu">Tamil Nadu</option>
                     <option value="Maharashtra">Maharashtra</option>
@@ -262,7 +335,11 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
+                <label>PIN Code</label>
+                <input type="text" class="form-control" name="pin_code" placeholder="e.g., 500001" maxlength="6">
+            </div>
+            <div class="form-group col-md-3">
                 <label>Password *</label>
                 <input type="password" class="form-control" name="password" placeholder="Student portal login" required>
             </div>
