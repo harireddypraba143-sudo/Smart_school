@@ -145,10 +145,11 @@
 /* Hide old navbar */
 .navbar.navbar-default { display: none !important; }
 
-/* Fix page wrapper margin */
-@media (min-width: 768px) {
-    .top-header-bar { margin-left: 240px; }
-}
+/* Keep header full width and adjust sidebar underneath */
+#wrapper { padding-top: 64px; }
+.top-header-bar { position: fixed; top: 0; left: 0; width: 100%; }
+.navbar-default.sidebar { margin-top: 64px; }
+
 @media (max-width: 767px) {
     .hdr-shortcuts { display: none; }
     .hdr-brand .name { font-size: 13px; }
