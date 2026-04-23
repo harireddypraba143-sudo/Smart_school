@@ -269,10 +269,10 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
         <div class="row" style="margin-bottom: 15px;">
             <div class="col-md-12">
                 <div class="btn-group btn-group-justified" role="group">
-                    <a class="btn btn-info active" id="btnSelectParent" onclick="toggleParentMode('select')">
+                    <a class="btn btn-default" id="btnSelectParent" onclick="toggleParentMode('select')">
                         <i class="fa fa-search"></i> Select Existing Parent
                     </a>
-                    <a class="btn btn-default" id="btnNewParent" onclick="toggleParentMode('new')">
+                    <a class="btn btn-info active" id="btnNewParent" onclick="toggleParentMode('new')">
                         <i class="fa fa-plus"></i> Create New Parent
                     </a>
                 </div>
@@ -280,10 +280,10 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
         </div>
 
         <!-- SELECT EXISTING -->
-        <div id="existingParentSection">
+        <div id="existingParentSection" style="display: none;">
             <div class="form-group">
                 <label>Select Parent *</label>
-                <select name="parent_id" class="form-control select2" style="width:100%" id="parent_id_select" required>
+                <select name="parent_id" class="form-control select2" style="width:100%" id="parent_id_select" disabled>
                     <option value="">Select parent</option>
                     <?php $parents = $this->db->get('parent')->result_array();
                     foreach($parents as $row){ ?>
@@ -294,8 +294,8 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
         </div>
 
         <!-- CREATE NEW PARENT -->
-        <div id="newParentSection" style="display: none;">
-            <input type="hidden" name="parent_id" id="parent_id_hidden" value="" disabled>
+        <div id="newParentSection">
+            <input type="hidden" name="parent_id" id="parent_id_hidden" value="new">
 
             <!-- Father Details -->
             <div style="background: #f0f4ff; border-radius: 8px; padding: 15px; margin-bottom: 12px;">
