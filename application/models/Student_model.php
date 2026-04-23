@@ -101,6 +101,7 @@ class Student_model extends CI_Model {
         }
 
         $page_data = array(
+            'admission_no'  => html_escape($this->input->post('admission_no')),
             'name'          => html_escape($this->input->post('name')),
             'birthday'      => html_escape($this->input->post('birthday')),
             'age'           => html_escape($this->input->post('age')),
@@ -148,6 +149,7 @@ class Student_model extends CI_Model {
             'house_id'        => html_escape($this->input->post('house_id')),
             'student_category_id' => html_escape($this->input->post('student_category_id')),
             'club_id'             => html_escape($this->input->post('club_id')),
+            'student_status'      => html_escape($this->input->post('student_status') ?: 'active'),
             'session'             => html_escape($this->input->post('session'))
         );
         
@@ -161,6 +163,7 @@ class Student_model extends CI_Model {
     //the function below update student
     function updateNewStudent($param2){
         $page_data = array(
+            'admission_no'  => html_escape($this->input->post('admission_no')),
             'name'          => html_escape($this->input->post('name')),
             'birthday'      => html_escape($this->input->post('birthday')),
             'age'           => html_escape($this->input->post('age')),
@@ -205,7 +208,8 @@ class Student_model extends CI_Model {
             'dormitory_id'    => html_escape($this->input->post('dormitory_id')),
             'house_id'        => html_escape($this->input->post('house_id')),
             'student_category_id' => html_escape($this->input->post('student_category_id')),
-            'club_id'             => html_escape($this->input->post('club_id'))
+            'club_id'             => html_escape($this->input->post('club_id')),
+            'student_status'      => html_escape($this->input->post('student_status') ?: 'active')
 	    );
         $this->db->where('student_id', $param2);
         $this->db->update('student', $page_data);

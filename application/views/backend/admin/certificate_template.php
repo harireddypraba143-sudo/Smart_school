@@ -94,7 +94,7 @@ $accent = isset($colors[$cert_type]) ? $colors[$cert_type] : '#1a237e';
         was a bonafide student of this institution. The details are as follows:</p>
 
         <table style="width:100%; border-collapse:collapse; margin: 15px 0; font-size: 14px;">
-            <tr><td style="padding:8px; border:1px solid #ccc; width:40%; background:#f9f9f9;"><strong>Admission No / Roll</strong></td><td style="padding:8px; border:1px solid #ccc;"><?php echo $student['roll']; ?></td></tr>
+            <tr><td style="padding:8px; border:1px solid #ccc; width:40%; background:#f9f9f9;"><strong>Admission No</strong></td><td style="padding:8px; border:1px solid #ccc;"><?php echo !empty($student['admission_no']) ? $student['admission_no'] : $student['roll']; ?></td></tr>
             <tr><td style="padding:8px; border:1px solid #ccc; background:#f9f9f9;"><strong>Class</strong></td><td style="padding:8px; border:1px solid #ccc;"><?php echo $class_name; ?></td></tr>
             <tr><td style="padding:8px; border:1px solid #ccc; background:#f9f9f9;"><strong>Date of Birth</strong></td><td style="padding:8px; border:1px solid #ccc;"><?php echo $student['birthday']; ?></td></tr>
             <tr><td style="padding:8px; border:1px solid #ccc; background:#f9f9f9;"><strong>Date of Admission</strong></td><td style="padding:8px; border:1px solid #ccc;"><?php echo $student['am_date']; ?></td></tr>

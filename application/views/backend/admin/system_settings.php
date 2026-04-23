@@ -106,10 +106,13 @@
 					<select name="running_session" class="form-control select2" >
                           <?php $running_session = $this->db->get_where('settings', array('type' => 'session'))->row()->description; ?>
                           <option value=""><?php echo get_phrase('select_running_session');?></option>
-                          <?php for($i = 0; $i < 10; $i++):?>
-                              <option value="<?php echo (2019+$i);?>-<?php echo (2019+$i+1);?>"
-                                <?php if($running_session == (2019+$i).'-'.(2019+$i+1)) echo 'selected';?>>
-                                  <?php echo (2019+$i);?>-<?php echo (2019+$i+1);?>
+                          <?php 
+                          $current_yr = (int)date('Y');
+                          if ((int)date('m') < 6) $current_yr--;
+                          for($y = $current_yr; $y >= 2012; $y--):?>
+                              <option value="<?php echo $y;?>-<?php echo ($y+1);?>"
+                                <?php if($running_session == $y.'-'.($y+1)) echo 'selected';?>>
+                                  <?php echo $y;?>-<?php echo ($y+1);?><?php if($y == $current_yr) echo ' (Current)';?>
                               </option>
                           <?php endfor;?>
                           </select>

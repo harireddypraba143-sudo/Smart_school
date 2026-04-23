@@ -27,13 +27,28 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
     <div class="white-box" style="border-radius: 12px; border-left: 4px solid #667eea; margin-bottom: 15px;">
         <h3 class="box-title" style="margin-bottom: 20px; font-size: 16px;"><i class="fa fa-graduation-cap" style="color: #667eea;"></i> Academic Information</h3>
         <div class="row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
+                <label>Admission No *</label>
+                <input type="text" class="form-control" name="admission_no" placeholder="e.g., SS/2026/0001" required style="font-weight: 600;">
+            </div>
+            <div class="form-group col-md-3">
                 <label>Session *</label>
-                <select name="session" class="form-control">
-                    <option value="<?php echo $auto_session; ?>" selected><?php echo $auto_session; ?> (Current)</option>
+                <select name="session" class="form-control select2" style="width:100%" required>
+                    <option value="">Select Session</option>
+                    <?php
+                    $current_year = (int)date('Y');
+                    // If current month is before June, current academic session started last year
+                    if ((int)date('m') < 6) $current_year--;
+                    for ($y = $current_year; $y >= 2012; $y--) {
+                        $session_str = $y . '-' . ($y + 1);
+                        $is_current = ($y == $current_year) ? ' (Current)' : '';
+                        $selected = ($y == $current_year) ? 'selected' : '';
+                        echo '<option value="' . $session_str . '" ' . $selected . '>' . $session_str . $is_current . '</option>';
+                    }
+                    ?>
                 </select>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label>Class *</label>
                 <select name="class_id" class="form-control select2" style="width:100%" id="class_id" 
                     onchange="$.ajax({url: '<?php echo base_url();?>admin/get_class_section/' + this.value, success: function(response){jQuery('#section_selector_holder').html(response);}});" required>
@@ -44,11 +59,27 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                     <?php } ?>
                 </select>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label>Section *</label>
                 <select name="section_id" class="form-control select2" style="width:100%" id="section_selector_holder">
                     <option value="">Select class first</option>
                 </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label>Student Status *</label>
+                <select name="student_status" class="form-control" required style="font-weight: 600;">
+                    <option value="active" selected>✅ Active (Currently Studying)</option>
+                    <option value="left">🚪 Left School</option>
+                    <option value="completed">🎓 Completed (10th Pass / Passed Out)</option>
+                </select>
+            </div>
+            <div class="form-group col-md-8">
+                <label>&nbsp;</label>
+                <div class="alert alert-info" style="margin: 0; padding: 8px 12px; font-size: 12px; border-radius: 6px;">
+                    <i class="fa fa-info-circle"></i> <strong>For old students:</strong> Set the <strong>Session</strong> to their admission year, <strong>Class</strong> to their last/current class, and <strong>Status</strong> accordingly.
+                </div>
             </div>
         </div>
         <input type="hidden" name="roll" value="<?php echo substr(md5(uniqid(rand(), true)), 0, 7); ?>">
@@ -516,8 +547,10 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                     <thead>
                         <tr>
                             <th width="50">Photo</th>
+                            <th>Admission No</th>
                             <th>Name</th>
                             <th>Class</th>
+                            <th>Session</th>
                             <th>Parent</th>
                             <th>Phone</th>
                             <th>Options</th>
@@ -532,11 +565,13 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                         ?>
                         <tr>
                             <td><img src="<?php echo $this->crud_model->get_image_url('student', $student['student_id']);?>" class="img-circle" width="40"></td>
+                            <td><strong style="color: #667eea;"><?php echo isset($student['admission_no']) && $student['admission_no'] ? $student['admission_no'] : '—';?></strong></td>
                             <td>
                                 <strong><?php echo $student['name'];?></strong><br>
                                 <small style="color: #999;"><?php echo $student['roll'];?></small>
                             </td>
                             <td><?php echo $class ? $class->name : '—';?></td>
+                            <td><?php echo isset($student['session']) ? $student['session'] : '—';?></td>
                             <td><?php echo $parent ? $parent->name : '—';?></td>
                             <td><?php echo $student['phone'];?></td>
                             <td>

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class MigrateDB extends CI_Controller {
+class Migratedb extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->database();
@@ -143,6 +143,10 @@ class MigrateDB extends CI_Controller {
      */
     public function student_admission() {
         $queries = [
+            // Student table — admission number
+            "ALTER TABLE `student` ADD COLUMN `admission_no` VARCHAR(50) DEFAULT NULL",
+            // Student table — status tracking (active / left / completed)
+            "ALTER TABLE `student` ADD COLUMN `student_status` VARCHAR(20) NOT NULL DEFAULT 'active'",
             // Student table — new identity fields
             "ALTER TABLE `student` ADD COLUMN `aadhaar_number` VARCHAR(20) DEFAULT NULL",
             "ALTER TABLE `student` ADD COLUMN `appar_number` VARCHAR(30) DEFAULT NULL",

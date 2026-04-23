@@ -2059,15 +2059,33 @@ class Admin extends CI_Controller {
         if ($this->input->post('operation') == 'promote') {
             $from_class = $this->input->post('from_class');
             $to_class = $this->input->post('to_class');
+            $new_session = $this->input->post('new_session');
             $student_ids = $this->input->post('student_ids');
             
             if (!empty($student_ids) && is_array($student_ids)) {
+                $update_data = ['class_id' => $to_class];
+                if (!empty($new_session)) {
+                    $update_data['session'] = $new_session;
+                }
                 foreach ($student_ids as $sid) {
-                    $this->db->update('student', ['class_id' => $to_class], ['student_id' => $sid]);
+                    $this->db->update('student', $update_data, ['student_id' => $sid]);
                 }
                 $this->session->set_flashdata('flash_message', count($student_ids) . ' students promoted successfully!');
             } else {
                 $this->session->set_flashdata('error_message', 'No students selected.');
+            }
+            redirect(base_url() . 'admin/student_promotion', 'refresh');
+        }
+
+        // Mark completed: if operation is mark_status
+        if ($this->input->post('operation') == 'mark_status') {
+            $student_ids = $this->input->post('student_ids');
+            $new_status = $this->input->post('new_status');
+            if (!empty($student_ids) && is_array($student_ids) && in_array($new_status, ['active','left','completed'])) {
+                foreach ($student_ids as $sid) {
+                    $this->db->update('student', ['student_status' => $new_status], ['student_id' => $sid]);
+                }
+                $this->session->set_flashdata('flash_message', count($student_ids) . ' students marked as ' . ucfirst($new_status) . '!');
             }
             redirect(base_url() . 'admin/student_promotion', 'refresh');
         }
@@ -2078,7 +2096,9 @@ class Admin extends CI_Controller {
     }
 
     function get_students_by_class($class_id) {
-        $students = $this->db->get_where('student', ['class_id' => $class_id])->result_array();
+        // Only return active students for promotion
+        $this->db->where('class_id', $class_id);
+        $students = $this->db->get('student')->result_array();
         echo json_encode($students);
     }
 

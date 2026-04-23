@@ -263,7 +263,7 @@
             <div class="ms-details-col">
                 <span class="plabel">Student Name</span> <span class="psep">:</span> <span class="pval"><?php echo $student['name']; ?></span>
                 <span class="plabel">Roll No.</span> <span class="psep">:</span> <span class="pval"><?php echo $student['roll']; ?></span>
-                <span class="plabel">Admission No.</span> <span class="psep">:</span> <span class="pval"><?php echo isset($student['admission_no']) ? $student['admission_no'] : $student['student_id']; ?></span>
+                <span class="plabel">Admission No.</span> <span class="psep">:</span> <span class="pval"><?php echo !empty($student['admission_no']) ? $student['admission_no'] : (isset($student['roll']) ? $student['roll'] : $student['student_id']); ?></span>
                 <span class="plabel">Mother's Name</span> <span class="psep">:</span> <span class="pval"><?php echo isset($student['mother_name']) ? $student['mother_name'] : 'N/A'; ?></span>
                 <span class="plabel">Father's Name</span> <span class="psep">:</span> <span class="pval"><?php echo isset($student['father_name']) ? $student['father_name'] : 'N/A'; ?></span>
             </div>

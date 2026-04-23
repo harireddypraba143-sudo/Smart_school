@@ -27,7 +27,28 @@
     <div class="white-box" style="border-radius: 12px; border-left: 4px solid #667eea; margin-bottom: 15px;">
         <h3 class="box-title" style="margin-bottom: 20px; font-size: 16px;"><i class="fa fa-graduation-cap" style="color: #667eea;"></i> Academic Information</h3>
         <div class="row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
+                <label>Admission No *</label>
+                <input type="text" class="form-control" name="admission_no" value="<?php echo isset($student['admission_no']) ? $student['admission_no'] : '';?>" required style="font-weight: 600;">
+            </div>
+            <div class="form-group col-md-3">
+                <label>Session *</label>
+                <select name="session" class="form-control select2" style="width:100%" required>
+                    <option value="">Select Session</option>
+                    <?php
+                    $current_year = (int)date('Y');
+                    if ((int)date('m') < 6) $current_year--;
+                    $saved_session = isset($student['session']) ? $student['session'] : '';
+                    for ($y = $current_year; $y >= 2012; $y--) {
+                        $session_str = $y . '-' . ($y + 1);
+                        $is_current = ($y == $current_year) ? ' (Current)' : '';
+                        $selected = ($session_str == $saved_session) ? 'selected' : '';
+                        echo '<option value="' . $session_str . '" ' . $selected . '>' . $session_str . $is_current . '</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
                 <label>Class *</label>
                 <select name="class_id" class="form-control select2" style="width:100%" id="class_id" 
                     onchange="return get_class_sections(this.value)" required>
@@ -38,13 +59,24 @@
                     <?php } ?>
                 </select>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label>Section *</label>
                 <select name="section_id" class="form-control select2" style="width:100%" id="section_selector_holder">
                     <option value="">Select class first</option>
                 </select>
             </div>
+        </div>
+        <div class="row">
             <div class="form-group col-md-4">
+                <label>Student Status *</label>
+                <?php $saved_status = isset($student['student_status']) ? $student['student_status'] : 'active'; ?>
+                <select name="student_status" class="form-control" required style="font-weight: 600;">
+                    <option value="active" <?php if($saved_status == 'active') echo 'selected';?>>✅ Active (Currently Studying)</option>
+                    <option value="left" <?php if($saved_status == 'left') echo 'selected';?>>🚪 Left School</option>
+                    <option value="completed" <?php if($saved_status == 'completed') echo 'selected';?>>🎓 Completed (10th Pass / Passed Out)</option>
+                </select>
+            </div>
+            <div class="form-group col-md-8">
                 <label>Parent *</label>
                 <select name="parent_id" class="form-control select2" style="width:100%" required>
                     <option value="">Select</option>
