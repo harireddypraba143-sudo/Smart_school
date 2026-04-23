@@ -74,9 +74,6 @@
     <!-- ═══════════════════════════════════════ -->
     <?php if($check_admin_permission_academics == '1'):?>
 
-        <li class="nav-small-cap" style="padding: 8px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #7c8ea0; text-transform: uppercase; margin-top: 5px;">
-            <span style="display: inline-block; width: 18px; height: 2px; background: linear-gradient(90deg, #11998e, #38ef7d); vertical-align: middle; margin-right: 6px; border-radius: 1px;"></span>ACADEMICS
-        </li>
 
         <li> <a href="javascript:void(0);" class="waves-effect" style="padding: 10px 15px;"><i class="fa fa-graduation-cap" style="font-size: 15px; color: #11998e; margin-right: 8px; width: 20px; text-align: center;"></i> <span class="hide-menu" style="font-weight: 600; font-size: 14px;">Academics<span class="fa arrow"></span></span></a>
             <ul class="nav nav-second-level<?php
@@ -137,9 +134,6 @@
     <!-- ═══════════════════════════════════════ -->
     <?php if($check_admin_permission_employee == '1'):?> 
 
-        <li class="nav-small-cap" style="padding: 8px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #7c8ea0; text-transform: uppercase; margin-top: 5px;">
-            <span style="display: inline-block; width: 18px; height: 2px; background: linear-gradient(90deg, #667eea, #764ba2); vertical-align: middle; margin-right: 6px; border-radius: 1px;"></span>HRMS
-        </li>
 
         <li class="staff"> <a href="javascript:void(0);" class="waves-effect" style="padding: 10px 15px;"><i class="fa fa-building" style="font-size: 15px; color: #667eea; margin-right: 8px; width: 20px; text-align: center;"></i> <span class="hide-menu" style="font-weight: 600; font-size: 14px;">Human Resources<span class="fa arrow"></span></span></a>
         
@@ -226,9 +220,6 @@
     <!-- ═══════════════════════════════════════ -->
     <?php if($check_admin_permission_student == '1'):?>
 
-        <li class="nav-small-cap" style="padding: 8px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #7c8ea0; text-transform: uppercase; margin-top: 5px;">
-            <span style="display: inline-block; width: 18px; height: 2px; background: linear-gradient(90deg, #f093fb, #f5576c); vertical-align: middle; margin-right: 6px; border-radius: 1px;"></span>STUDENTS
-        </li>
 
         <li class="student"> <a href="javascript:void(0);" class="waves-effect" style="padding: 10px 15px;"><i class="fa fa-users" style="font-size: 15px; color: #f5576c; margin-right: 8px; width: 20px; text-align: center;"></i> <span class="hide-menu" style="font-weight: 600; font-size: 14px;">Student Management<span class="fa arrow"></span></span></a>
         
@@ -380,9 +371,6 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- CLASSES & SUBJECTS -->
     <!-- ═══════════════════════════════════════ -->
-    <li class="nav-small-cap" style="padding: 8px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #7c8ea0; text-transform: uppercase; margin-top: 5px;">
-        <span style="display: inline-block; width: 18px; height: 2px; background: linear-gradient(90deg, #4facfe, #00f2fe); vertical-align: middle; margin-right: 6px; border-radius: 1px;"></span>SCHOOL
-    </li>
 
     <li> <a href="javascript:void(0);" class="waves-effect" style="padding: 10px 15px;"><i class="fa fa-university" style="font-size: 15px; color: #4facfe; margin-right: 8px; width: 20px; text-align: center;"></i> <span class="hide-menu" style="font-weight: 600; font-size: 14px;">Classes & Sections<span class="fa arrow"></span></span></a>
         
@@ -470,9 +458,6 @@
     <!-- ═══════════════════════════════════════ -->
     <?php if ($is_admin || $is_accountant || $is_admission): ?>
 
-    <li class="nav-small-cap" style="padding: 8px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #7c8ea0; text-transform: uppercase; margin-top: 5px;">
-        <span style="display: inline-block; width: 18px; height: 2px; background: linear-gradient(90deg, #fa709a, #fee140); vertical-align: middle; margin-right: 6px; border-radius: 1px;"></span>FINANCE
-    </li>
 
     <li class="collect_fee"> <a href="javascript:void(0);" class="waves-effect" style="padding: 10px 15px;"><i class="fa fa-credit-card" style="font-size: 15px; color: #e11d48; margin-right: 8px; width: 20px; text-align: center;"></i> <span class="hide-menu" style="font-weight: 600; font-size: 14px;">Fee Collection<span class="fa arrow"></span></span></a>
         
@@ -524,9 +509,6 @@
     <!-- ═══════════════════════════════════════ -->
     <?php if ($is_admin): ?>
 
-    <li class="nav-small-cap" style="padding: 8px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #7c8ea0; text-transform: uppercase; margin-top: 5px;">
-        <span style="display: inline-block; width: 18px; height: 2px; background: linear-gradient(90deg, #a8c0ff, #3f2b96); vertical-align: middle; margin-right: 6px; border-radius: 1px;"></span>FACILITY
-    </li>
 
     <li> <a href="javascript:void(0);" class="waves-effect" style="padding: 10px 15px;"><i class="fa fa-bed" style="font-size: 15px; color: #7c3aed; margin-right: 8px; width: 20px; text-align: center;"></i> <span class="hide-menu" style="font-weight: 600; font-size: 14px;">Hostel<span class="fa arrow"></span></span></a>
         
@@ -596,9 +578,6 @@
     <!-- SETTINGS & ADMIN -->
     <!-- ═══════════════════════════════════════ -->
 
-    <li class="nav-small-cap" style="padding: 8px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #7c8ea0; text-transform: uppercase; margin-top: 5px;">
-        <span style="display: inline-block; width: 18px; height: 2px; background: linear-gradient(90deg, #667eea, #764ba2); vertical-align: middle; margin-right: 6px; border-radius: 1px;"></span>ADMIN
-    </li>
 
     <li> <a href="javascript:void(0);" class="waves-effect" style="padding: 10px 15px;"><i class="fa fa-cog" style="font-size: 15px; color: #6b7280; margin-right: 8px; width: 20px; text-align: center;"></i> <span class="hide-menu" style="font-weight: 600; font-size: 14px;">Settings<span class="fa arrow"></span></span></a>
         
