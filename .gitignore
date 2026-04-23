@@ -1,3 +1,6 @@
 optimum.zip
 optimum_less.zip
 optimum_plugins.zip
+
+uploads/*
+!uploads/index.html
