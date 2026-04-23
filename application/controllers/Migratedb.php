@@ -193,4 +193,62 @@ class Migratedb extends CI_Controller {
         }
         echo "<br><strong>Student Admission Migration Complete: $success applied, $skipped skipped.</strong>";
     }
+
+    /**
+     * Alumni & Missing Tables Migration
+     * Run once: /migratedb/create_tables
+     */
+    public function create_tables() {
+        $queries = [
+            "CREATE TABLE IF NOT EXISTS `alumni` (
+              `alumni_id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(100) NOT NULL,
+              `email` varchar(100) DEFAULT NULL,
+              `sex` varchar(10) DEFAULT NULL,
+              `address` text DEFAULT NULL,
+              `phone` varchar(20) DEFAULT NULL,
+              `profession` varchar(100) DEFAULT NULL,
+              `g_year` varchar(20) DEFAULT NULL,
+              `club_id` int(11) DEFAULT NULL,
+              `interest` text DEFAULT NULL,
+              PRIMARY KEY (`alumni_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+            "CREATE TABLE IF NOT EXISTS `admin_role` (
+              `admin_role_id` int(11) NOT NULL AUTO_INCREMENT,
+              `admin_id` int(11) NOT NULL,
+              `dashboard` int(1) NOT NULL DEFAULT 1,
+              `manage_academics` int(1) NOT NULL DEFAULT 1,
+              `manage_employee` int(1) NOT NULL DEFAULT 1,
+              `manage_student` int(1) NOT NULL DEFAULT 1,
+              `manage_attendance` int(1) NOT NULL DEFAULT 1,
+              `download_page` int(1) NOT NULL DEFAULT 1,
+              `manage_parent` int(1) NOT NULL DEFAULT 1,
+              `manage_alumni` int(1) NOT NULL DEFAULT 1,
+              PRIMARY KEY (`admin_role_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+        ];
+
+        $success = 0;
+        $skipped = 0;
+        foreach ($queries as $sql) {
+            try {
+                $this->db->query($sql);
+                $success++;
+                echo "✓ OK: " . substr($sql, 0, 80) . "...<br>";
+            } catch (Exception $e) {
+                $skipped++;
+                echo "⊘ Skipped: " . substr($sql, 0, 80) . "...<br>";
+            }
+        }
+
+        // Create upload directory for alumni images
+        $alumni_dir = FCPATH . 'uploads/alumni_image';
+        if (!is_dir($alumni_dir)) {
+            mkdir($alumni_dir, 0755, true);
+            echo "✓ Created uploads/alumni_image/ directory<br>";
+        }
+
+        echo "<br><strong>Tables Migration Complete: $success applied, $skipped skipped.</strong>";
+    }
 }
