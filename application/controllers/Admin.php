@@ -2232,4 +2232,70 @@ class Admin extends CI_Controller {
         }
     }
 
+
+    /************** OCR SESSION MANAGEMENT ********************/
+    
+    // Create a new OCR scanning session
+    function create_ocr_session() {
+        if (!$this->_is_staff_logged_in()) { echo json_encode(['error' => 'Unauthorized']); return; }
+        $session_id = 'OCR_' . bin2hex(random_bytes(8));
+        $session_file = FCPATH . 'uploads/ocr_sessions/' . $session_id . '.json';
+        
+        // Create directory if not exists
+        $dir = FCPATH . 'uploads/ocr_sessions';
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
+        
+        file_put_contents($session_file, json_encode([
+            'session_id' => $session_id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'status' => 'waiting',
+            'data' => []
+        ]));
+        
+        echo json_encode([
+            'session_id' => $session_id,
+            'scanner_url' => base_url() . 'index.php/admin/ocr_scanner/' . $session_id
+        ]);
+    }
+    
+    // Poll for OCR data (called by web admission page)
+    function get_ocr_data($session_id = '') {
+        if (empty($session_id)) { echo json_encode(['status' => 'error']); return; }
+        $session_file = FCPATH . 'uploads/ocr_sessions/' . $session_id . '.json';
+        if (!file_exists($session_file)) { echo json_encode(['status' => 'expired']); return; }
+        
+        $data = json_decode(file_get_contents($session_file), true);
+        echo json_encode($data);
+    }
+    
+    // Receive OCR data from mobile scanner (POST)
+    function receive_ocr_data($session_id = '') {
+        if (empty($session_id)) { echo json_encode(['error' => 'No session']); return; }
+        $session_file = FCPATH . 'uploads/ocr_sessions/' . $session_id . '.json';
+        if (!file_exists($session_file)) { echo json_encode(['error' => 'Session expired']); return; }
+        
+        $existing = json_decode(file_get_contents($session_file), true);
+        $scan_type = $this->input->post('scan_type'); // student_aadhaar, father_aadhaar, mother_aadhaar, bank
+        $scan_data = $this->input->post('scan_data');  // JSON string of parsed data
+        
+        if ($scan_type && $scan_data) {
+            $existing['data'][$scan_type] = json_decode($scan_data, true);
+            $existing['status'] = 'has_data';
+            $existing['last_update'] = date('Y-m-d H:i:s');
+            file_put_contents($session_file, json_encode($existing));
+        }
+        
+        echo json_encode(['success' => true, 'scan_type' => $scan_type]);
+    }
+    
+    // Mobile scanner page
+    function ocr_scanner($session_id = '') {
+        if (empty($session_id)) { show_error('Invalid session'); return; }
+        $session_file = FCPATH . 'uploads/ocr_sessions/' . $session_id . '.json';
+        if (!file_exists($session_file)) { show_error('Session expired. Please generate a new QR code.'); return; }
+        
+        $page_data['session_id'] = $session_id;
+        $this->load->view('backend/admin/ocr_scanner', $page_data);
+    }
+
 }

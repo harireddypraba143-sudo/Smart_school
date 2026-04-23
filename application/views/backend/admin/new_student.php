@@ -16,6 +16,34 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
 
 <?php echo form_open(base_url() . 'admin/new_student/create/' , array('class' => 'form-horizontal validate', 'enctype' => 'multipart/form-data', 'id' => 'admissionForm'));?>
 
+<!-- OCR Auto-Fill Button -->
+<div class="row" style="margin-bottom:10px;">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-lg" onclick="startOCRSession()" 
+            style="background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; font-weight:700; border:none; border-radius:10px; padding:10px 24px;">
+            <i class="fa fa-camera"></i> &nbsp;📸 OCR Auto Fill — Scan Aadhaar / Bank Passbook
+        </button>
+        <span id="ocr_connection_status" style="margin-left:10px; display:none;"></span>
+    </div>
+</div>
+
+<!-- QR Code Modal -->
+<div class="modal fade" id="ocrModal" tabindex="-1">
+    <div class="modal-dialog modal-sm" style="margin-top:80px;">
+        <div class="modal-content" style="border-radius:16px; text-align:center; padding:24px;">
+            <h4 style="font-weight:700; margin-bottom:4px;">📱 Scan with Phone</h4>
+            <p style="color:#666; font-size:13px; margin-bottom:16px;">Open your phone camera and scan this QR code</p>
+            <div id="qrcode_container" style="display:inline-block; padding:12px; background:#fff; border-radius:12px; border:2px solid #eee;"></div>
+            <p style="margin-top:12px; font-size:11px; color:#999;">Or open this URL on your phone:</p>
+            <input type="text" id="scanner_url_display" class="form-control" readonly style="font-size:11px; text-align:center; background:#f8f9fa; margin-bottom:12px;">
+            <div id="ocr_waiting" style="color:#f59e0b; font-size:13px;">
+                <i class="fa fa-spinner fa-spin"></i> Waiting for scans...
+            </div>
+            <button class="btn btn-default btn-block" data-dismiss="modal" style="margin-top:10px;">Close</button>
+        </div>
+    </div>
+</div>
+
 <div class="row">
 
 <!-- ════════════════════════════════════════════════════════════════ -->
@@ -974,8 +1002,157 @@ function fillParentFields() {
     document.getElementById('sibling_alert').innerHTML = '<div class="alert alert-success" style="padding:6px 10px; margin:0; border-radius:6px; font-size:12px;"><i class="fa fa-check"></i> Parent details auto-filled! You can edit if needed.</div>';
 }
 
+// ═══════════════════════════════════════════════
+// OCR AUTO-FILL SYSTEM
+// ═══════════════════════════════════════════════
+var ocrSessionId = null;
+var ocrPollTimer = null;
+var ocrAppliedTypes = {};
+
+function startOCRSession() {
+    $.ajax({
+        url: '<?php echo base_url();?>admin/create_ocr_session',
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+            if (res.session_id) {
+                ocrSessionId = res.session_id;
+                
+                // Generate QR Code
+                var qrContainer = document.getElementById('qrcode_container');
+                qrContainer.innerHTML = '';
+                new QRCode(qrContainer, {
+                    text: res.scanner_url,
+                    width: 180,
+                    height: 180,
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+                
+                document.getElementById('scanner_url_display').value = res.scanner_url;
+                $('#ocrModal').modal('show');
+                
+                // Start polling
+                ocrAppliedTypes = {};
+                startOCRPolling();
+                
+                // Show connection status
+                var statusEl = document.getElementById('ocr_connection_status');
+                statusEl.style.display = 'inline';
+                statusEl.innerHTML = '<span style="color:#16a34a;"><i class="fa fa-wifi"></i> OCR Session Active</span>';
+            }
+        },
+        error: function() { alert('Failed to create OCR session.'); }
+    });
+}
+
+function startOCRPolling() {
+    if (ocrPollTimer) clearInterval(ocrPollTimer);
+    ocrPollTimer = setInterval(pollOCRData, 3000);
+}
+
+function pollOCRData() {
+    if (!ocrSessionId) return;
+    $.ajax({
+        url: '<?php echo base_url();?>admin/get_ocr_data/' + ocrSessionId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(res) {
+            if (res.status === 'has_data' && res.data) {
+                var types = ['student_aadhaar', 'father_aadhaar', 'mother_aadhaar', 'bank'];
+                types.forEach(function(type) {
+                    if (res.data[type] && !ocrAppliedTypes[type]) {
+                        applyOCRData(type, res.data[type]);
+                        ocrAppliedTypes[type] = true;
+                    }
+                });
+                
+                // Update modal status
+                var doneCount = Object.keys(ocrAppliedTypes).length;
+                document.getElementById('ocr_waiting').innerHTML = 
+                    '<span style="color:#16a34a;"><i class="fa fa-check-circle"></i> ' + doneCount + '/4 scans received</span>';
+            }
+        }
+    });
+}
+
+function applyOCRData(type, data) {
+    var fieldMap = {};
+    
+    if (type === 'student_aadhaar') {
+        fieldMap = {
+            'name': data.name,
+            'aadhaar_number': data.aadhaar,
+            'sex': data.gender,
+            'address': data.address
+        };
+        // Handle DOB (convert DD/MM/YYYY to YYYY-MM-DD)
+        if (data.dob) {
+            var parts = data.dob.split('/');
+            if (parts.length === 3) {
+                var isoDate = parts[2] + '-' + parts[1] + '-' + parts[0];
+                var dobEl = document.getElementById('birthday_field');
+                if (dobEl) { dobEl.value = isoDate; calculateAge(); }
+            }
+        }
+    }
+    else if (type === 'father_aadhaar') {
+        fieldMap = {
+            'father_name': data.name,
+            'father_aadhaar': data.aadhaar
+        };
+        if (data.address && !document.querySelector('[name="address"]').value) {
+            fieldMap['address'] = data.address;
+        }
+    }
+    else if (type === 'mother_aadhaar') {
+        fieldMap = {
+            'mother_name': data.name,
+            'mother_aadhaar': data.aadhaar
+        };
+    }
+    else if (type === 'bank') {
+        fieldMap = {
+            'bank_account_number': data.account_no,
+            'bank_ifsc': data.ifsc
+        };
+        // Set bank name dropdown
+        if (data.bank_name) {
+            var bankSel = document.querySelector('[name="bank_name"]');
+            if (bankSel) {
+                for (var i = 0; i < bankSel.options.length; i++) {
+                    if (bankSel.options[i].value.indexOf(data.bank_name) >= 0 || data.bank_name.indexOf(bankSel.options[i].value) >= 0) {
+                        bankSel.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    // Apply field values with green highlight
+    for (var fieldName in fieldMap) {
+        if (fieldMap[fieldName]) {
+            var el = document.querySelector('[name="' + fieldName + '"]');
+            if (el) {
+                el.value = fieldMap[fieldName];
+                el.style.background = '#f0fff4';
+                el.style.transition = 'background 2s';
+                setTimeout((function(e) { return function() { e.style.background = ''; }; })(el), 4000);
+            }
+        }
+    }
+    
+    // Show notification
+    var typeLabels = { student_aadhaar:'Student Aadhaar', father_aadhaar:'Father Aadhaar', mother_aadhaar:'Mother Aadhaar', bank:'Bank Passbook' };
+    var statusEl = document.getElementById('ocr_connection_status');
+    statusEl.innerHTML = '<span style="color:#16a34a;"><i class="fa fa-check-circle"></i> ' + typeLabels[type] + ' filled!</span>';
+}
+
 // Load Telangana cities on page load
 $(document).ready(function() {
     filterCities();
 });
 </script>
+
+<!-- QR Code Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
