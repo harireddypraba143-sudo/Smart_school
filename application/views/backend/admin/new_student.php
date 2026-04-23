@@ -408,8 +408,9 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                         <input type="text" class="form-control" name="father_name" placeholder="e.g., Ramesh Kumar">
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Father's Phone *</label>
-                        <input type="text" class="form-control" name="father_phone" placeholder="e.g., 9876543210">
+                        <label>Father's Phone * <small style="color:#999;">(auto-detects siblings)</small></label>
+                        <input type="text" class="form-control" name="father_phone" id="father_phone" placeholder="e.g., 9876543210" onkeyup="if(this.value.length>=10) lookupParentByPhone(this.value)">
+                        <div id="sibling_alert" style="display:none; margin-top:6px;"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -878,6 +879,99 @@ function readURL(input) {
         }
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+// ═══ Sibling Detection — Auto-fill parent by phone ═══
+function lookupParentByPhone(phone) {
+    if (phone.length < 10) return;
+    var alertEl = document.getElementById('sibling_alert');
+    alertEl.style.display = 'block';
+    alertEl.innerHTML = '<span style="color:#f59e0b;"><i class="fa fa-spinner fa-spin"></i> Searching for existing parent...</span>';
+    
+    $.ajax({
+        url: '<?php echo base_url();?>admin/lookup_parent_by_phone',
+        type: 'GET',
+        data: { phone: phone },
+        dataType: 'json',
+        timeout: 5000,
+        success: function(data) {
+            if (data.found) {
+                // Show sibling info
+                var siblingHtml = '<div class="alert alert-success" style="padding:8px 12px; margin:0; border-radius:6px; font-size:12px;">';
+                siblingHtml += '<i class="fa fa-users"></i> <strong>Parent found!</strong> ' + data.father_name;
+                if (data.siblings && data.siblings.length > 0) {
+                    siblingHtml += '<br><i class="fa fa-child"></i> Siblings: <strong>' + data.siblings.join(', ') + '</strong>';
+                }
+                siblingHtml += '<br><a href="#" onclick="useSiblingParent(' + data.parent_id + '); return false;" class="btn btn-success btn-xs" style="margin-top:4px;"><i class="fa fa-link"></i> Use this parent (skip filling)</a>';
+                siblingHtml += ' <a href="#" onclick="fillParentFields(); return false;" class="btn btn-info btn-xs" style="margin-top:4px;"><i class="fa fa-pencil"></i> Auto-fill & edit</a>';
+                siblingHtml += '</div>';
+                alertEl.innerHTML = siblingHtml;
+                
+                // Store data globally for auto-fill
+                window._siblingParentData = data;
+            } else {
+                alertEl.innerHTML = '<span style="color:#16a34a; font-size:12px;"><i class="fa fa-plus-circle"></i> New parent — please fill details below</span>';
+                setTimeout(function() { alertEl.style.display = 'none'; }, 3000);
+            }
+        },
+        error: function() {
+            alertEl.style.display = 'none';
+        }
+    });
+}
+
+// Use existing parent directly (link sibling)
+function useSiblingParent(parentId) {
+    toggleParentMode('select');
+    var sel = document.getElementById('parent_id_select');
+    if ($.fn.select2 && $(sel).data('select2')) {
+        $(sel).val(parentId).trigger('change');
+    } else {
+        sel.value = parentId;
+    }
+    document.getElementById('sibling_alert').innerHTML = '<div class="alert alert-info" style="padding:6px 10px; margin:0; border-radius:6px; font-size:12px;"><i class="fa fa-check"></i> Linked to existing parent. No need to fill parent details.</div>';
+}
+
+// Auto-fill all parent fields from sibling data
+function fillParentFields() {
+    var d = window._siblingParentData;
+    if (!d) return;
+    
+    var fields = {
+        'father_name': d.father_name,
+        'father_phone': d.father_phone,
+        'father_email': d.father_email,
+        'father_occupation': d.father_occupation,
+        'father_aadhaar': d.father_aadhaar,
+        'father_qualification': d.father_qualification,
+        'father_annual_income': d.father_annual_income,
+        'mother_name': d.mother_name,
+        'mother_phone': d.mother_phone,
+        'mother_email': d.mother_email,
+        'mother_occupation': d.mother_occupation,
+        'mother_aadhaar': d.mother_aadhaar,
+        'mother_qualification': d.mother_qualification
+    };
+    
+    for (var name in fields) {
+        var el = document.querySelector('[name="' + name + '"]');
+        if (el && fields[name]) {
+            el.value = fields[name];
+            el.style.background = '#f0fff4';
+            setTimeout((function(e) { return function() { e.style.background = ''; }; })(el), 3000);
+        }
+    }
+    
+    // Fill address if available
+    if (d.address) {
+        var addrEl = document.querySelector('[name="address"]');
+        if (addrEl && !addrEl.value) {
+            addrEl.value = d.address;
+            addrEl.style.background = '#f0fff4';
+        }
+    }
+    
+    document.getElementById('sibling_alert').innerHTML = '<div class="alert alert-success" style="padding:6px 10px; margin:0; border-radius:6px; font-size:12px;"><i class="fa fa-check"></i> Parent details auto-filled! You can edit if needed.</div>';
 }
 
 // Load Telangana cities on page load

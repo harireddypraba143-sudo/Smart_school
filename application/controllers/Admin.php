@@ -2178,4 +2178,58 @@ class Admin extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
+
+    /************** SIBLING DETECTION: Lookup parent by phone ********************/
+    function lookup_parent_by_phone() {
+        if (!$this->_is_staff_logged_in()) { echo json_encode(['found' => false]); return; }
+        
+        $phone = $this->input->get('phone');
+        if (empty($phone) || strlen($phone) < 10) { echo json_encode(['found' => false]); return; }
+        
+        // Search in parent table by phone
+        $parent = $this->db->get_where('parent', ['phone' => $phone])->row();
+        if (!$parent) {
+            // Also try matching father_phone
+            $parent = $this->db->like('father_phone', $phone)->get('parent')->row();
+        }
+        
+        if ($parent) {
+            // Get siblings (existing children of this parent)
+            $siblings = $this->db->select('student.name, student.class_id, class.name as class_name')
+                ->from('student')
+                ->join('class', 'class.class_id = student.class_id', 'left')
+                ->where('student.parent_id', $parent->parent_id)
+                ->get()->result_array();
+            
+            $sibling_names = [];
+            foreach ($siblings as $s) {
+                $sibling_names[] = $s['name'] . ' (' . ($s['class_name'] ?? '—') . ')';
+            }
+            
+            echo json_encode([
+                'found' => true,
+                'parent_id' => $parent->parent_id,
+                'parent_name' => $parent->name ?? '',
+                'parent_phone' => $parent->phone ?? '',
+                'father_name' => $parent->father_name ?? $parent->name ?? '',
+                'father_phone' => $parent->father_phone ?? $parent->phone ?? '',
+                'father_email' => $parent->father_email ?? $parent->email ?? '',
+                'father_occupation' => $parent->father_occupation ?? $parent->profession ?? '',
+                'father_aadhaar' => $parent->father_aadhaar ?? '',
+                'father_qualification' => $parent->father_qualification ?? '',
+                'father_annual_income' => $parent->father_annual_income ?? '',
+                'mother_name' => $parent->mother_name ?? '',
+                'mother_phone' => $parent->mother_phone ?? '',
+                'mother_email' => $parent->mother_email ?? '',
+                'mother_occupation' => $parent->mother_occupation ?? '',
+                'mother_aadhaar' => $parent->mother_aadhaar ?? '',
+                'mother_qualification' => $parent->mother_qualification ?? '',
+                'address' => $parent->address ?? '',
+                'siblings' => $sibling_names
+            ]);
+        } else {
+            echo json_encode(['found' => false]);
+        }
+    }
+
 }
