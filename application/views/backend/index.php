@@ -6,6 +6,10 @@ $text_align     = $this->db->get_where('settings', array('type' => 'text_align')
 $loginType      = $this->session->userdata('login_type');
 $running_year   = $this->db->get_where('settings', array('type' => 'session'))->row()->description;
 
+// Remember original role before remapping
+$originalLoginType = $loginType;
+$hide_sidebar = ($loginType == 'accountant' || $loginType == 'admission');
+
 // Map accountant & admission to use admin views (same panel, restricted via permissions)
 if ($loginType == 'accountant' || $loginType == 'admission') {
     $loginType = 'admin';
@@ -18,11 +22,13 @@ if ($loginType == 'accountant' || $loginType == 'admission') {
         <div class="cssload-speeding-wheel"></div>
     </div>
     -->
-    <div id="wrapper">
+    <div id="wrapper" class="<?php echo $hide_sidebar ? 'no-sidebar-mode' : ''; ?>">
     
 
 	<?php include 'header.php'; ?>
+	<?php if (!$hide_sidebar): ?>
 	<?php include $loginType.'/navigation.php';?>
+	<?php endif; ?>
 	<?php include 'page_info.php';?>
 	<?php include $loginType.'/'.$page_name.'.php';?>
 		

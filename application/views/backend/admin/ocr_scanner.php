@@ -99,6 +99,7 @@ canvas{display:none}
     <div class="scan-card" id="c_bank" onclick="startScan('bank','🏦 Bank Passbook')"><span class="icon">🏦</span><div class="label">Bank<br>Passbook</div><div class="sub" id="s_bank">Tap to scan</div></div>
     <div class="scan-card" id="c_tc" onclick="startScan('tc','📜 Transfer Certificate')"><span class="icon">📜</span><div class="label">Transfer<br>Certificate</div><div class="sub" id="s_tc">Tap to scan</div></div>
     <div class="scan-card" id="c_form" onclick="startScan('admission_form','📝 Admission Form')"><span class="icon">📝</span><div class="label">Admission<br>Form</div><div class="sub" id="s_form">Tap to scan</div></div>
+    <div class="scan-card" id="c_photo" onclick="startScan('student_photo','📷 Student Photo')"><span class="icon">📷</span><div class="label">Student<br>Photo</div><div class="sub" id="s_photo">Tap to take</div></div>
 </div>
 
 <div id="resultPage" class="result-page">
@@ -123,8 +124,11 @@ canvas{display:none}
         <button class="btn-x" onclick="closeCam()">✕</button>
         <button class="btn-cap" onclick="capture()"></button>
         <button class="btn-flash" id="flashBtn" onclick="toggleFlash()"><i class="fa fa-bolt"></i></button>
+        <button class="btn-flash" onclick="document.getElementById('fileUpload').click()" style="margin-left: 10px;"><i class="fa fa-image"></i></button>
     </div>
 </div>
+
+<input type="file" id="fileUpload" accept="image/*" style="display:none;" onchange="handleUpload(this)">
 
 <!-- Processing -->
 <div class="proc-overlay" id="procOvl">
@@ -154,10 +158,40 @@ function capture(){
     var v=document.getElementById('vid'),c=document.getElementById('cvs');
     c.width=v.videoWidth;c.height=v.videoHeight;
     var ctx=c.getContext('2d');ctx.drawImage(v,0,0);
-    // Auto-enhance: increase contrast
-    try{var id=ctx.getImageData(0,0,c.width,c.height),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,d[i]*1.3);d[i+1]=Math.min(255,d[i+1]*1.3);d[i+2]=Math.min(255,d[i+2]*1.3);}ctx.putImageData(id,0,0);}catch(e){}
     closeCam();
+
+    if (curType === 'student_photo') {
+        var base64 = c.toDataURL('image/jpeg', 0.85);
+        curData = { image_base64: base64 };
+        document.getElementById('resultTitle').textContent='📋 '+curLabel;
+        document.getElementById('resultFields').innerHTML='<img src="'+base64+'" style="width:100%; border-radius:12px; margin-top:10px;">';
+        document.getElementById('resultPage').style.display='block';
+        window.scrollTo({top:document.getElementById('resultPage').offsetTop,behavior:'smooth'});
+        return;
+    }
+
+    // Auto-enhance: increase contrast for OCR
+    try{var id=ctx.getImageData(0,0,c.width,c.height),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,d[i]*1.3);d[i+1]=Math.min(255,d[i+1]*1.3);d[i+2]=Math.min(255,d[i+2]*1.3);}ctx.putImageData(id,0,0);}catch(e){}
     doOCR(c.toDataURL('image/jpeg',0.92));
+}
+
+function handleUpload(input){
+    if(input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            closeCam();
+            if (curType === 'student_photo') {
+                curData = { image_base64: e.target.result };
+                document.getElementById('resultTitle').textContent='📋 '+curLabel;
+                document.getElementById('resultFields').innerHTML='<img src="'+e.target.result+'" style="width:100%; border-radius:12px; margin-top:10px;">';
+                document.getElementById('resultPage').style.display='block';
+                window.scrollTo({top:document.getElementById('resultPage').offsetTop,behavior:'smooth'});
+            } else {
+                doOCR(e.target.result);
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
 function doOCR(img){
@@ -230,7 +264,7 @@ function sendData(){
     fetch(BASE+'index.php/admin/receive_ocr_data/'+SID,{method:'POST',body:fd})
     .then(function(r){return r.json()}).then(function(res){
         if(res.success){
-            var map={student_aadhaar:'student',father_aadhaar:'father',mother_aadhaar:'mother',bank:'bank',tc:'tc',admission_form:'form'};
+            var map={student_aadhaar:'student',father_aadhaar:'father',mother_aadhaar:'mother',bank:'bank',tc:'tc',admission_form:'form',student_photo:'photo'};
             var ck=map[curType];
             document.getElementById('c_'+ck).classList.add('done');
             document.getElementById('s_'+ck).textContent='✅ Sent!';

@@ -161,12 +161,44 @@
     .hdr-search span, .hdr-search kbd { display: none; }
     .navbar-default.sidebar { margin-top: 0 !important; top: 64px !important; }
 }
+
+/* ===== No Sidebar Mode (Admission Officer & Accountant) ===== */
+.no-sidebar-mode .navbar-default.sidebar,
+.no-sidebar-mode .sidebar {
+    display: none !important;
+    width: 0 !important;
+}
+.no-sidebar-mode #page-wrapper,
+.no-sidebar-mode .page-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+.no-sidebar-mode .container-fluid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
 </style>
 
 <?php
     $sys_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
     $admin_name = $this->session->userdata('name') ?: 'Admin';
     $active_page = $this->uri->segment(2);
+
+    // Dynamic role detection
+    $login_type = $this->session->userdata('login_type');
+    $role_labels = array(
+        'admin'      => 'Super Admin',
+        'hrm'        => 'HR Manager',
+        'hostel'     => 'Hostel Manager',
+        'accountant' => 'Accountant',
+        'admission'  => 'Admission Officer',
+        'librarian'  => 'Librarian',
+        'parent'     => 'Parent',
+        'student'    => 'Student',
+        'teacher'    => 'Teacher'
+    );
+    $admin_role_label = isset($role_labels[$login_type]) ? $role_labels[$login_type] : ucfirst($login_type ?: 'Admin');
 ?>
 
 <!-- Original navbar (hidden by CSS, needed for sidebar toggle) -->
@@ -186,17 +218,21 @@
 
 <!-- NEW MODERN HEADER -->
 <div class="top-header-bar">
-    <!-- Brand -->
-    <div class="hdr-brand">
+    <!-- Brand (clickable to dashboard) -->
+    <a href="<?php echo base_url();?>admin/dashboard" class="hdr-brand" style="text-decoration:none;">
         <img src="<?php echo base_url();?>uploads/logo.png" alt="Logo">
         <div>
             <div class="name"><?php echo $sys_name; ?></div>
             <div class="sub">Smart School Management</div>
         </div>
-    </div>
+    </a>
 
     <!-- Shortcuts -->
     <div class="hdr-shortcuts">
+        <a href="<?php echo base_url();?>admin/dashboard" class="<?php echo ($active_page == 'dashboard') ? 'active' : ''; ?>" title="Home">
+            <i class="fa fa-home"></i>
+            <span>Home</span>
+        </a>
         <a href="<?php echo base_url();?>admin/new_student" class="<?php echo in_array($active_page, ['student_information','new_student','edit_student']) ? 'active' : ''; ?>" title="Admission">
             <i class="fa fa-user-plus"></i>
             <span>Admission</span>
@@ -212,10 +248,6 @@
         <a href="<?php echo base_url();?>admin/student_marksheet_subject" class="<?php echo in_array($active_page, ['createExamination','examQuestion','student_marksheet_subject']) ? 'active' : ''; ?>" title="Marks Entry">
             <i class="fa fa-pencil-square-o"></i>
             <span>Marks Entry</span>
-        </a>
-        <a href="<?php echo base_url();?>admin/noticeboard" class="<?php echo in_array($active_page, ['noticeboard','circular']) ? 'active' : ''; ?>" title="Messages">
-            <i class="fa fa-bell-o"></i>
-            <span>Messages</span>
         </a>
         <a href="<?php echo base_url();?>admin/marksheet_view" class="<?php echo in_array($active_page, ['marksheet_view','co_scholastic','marks']) ? 'active' : ''; ?>" title="Reports">
             <i class="fa fa-bar-chart"></i>
@@ -242,9 +274,9 @@
             <span class="hdr-badge"></span>
         </a>
 
-        <!-- Settings -->
-        <a href="<?php echo base_url();?>admin/manage_profile" class="hdr-icon-btn" title="Settings">
-            <i class="fa fa-cog"></i>
+        <!-- Logout -->
+        <a href="<?php echo base_url();?>login/logout" class="hdr-icon-btn" title="Logout">
+            <i class="fa fa-power-off" style="color: #ef4444;"></i>
         </a>
 
         <!-- Admin Profile -->
@@ -252,7 +284,7 @@
             <div class="hdr-admin-avatar"><?php echo strtoupper(substr($admin_name, 0, 1)); ?></div>
             <div class="hdr-admin-info hidden-xs">
                 <div class="name"><?php echo $admin_name; ?></div>
-                <div class="role">Super Admin</div>
+                <div class="role"><?php echo $admin_role_label; ?></div>
             </div>
             <i class="fa fa-chevron-down" style="font-size:10px; color:#94a3b8; margin-left:2px;"></i>
         </a>
