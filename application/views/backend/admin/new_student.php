@@ -535,7 +535,20 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
             </div>
             <div class="form-group col-md-4">
                 <label>Club *</label>
-                <select name="club_id" class="form-control select2" style="width:100%" required>
+                <style>
+                    /* Custom style for Club dropdown */
+                    .club-custom-dropdown + .select2-container .select2-selection--single {
+                        background-color: #0891b2 !important;
+                        border-color: #0891b2 !important;
+                    }
+                    .club-custom-dropdown + .select2-container .select2-selection__rendered {
+                        color: #ffffff !important;
+                    }
+                    .club-custom-dropdown + .select2-container .select2-selection__arrow b {
+                        border-color: #ffffff transparent transparent transparent !important;
+                    }
+                </style>
+                <select name="club_id" class="form-control select2 club-custom-dropdown" style="width:100%" required>
                     <option value="">Select</option>
                     <?php $clubs = $this->db->get('club')->result_array();
                     foreach($clubs as $row){ ?>
