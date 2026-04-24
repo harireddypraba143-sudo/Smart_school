@@ -589,7 +589,7 @@ $auto_session = $this->db->get_where('settings', array('type' => 'running_sessio
                         <option value="">Select</option>
                         <?php $clubs = $this->db->get('club')->result_array();
                         foreach ($clubs as $row) { ?>
-                            <option value="<?php echo $row['club_id']; ?>"><?php echo $row['name']; ?></option>
+                            <option value="<?php echo $row['club_id']; ?>"><?php echo $row['club_name']; ?></option>
                         <?php } ?>
                     </select>
                 </div>
